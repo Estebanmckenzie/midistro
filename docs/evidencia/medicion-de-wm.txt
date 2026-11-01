@@ -1,0 +1,19 @@
+==BASE sin DE/WM ==
+               total        used        free      shared  buff/cache   available
+Mem:            3888         380        3513           0         243        3507
+Swap:              0           0           0
+100
+== i3 ==
+               total        used        free      shared  buff/cache   available
+Mem:            3888         500        2661          25        1022        3387
+Swap:              0           0           0
+111
+== XFCE ==
+               total        used        free      shared  buff/cache   available
+Mem:            3888         621        2305           4        1248        3266
+Swap:              0           0           0
+==XFCE (repetido) ==
+               total        used        free      shared  buff/cache   available
+Mem:            3888         615        2310           4        1249        3273
+Swap:              0           0           0
+134
