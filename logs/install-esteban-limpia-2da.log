@@ -1,0 +1,34 @@
+
+==> 1/4 Paquetes (pkglist.txt)
+warning: base-3-3 is up to date -- skipping
+warning: linux-7.2.11.arch1-1 is up to date -- skipping
+warning: linux-firmware-20260916-1 is up to date -- skipping
+warning: networkmanager-1.58.1-2 is up to date -- skipping
+warning: sudo-1.9.17.p2-6 is up to date -- skipping
+warning: vim-9.2.1178-1 is up to date -- skipping
+warning: base-devel-1-2 is up to date -- skipping
+warning: git-2.56.0-1 is up to date -- skipping
+warning: man-db-2.13.1-2 is up to date -- skipping
+warning: openssh-10.6p1-2 is up to date -- skipping
+warning: efibootmgr-18-4 is up to date -- skipping
+warning: xorg-server-21.1.25-2 is up to date -- skipping
+warning: xorg-xinit-1.4.4-1 is up to date -- skipping
+warning: xorg-xrdb-1.2.3-1 is up to date -- skipping
+warning: i3-wm-4.25.1-1 is up to date -- skipping
+warning: i3status-2.15-1 is up to date -- skipping
+warning: dmenu-5.4-1 is up to date -- skipping
+warning: xterm-411-1 is up to date -- skipping
+warning: mesa-1:26.2.6-1 is up to date -- skipping
+warning: virtualbox-guest-utils-7.2.22-1 is up to date -- skipping
+ there is nothing to do
+
+==> 2/4 Dotfiles
+   /home/esteban/.xinitrc -> /home/esteban/midistro/dotfiles/xinitrc
+   /home/esteban/.Xresources -> /home/esteban/midistro/dotfiles/Xresources
+   /home/esteban/.config/i3/config -> /home/esteban/midistro/dotfiles/i3/config
+
+==> 3/4 Unit files propios (systemd/)
+
+==> 4/4 Servicios
+
+==> Listo. Para entrar al escritorio ejecute: startx
