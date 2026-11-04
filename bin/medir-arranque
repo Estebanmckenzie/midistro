@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# medir-arranque: guarda la medicion de arranque de systemd en docs/evidencia.
+# Uso: bin/medir-arranque antes|despues N
+# Interfaz del SO que usa: systemd (systemd-analyze, systemctl is-system-running).
+set -euo pipefail
+fase="${1:?uso: medir-arranque antes|despues N}"
+n="${2:?uso: medir-arranque antes|despues N}"
+repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+out="$repo/docs/evidencia/tema7-$fase.txt"
+# Espera a que systemd termine de arrancar para medir el arranque completo
+systemctl is-system-running --wait >/dev/null || true
+{
+    echo "== ${fase^^}, arranque $n ($(date '+%F %T')) =="
+    systemd-analyze
+    systemd-analyze blame | head -10
+    systemd-analyze critical-chain
+} >> "$out"
+cat "$out"
