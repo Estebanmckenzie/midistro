@@ -1,0 +1,39 @@
+#!/bin/bash
+# midistro-zombies - lista procesos zombie leyendo directamente /proc (Capa 3, comando libre)
+#
+# Interfaz del SO que usa: /proc/<pid>/stat (campo 3 = estado, campo 4 = PPID) y /proc/<pid>/comm.
+# Un zombie es un proceso que ya termino (estado "Z") pero cuyo padre todavia no ha llamado
+# a wait()/waitpid() para recoger su estado de salida; solo ocupa una entrada en la tabla de procesos.
+#
+# Uso: midistro-zombies [-q]      -q = silencioso, solo el codigo de salida
+# Salida: codigo 0 = no hay zombies, 1 = hay zombies (util en scripts y para probar el Tema 5)
+#
+# Referencias: man 5 proc (seccion /proc/pid/stat), man 2 wait.
+
+quiet=0
+[[ ${1:-} == -q ]] && quiet=1
+[[ ${1:-} == -h || ${1:-} == --help ]] && { sed -n '2,11p' "$0"; exit 0; }
+
+count=0
+lines=""
+for d in /proc/[0-9]*; do
+    # El proceso puede desaparecer mientras recorremos /proc; si no se puede leer, se ignora.
+    read -r stat < "$d/stat" 2>/dev/null || continue
+    rest=${stat##*) }               # todo lo que sigue al ULTIMO ")" (el nombre puede tener espacios y parentesis)
+    read -r state ppid _ <<< "$rest"
+    [[ $state == Z ]] || continue
+    pid=${d#/proc/}
+    name=${stat#*(}; name=${name%)*}
+    read -r pname < "/proc/$ppid/comm" 2>/dev/null || pname="?"
+    lines+=$(printf '%-8s %-8s %-18s %s' "$pid" "$ppid" "$name" "$pname")$'\n'
+    count=$((count + 1))
+done
+
+if (( ! quiet )); then
+    if (( count > 0 )); then
+        printf '%-8s %-8s %-18s %s\n' PID PPID COMANDO PADRE
+        printf '%s' "$lines"
+    fi
+    echo "Zombies: $count"
+fi
+(( count == 0 ))
