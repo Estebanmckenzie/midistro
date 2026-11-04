@@ -1,0 +1,110 @@
+== 1. Firmware UEFI y bootloader ==
+System:
+      Firmware: UEFI 2.70 (EDK II 1.00)
+ Firmware Arch: x64
+   Secure Boot: disabled (setup)
+  TPM2 Support: no
+  Measured UKI: no
+   Measured OS: no
+  Boot into FW: supported
+ Platform Lang: n/a
+
+Current Boot Loader:
+        Product: systemd-boot 262.1-1-arch
+       Features: ✓ Boot counting
+                 ✓ Menu timeout control
+                 ✓ One-shot menu timeout control
+                 ✓ Default entry control
+                 ✓ One-shot entry control
+                 ✓ Support for XBOOTLDR partition
+                 ✓ Support for passing random seed to OS
+                 ✓ Load drop-in drivers
+                 ✓ Support Type #1 sort-key field
+                 ✓ Support @saved pseudo-entry
+                 ✓ Support Type #1 devicetree field
+                 ✓ Enroll SecureBoot keys
+                 ✓ Retain SHIM protocols
+                 ✓ Menu can be disabled
+                 ✓ Multi-Profile UKIs are supported
+                 ✓ Loader reports network boot URL
+                 ✓ Support Type #1 uki field
+                 ✓ Support Type #1 uki-url field
+                 ✓ Loader reports active TPM2 PCR banks
+                 ✓ Loader reports firmware keyboard layout
+                 ✓ Loader measures SMBIOS information
+      Partition: /dev/disk/by-partuuid/42d6b489-115d-4927-95f8-bfd78fb29305
+         Loader: └─/boot//EFI/BOOT/BOOTX64.EFI
+Keyboard Layout: n/a (not reported by firmware)
+  Current Entry: arch.conf
+
+Random Seed:
+ System Token: set
+       Exists: yes
+
+Available Boot Loaders on ESP:
+          ESP: /boot (/dev/disk/by-partuuid/42d6b489-115d-4927-95f8-bfd78fb29305)
+         File: ├─/boot//EFI/systemd/systemd-bootx64.efi (systemd-boot 262.1-1-arch)
+               └─/boot//EFI/BOOT/BOOTX64.EFI (systemd-boot 262.1-1-arch)
+
+No boot loaders listed in EFI Variables.
+
+Boot Loader Entry Locations:
+          ESP: /boot (/dev/disk/by-partuuid/42d6b489-115d-4927-95f8-bfd78fb29305, $BOOT)
+       config: /boot//loader/loader.conf
+        token: arch
+
+Default Boot Loader Entry:
+         type: Boot Loader Specification Type #1 (.conf)
+        title: Arch Linux
+           id: arch.conf
+       source: /boot//loader/entries/arch.conf (on the EFI System Partition)
+        linux: /boot//vmlinuz-linux
+       initrd: /boot//initramfs-linux.img
+      options: root=UUID=bd2343d2-ea74-4bd0-a3a8-40fd71f571f4 rw
+== 2. Parametros que recibio el kernel ==
+initrd=\initramfs-linux.img root=UUID=bd2343d2-ea74-4bd0-a3a8-40fd71f571f4 rw
+== 3. Hooks del initramfs ==
+HOOKS=(base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems fsck)
+== 4. Contenido del initramfs ==
+==> Image: /boot/initramfs-linux.img
+==> Created with mkinitcpio 42.2
+==> Kernel: 7.2.11-arch1-1
+==> Early CPIO: 790 KiB
+==> Size: 14.1 MiB
+==> Compressed with: zstd
+  -> Uncompressed size: 42.49 MiB (.331 ratio)
+  -> Estimated decompression time: 0.082s
+
+==> Included modules (20):
+  ata_generic		  drm_ttm_helper	  mmc_block		  nvme-auth		  pata_acpi		  sr_mod		  usb-storage
+  ata_piix		  intel-agp		  mmc_core		  nvme-core		  rpmb-core		  ttm			  vmwgfx
+  cdrom			  intel-gtt		  nvme			  nvme-keyring		  serio_raw		  uas
+
+==> Included binaries (17):
+  blkid			  fsck			  loadkeys		  sulogin		  switch_root		  udevadm
+  busybox		  journalctl		  mount			  swapoff		  systemctl		  umount
+  e2fsck		  kmod			  setfont		  swapon		  systemd-tmpfiles
+
+== 5. Target por defecto de systemd ==
+graphical.target
+== 6. Primeros mensajes del kernel ==
+[    0.000000] Linux version 7.2.11-arch1-1 (linux@archlinux) (gcc (GCC) 16.2.1 20260810, GNU ld (GNU Binutils) 2.47) #1 SMP PREEMPT_DYNAMIC Fri, 16 Oct 2026 00:28:58 +0000
+[    0.000000] Command line: initrd=\initramfs-linux.img root=UUID=bd2343d2-ea74-4bd0-a3a8-40fd71f571f4 rw
+[    0.000000] x86/CPU: Model not found in latest microcode list
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff]  System RAM
+[    0.000000] BIOS-e820: [gap 0x00000000000a0000-0x00000000000fffff]
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x00000000ddea2fff]  System RAM
+[    0.000000] BIOS-e820: [mem 0x00000000ddea3000-0x00000000ddfb6fff]  device reserved
+[    0.000000] BIOS-e820: [mem 0x00000000ddfb7000-0x00000000deaecfff]  System RAM
+[    0.000000] BIOS-e820: [mem 0x00000000deaed000-0x00000000ded6cfff]  device reserved
+[    0.000000] BIOS-e820: [mem 0x00000000ded6d000-0x00000000ded7efff]  ACPI data
+[    0.000000] BIOS-e820: [mem 0x00000000ded7f000-0x00000000dedfefff]  ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x00000000dedff000-0x00000000df12cfff]  System RAM
+[    0.000000] BIOS-e820: [mem 0x00000000df12d000-0x00000000df130fff]  device reserved
+[    0.000000] BIOS-e820: [mem 0x00000000df131000-0x00000000df132fff]  ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x00000000df133000-0x00000000df16dfff]  System RAM
+[    0.000000] BIOS-e820: [mem 0x00000000df16e000-0x00000000dffeffff]  device reserved
+[    0.000000] BIOS-e820: [gap 0x00000000dfff0000-0x00000000ffbfffff]
+[    0.000000] BIOS-e820: [mem 0x00000000ffc00000-0x00000000ffffffff]  device reserved
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000011fffffff]  System RAM
