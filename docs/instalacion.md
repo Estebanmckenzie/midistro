@@ -3,7 +3,7 @@
 II Proyecto Programado, IC-6600 Principios de Sistemas Operativos, II semestre 2026.
 Alternativa A: distribución propia basada en Arch Linux.
 
-Este documento explica cómo se instaló el sistema, **por qué** se tomó cada decisión y qué problemas aparecieron. Cada integrante agrega su propia sección con su instalación (ver la sección "Instalación de Ryan" y "Instalación de Geiner" al final). Los archivos de evidencia están en `docs/evidencia/` y los logs del bootstrap en `logs/`.
+Este documento explica cómo se instaló el sistema, **por qué** se tomó cada decisión y qué problemas aparecieron. Cada integrante agrega su propia sección con su instalación (ver la sección "Instalación de Ryan" y "Instalación de Geiner" al final). Los archivos de evidencia están en `docs/evidencia/<integrante>/` y los logs del bootstrap en `logs/`.
 
 ## 1. Resumen
 
@@ -61,7 +61,7 @@ mount /dev/sda2 /mnt
 mount --mkdir /dev/sda1 /mnt/boot
 ```
 
-`mkfs` crea el sistema de archivos dentro de cada partición. El orden de `mount` importa: primero la raíz y luego `/boot` dentro de ella, porque `/mnt/boot` es una carpeta que vive en la raíz. Evidencia: `docs/evidencia/lsblk.txt`.
+`mkfs` crea el sistema de archivos dentro de cada partición. El orden de `mount` importa: primero la raíz y luego `/boot` dentro de ella, porque `/mnt/boot` es una carpeta que vive en la raíz. Evidencia: `docs/evidencia/esteban/lsblk.txt`.
 
 ### 2.4 Instalar el sistema base
 
@@ -74,7 +74,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 - Se instaló lo mínimo para tener un sistema útil: `base` (utilidades y systemd), `linux` (el kernel), `linux-firmware` (blobs de firmware de hardware), `networkmanager` (red), `sudo` y `vim`. `base-devel` trae las herramientas para construir paquetes, que se usarán para el `PKGBUILD` del tema de paquetes. `git` es para el repositorio.
 - `genfstab -U` genera `/etc/fstab`, la tabla que dice qué partición se monta dónde en cada arranque. Se usa `-U` para identificar cada partición por su **UUID** y no por `sda1`, porque el nombre del dispositivo puede cambiar de un arranque a otro, pero el UUID no.
 
-Evidencia: `docs/evidencia/fstab.txt`.
+Evidencia: `docs/evidencia/esteban/fstab.txt`.
 
 ### 2.5 Configuración dentro del chroot
 
@@ -134,17 +134,17 @@ sudo bootctl install
 sudo efibootmgr -v
 ```
 
-Después de eso aparece `Linux Boot Manager` en las variables EFI. Evidencia: `docs/evidencia/bootctl-status.txt` y `docs/evidencia/efibootmgr.txt`.
+Después de eso aparece `Linux Boot Manager` en las variables EFI. Evidencia: `docs/evidencia/esteban/bootctl-status.txt` y `docs/evidencia/esteban/efibootmgr.txt`.
 
 ### 2.10 Evidencia de la instalación
 
 | Archivo | Qué demuestra |
 | --- | --- |
-| `docs/evidencia/lsblk.txt` | Particiones y sistemas de archivos montados |
-| `docs/evidencia/fstab.txt` | Tabla de montaje con UUID y las máscaras de seguridad |
-| `docs/evidencia/bootctl-status.txt` | Arranque por UEFI y el bootloader registrado |
-| `docs/evidencia/efibootmgr.txt` | Entrada de arranque en la NVRAM |
-| `docs/evidencia/list-boots.txt` | Arranques registrados por `journald` |
+| `docs/evidencia/esteban/lsblk.txt` | Particiones y sistemas de archivos montados |
+| `docs/evidencia/esteban/fstab.txt` | Tabla de montaje con UUID y las máscaras de seguridad |
+| `docs/evidencia/esteban/bootctl-status.txt` | Arranque por UEFI y el bootloader registrado |
+| `docs/evidencia/esteban/efibootmgr.txt` | Entrada de arranque en la NVRAM |
+| `docs/evidencia/esteban/list-boots.txt` | Arranques registrados por `journald` |
 
 `systemctl --failed` reportó `0 loaded units listed`, es decir, ningún servicio falló al arrancar.
 
@@ -166,7 +166,7 @@ Se compararon dos entornos en la misma VM (4 GB de RAM), con **una sola terminal
 
 Otra razón es práctica: toda la configuración de i3 está en un solo archivo de texto, así que se versiona en `dotfiles/i3/config` y se puede cambiar un atajo con una línea, lo que facilita la parte de atajos del proyecto.
 
-**Limitaciones de la medición.** Es una VM y no hardware real, y cada configuración se midió con pocas repeticiones. Una primera lectura de XFCE se descartó porque se tomó con más ventanas abiertas que la de i3 y no era comparable. Los datos crudos están en `docs/evidencia/medicion-de-wm.txt`.
+**Limitaciones de la medición.** Es una VM y no hardware real, y cada configuración se midió con pocas repeticiones. Una primera lectura de XFCE se descartó porque se tomó con más ventanas abiertas que la de i3 y no era comparable. Los datos crudos están en `docs/evidencia/esteban/medicion-de-wm.txt`.
 
 ## 5. Bootstrap reproducible
 

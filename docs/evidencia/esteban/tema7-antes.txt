@@ -1,0 +1,90 @@
+== ANTES, arranque 1 (2026-11-04 15:47:09) ==
+Startup finished in 1.612s (kernel) + 2.820s (initrd) + 2.763s (userspace) = 7.196s 
+graphical.target reached after 2.754s in userspace.
+3.638s dev-disk-by\x2duuid-bd2343d2\x2dea74\x2d4bd0\x2da3a8\x2d40fd71f571f4.device
+3.633s dev-disk-by\x2dpartuuid-1e118861\x2d49c9\x2d4836\x2da4e7\x2dafc8b85fa8db.device
+3.633s dev-disk-by\x2ddiskseq-1\x2dpart2.device
+3.633s sys-devices-pci0000:00-0000:00:0d.0-ata1-host0-target0:0:0-0:0:0:0-block-sda-sda2.device
+3.633s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartuuid-1e118861\x2d49c9\x2d4836\x2da4e7\x2dafc8b85fa8db.device
+3.633s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart2.device
+3.633s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2duuid-bd2343d2\x2dea74\x2d4bd0\x2da3a8\x2d40fd71f571f4.device
+3.633s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1\x2dpart2.device
+3.633s dev-disk-by\x2did-ata\x2dVBOX_HARDDISK_VB0b0db171\x2d483b9d09\x2dpart2.device
+3.633s dev-sda2.device
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @2.754s
+└─multi-user.target @2.752s
+  └─sshd.service @2.649s +100ms
+    └─network.target @2.643s
+      └─NetworkManager.service @2.207s +431ms
+        └─basic.target @2.199s
+          └─dbus-broker.service @2.136s +62ms
+            └─dbus.socket @2.096s +288us
+              └─sysinit.target @2.088s
+                └─systemd-update-utmp.service @2.050s +32ms
+                  └─systemd-tmpfiles-setup.service @1.768s +276ms
+                    └─local-fs.target @1.716s
+                      └─boot.mount @1.574s +138ms
+                        └─dev-sda1.device
+== ANTES, arranque 2 (2026-11-04 15:53:52) ==
+Startup finished in 1.501s (kernel) + 2.095s (initrd) + 3.337s (userspace) = 6.933s 
+graphical.target reached after 3.334s in userspace.
+3.790s sys-devices-platform-serial8250-serial8250:0-serial8250:0.3-tty-ttyS3.device
+3.790s dev-ttyS3.device
+3.784s sys-devices-platform-serial8250-serial8250:0-serial8250:0.2-tty-ttyS2.device
+3.784s dev-ttyS2.device
+3.761s dev-ttyS1.device
+3.761s sys-devices-platform-serial8250-serial8250:0-serial8250:0.1-tty-ttyS1.device
+3.755s dev-ttyS0.device
+3.755s sys-devices-platform-serial8250-serial8250:0-serial8250:0.0-tty-ttyS0.device
+3.753s sys-module-configfs.device
+3.744s sys-module-fuse.device
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @3.334s
+└─multi-user.target @3.323s
+  └─sshd.service @3.243s +77ms
+    └─network.target @3.234s
+      └─NetworkManager.service @2.786s +447ms
+        └─basic.target @2.778s
+          └─dbus-broker.service @2.713s +64ms
+            └─dbus.socket @2.663s +2ms
+              └─sysinit.target @2.656s
+                └─systemd-update-utmp.service @2.621s +33ms
+                  └─systemd-tmpfiles-setup.service @2.231s +372ms
+                    └─local-fs.target @2.196s
+                      └─boot.mount @2.021s +170ms
+                        └─dev-sda1.device
+== ANTES, arranque 3 (2026-11-04 15:56:16) ==
+Startup finished in 1.145s (kernel) + 2.157s (initrd) + 2.950s (userspace) = 6.253s 
+graphical.target reached after 2.936s in userspace.
+3.400s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1\x2dpart2.device
+3.400s dev-disk-by\x2duuid-bd2343d2\x2dea74\x2d4bd0\x2da3a8\x2d40fd71f571f4.device
+3.400s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2duuid-bd2343d2\x2dea74\x2d4bd0\x2da3a8\x2d40fd71f571f4.device
+3.400s dev-disk-by\x2did-ata\x2dVBOX_HARDDISK_VB0b0db171\x2d483b9d09\x2dpart2.device
+3.400s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartuuid-1e118861\x2d49c9\x2d4836\x2da4e7\x2dafc8b85fa8db.device
+3.400s dev-disk-by\x2ddiskseq-1\x2dpart2.device
+3.400s dev-disk-by\x2dpartuuid-1e118861\x2d49c9\x2d4836\x2da4e7\x2dafc8b85fa8db.device
+3.400s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartnum-2.device
+3.400s sys-devices-pci0000:00-0000:00:0d.0-ata1-host0-target0:0:0-0:0:0:0-block-sda-sda2.device
+3.400s dev-sda2.device
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @2.936s
+└─multi-user.target @2.935s
+  └─sshd.service @2.806s +122ms
+    └─network.target @2.794s
+      └─NetworkManager.service @2.347s +447ms
+        └─basic.target @2.342s
+          └─dbus-broker.service @2.219s +122ms
+            └─dbus.socket @2.182s +2ms
+              └─sysinit.target @2.170s
+                └─systemd-update-utmp.service @2.139s +24ms
+                  └─systemd-tmpfiles-setup.service @1.858s +276ms
+                    └─local-fs.target @1.821s
+                      └─boot.mount @1.609s +198ms
+                        └─dev-sda1.device

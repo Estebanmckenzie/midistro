@@ -1,0 +1,77 @@
+== DESPUES, arranque 1 (2026-11-04 16:28:02) ==
+Startup finished in 1.258s (kernel) + 1.333s (initrd) + 2.711s (userspace) = 5.302s 
+graphical.target reached after 2.697s in userspace.
+2.422s dev-disk-by\x2did-ata\x2dVBOX_HARDDISK_VB0b0db171\x2d483b9d09.device
+2.422s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0.device
+2.422s dev-sda.device
+2.422s sys-devices-pci0000:00-0000:00:0d.0-ata1-host0-target0:0:0-0:0:0:0-block-sda.device
+2.422s dev-disk-by\x2ddiskseq-1.device
+2.422s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.device
+2.421s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2duuid-5610\x2dA138.device
+2.421s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartuuid-42d6b489\x2d115d\x2d4927\x2d95f8\x2dbfd78fb29305.device
+2.421s dev-sda1.device
+2.421s dev-disk-by\x2ddiskseq-1\x2dpart1.device
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @2.697s
+└─multi-user.target @2.696s
+  └─getty.target @2.696s
+    └─getty@tty1.service @2.695s
+      └─systemd-user-sessions.service @2.664s +26ms
+        └─network.target @2.655s
+          └─NetworkManager.service @2.188s +457ms
+            └─basic.target @2.174s
+              └─dbus-broker.service @2.094s +77ms
+                └─dbus.socket @2.033s +1ms
+                  └─sysinit.target @2.015s
+                    └─systemd-update-utmp.service @1.977s +33ms
+                      └─systemd-tmpfiles-setup.service @1.699s +268ms
+                        └─local-fs.target @1.657s
+                          └─boot.mount @1.555s +98ms
+                            └─dev-sda1.device
+== DESPUES, arranque 2 (2026-11-04 16:28:37) ==
+Startup finished in 963ms (kernel) + 1.704s (initrd) + 2.651s (userspace) = 5.319s 
+graphical.target reached after 2.646s in userspace.
+2.360s dev-ttyS3.device
+2.360s sys-devices-platform-serial8250-serial8250:0-serial8250:0.3-tty-ttyS3.device
+2.350s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartuuid-42d6b489\x2d115d\x2d4927\x2d95f8\x2dbfd78fb29305.device
+2.350s dev-disk-by\x2did-ata\x2dVBOX_HARDDISK_VB0b0db171\x2d483b9d09\x2dpart1.device
+2.350s sys-devices-pci0000:00-0000:00:0d.0-ata1-host0-target0:0:0-0:0:0:0-block-sda-sda1.device
+2.350s dev-disk-by\x2dpartuuid-42d6b489\x2d115d\x2d4927\x2d95f8\x2dbfd78fb29305.device
+2.350s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart1.device
+2.350s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1\x2dpart1.device
+2.350s dev-disk-by\x2duuid-5610\x2dA138.device
+2.350s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2duuid-5610\x2dA138.device
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @2.646s
+└─multi-user.target @2.643s
+  └─getty.target @2.637s
+    └─getty@tty1.service @2.628s
+      └─systemd-user-sessions.service @2.596s +23ms
+        └─network.target @2.581s
+          └─NetworkManager.service @2.190s +390ms
+            └─basic.target @2.184s
+              └─dbus-broker.service @2.112s +70ms
+                └─dbus.socket @2.074s +240us
+                  └─sysinit.target @2.061s
+                    └─systemd-update-utmp.service @2.019s +41ms
+                      └─systemd-tmpfiles-setup.service @1.735s +278ms
+                        └─local-fs.target @1.706s
+                          └─boot.mount @1.559s +140ms
+                            └─dev-sda1.device
+== DESPUES, arranque 3 (2026-11-04 16:29:12) ==
+Startup finished in 943ms (kernel) + 1.465s (initrd) + 2.627s (userspace) = 5.036s 
+graphical.target reached after 2.621s in userspace.
+2.392s dev-disk-by\x2ddesignator-esp.device
+2.392s dev-disk-by\x2dpartuuid-42d6b489\x2d115d\x2d4927\x2d95f8\x2dbfd78fb29305.device
+2.392s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartuuid-42d6b489\x2d115d\x2d4927\x2d95f8\x2dbfd78fb29305.device
+2.392s dev-sda1.device
+2.392s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart1.device
+2.392s dev-disk-by\x2duuid-5610\x2dA138.device
+2.392s dev-disk-by\x2did-ata\x2dVBOX_HARDDISK_VB0b0db171\x2d483b9d09\x2dpart1.device
+2.392s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1\x2dpart1.device
+2.392s sys-devices-pci0000:00-0000:00:0d.0-ata1-host0-target0:0:0-0:0:0:0-block-sda-sda1.device
+2.392s dev-disk-by\x2dpath-pci\x2d0000:00:0d.0\x2data\x2d1.0\x2dpart-by\x2dpartnum-1.device

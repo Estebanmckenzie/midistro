@@ -6,7 +6,7 @@ set -euo pipefail
 fase="${1:?uso: medir-arranque antes|despues N}"
 n="${2:?uso: medir-arranque antes|despues N}"
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-out="$repo/docs/evidencia/tema7-$fase.txt"
+out="$repo/docs/evidencia/esteban/tema7-$fase.txt"
 # Espera a que systemd termine de arrancar para medir el arranque completo
 systemctl is-system-running --wait >/dev/null || true
 {
