@@ -1,0 +1,11 @@
+== Normal: target por defecto ==
+graphical.target
+== Normal: targets activos ==
+21
+== Normal: servicios corriendo ==
+10
+== Normal: procesos ==
+145
+== Normal: red ==
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+enp0s3           UP             10.0.2.15/24 fd17:625c:f037:2:92ee:c71d:ea9d:b4cf/64 fe80::13db:7454:e1e6:20a3/64 
