@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""procesos: lista procesos leyendo /proc y permite cambiar nice y politica.
+
+Uso:
+  procesos listar [--orden cpu|pid|nice] [--top N] [--intervalo S]
+  procesos nice PID VALOR
+  procesos politica PID other|batch|idle|fifo|rr [PRIORIDAD_RT]
+"""
+import os
+import sys
+import time
+import argparse
+
+TICKS = os.sysconf("SC_CLK_TCK")  # ticks de CPU por segundo (normalmente 100)
+
+POLITICAS = {
+    os.SCHED_OTHER: "SCHED_OTHER",
+    os.SCHED_BATCH: "SCHED_BATCH",
+    os.SCHED_IDLE: "SCHED_IDLE",
+    os.SCHED_FIFO: "SCHED_FIFO",
+    os.SCHED_RR: "SCHED_RR",
+}
+NOMBRES = {
+    "other": os.SCHED_OTHER,
+    "batch": os.SCHED_BATCH,
+    "idle": os.SCHED_IDLE,
+    "fifo": os.SCHED_FIFO,
+    "rr": os.SCHED_RR,
+}
+
+
+def leer_stat(pid):
+    """Lee /proc/PID/stat. El nombre va entre parentesis y puede tener
+    espacios o parentesis, por eso se separa con el ULTIMO ')'."""
+    with open(f"/proc/{pid}/stat") as f:
+        datos = f.read()
+    izq, _, der = datos.rpartition(")")
+    comm = izq.split("(", 1)[1]
+    campos = der.split()
+    # campos[0]=estado(3), [1]=ppid(4), [11]=utime(14), [12]=stime(15), [16]=nice(19)
+    return {
+        "comm": comm,
+        "estado": campos[0],
+        "ppid": int(campos[1]),
+        "ticks": int(campos[11]) + int(campos[12]),
+        "nice": int(campos[16]),
+    }
+
+
+def tomar_muestra():
+    muestra = {}
+    for nombre in os.listdir("/proc"):
+        if not nombre.isdigit():
+            continue
+        pid = int(nombre)
+        try:
+            muestra[pid] = leer_stat(pid)
+        except (FileNotFoundError, ProcessLookupError, IndexError, PermissionError):
+            continue  # el proceso termino mientras lo leiamos
+    return muestra
+
+
+def politica_de(pid):
+    try:
+        pol = os.sched_getscheduler(pid)
+        prio = os.sched_getparam(pid).sched_priority
+        nombre = POLITICAS.get(pol, str(pol))
+        return nombre, prio
+    except (ProcessLookupError, PermissionError):
+        return "?", 0
+
+
+def listar(orden, top, intervalo):
+    m1 = tomar_muestra()
+    t1 = time.monotonic()
+    time.sleep(intervalo)
+    m2 = tomar_muestra()
+    dt = time.monotonic() - t1
+    filas = []
+    for pid, p in m2.items():
+        antes = m1.get(pid)
+        cpu = 0.0
+        if antes:
+            cpu = (p["ticks"] - antes["ticks"]) / (dt * TICKS) * 100
+        pol, prio = politica_de(pid)
+        filas.append((pid, p["ppid"], p["estado"], p["nice"], pol, prio, cpu, p["comm"]))
+    clave = {"cpu": lambda f: -f[6], "pid": lambda f: f[0], "nice": lambda f: f[3]}[orden]
+    filas.sort(key=clave)
+    print(f"{'PID':>7} {'PPID':>7} {'EST':>3} {'NICE':>4} {'POLITICA':<12} {'RT':>3} {'%CPU':>6}  COMANDO")
+    for f in filas[:top] if top else filas:
+        print(f"{f[0]:>7} {f[1]:>7} {f[2]:>3} {f[3]:>4} {f[4]:<12} {f[5]:>3} {f[6]:>6.1f}  {f[7]}")
+
+
+def cambiar_nice(pid, valor):
+    if not -20 <= valor <= 19:
+        sys.exit("nice debe estar entre -20 y 19")
+    antes = leer_stat(pid)["nice"]
+    os.setpriority(os.PRIO_PROCESS, pid, valor)  # misma syscall que renice
+    print(f"PID {pid}: nice {antes} -> {leer_stat(pid)['nice']}")
+
+
+def cambiar_politica(pid, nombre, prio):
+    pol = NOMBRES[nombre]
+    if pol in (os.SCHED_FIFO, os.SCHED_RR):
+        if prio is None:
+            sys.exit("fifo y rr necesitan prioridad RT (1-99)")
+    else:
+        prio = 0
+    antes = politica_de(pid)
+    os.sched_setscheduler(pid, pol, os.sched_param(prio))  # misma syscall que chrt
+    print(f"PID {pid}: {antes[0]}/{antes[1]} -> {politica_de(pid)[0]}/{politica_de(pid)[1]}")
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Herramienta de procesos y planificacion")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    l = sub.add_parser("listar")
+    l.add_argument("--orden", choices=["cpu", "pid", "nice"], default="cpu")
+    l.add_argument("--top", type=int, default=0, help="mostrar solo los primeros N")
+    l.add_argument("--intervalo", type=float, default=1.0, help="segundos para medir %%CPU")
+    n = sub.add_parser("nice")
+    n.add_argument("pid", type=int)
+    n.add_argument("valor", type=int)
+    p = sub.add_parser("politica")
+    p.add_argument("pid", type=int)
+    p.add_argument("nombre", choices=sorted(NOMBRES))
+    p.add_argument("prioridad", type=int, nargs="?")
+    a = ap.parse_args()
+    try:
+        if a.cmd == "listar":
+            listar(a.orden, a.top, a.intervalo)
+        elif a.cmd == "nice":
+            cambiar_nice(a.pid, a.valor)
+        else:
+            cambiar_politica(a.pid, a.nombre, a.prioridad)
+    except PermissionError:
+        sys.exit("Permiso denegado: subir prioridad o usar fifo/rr requiere sudo")
+    except ProcessLookupError:
+        sys.exit("Ese PID no existe")
+
+
+if __name__ == "__main__":
+    main()

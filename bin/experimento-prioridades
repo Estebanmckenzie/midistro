@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""experimento-prioridades: procesos CPU-bound fijados a UN nucleo.
+
+Uso: experimento-prioridades SEGUNDOS REPETICIONES  nice:A nice:B [...]
+     experimento-prioridades SEGUNDOS REPETICIONES  nice:0 fifo:50
+Cada argumento es 'nice:N' (SCHED_OTHER con ese nice), 'fifo:P' o 'rr:P'.
+Mide el CPU de cada proceso (utime+stime de /proc) y lo compara con la
+proporcion teorica de la tabla de pesos del kernel (sched_prio_to_weight).
+"""
+import os
+import sys
+import time
+import subprocess
+
+TICKS = os.sysconf("SC_CLK_TCK")
+NUCLEO = 0
+PESOS = {  # kernel/sched/core.c: sched_prio_to_weight[], indice = nice + 20
+    -20: 88761, -19: 71755, -18: 56483, -17: 46273, -16: 36291,
+    -15: 29154, -14: 23254, -13: 18705, -12: 14949, -11: 11916,
+    -10: 9548, -9: 7620, -8: 6100, -7: 4904, -6: 3906,
+    -5: 3121, -4: 2501, -3: 1991, -2: 1586, -1: 1277,
+    0: 1024, 1: 820, 2: 655, 3: 526, 4: 423,
+    5: 335, 6: 272, 7: 215, 8: 172, 9: 137,
+    10: 110, 11: 87, 12: 70, 13: 56, 14: 45,
+    15: 36, 16: 29, 17: 23, 18: 18, 19: 15,
+}
+
+
+def ticks_de(pid):
+    with open(f"/proc/{pid}/stat") as f:
+        campos = f.read().rpartition(")")[2].split()
+    return int(campos[11]) + int(campos[12])
+
+
+def lanzar(spec):
+    tipo, _, valor = spec.partition(":")
+    valor = int(valor)
+
+    def preparar():
+        os.sched_setaffinity(0, {NUCLEO})  # equivale a taskset -c 0
+        if tipo == "nice":
+            os.setpriority(os.PRIO_PROCESS, 0, valor)
+        else:
+            pol = os.SCHED_FIFO if tipo == "fifo" else os.SCHED_RR
+            os.sched_setscheduler(0, pol, os.sched_param(valor))
+
+    # bucle puro de CPU: no hace E/S ni duerme
+    return subprocess.Popen([sys.executable, "-c", "while True: pass"], preexec_fn=preparar)
+
+
+def una_corrida(specs, segundos):
+    procesos = [lanzar(s) for s in specs]
+    time.sleep(1)  # dejar que arranquen
+    base = [ticks_de(p.pid) for p in procesos]
+    time.sleep(segundos)
+    fin = [ticks_de(p.pid) for p in procesos]
+    for p in procesos:
+        p.kill()
+        p.wait()
+    usados = [f - b for f, b in zip(fin, base)]
+    total = sum(usados) or 1
+    return [u / total * 100 for u in usados]
+
+
+def teorico(specs):
+    if not all(s.startswith("nice:") for s in specs):
+        return None
+    pesos = [PESOS[int(s.split(":")[1])] for s in specs]
+    return [p / sum(pesos) * 100 for p in pesos]
+
+
+def main():
+    segundos, reps, specs = int(sys.argv[1]), int(sys.argv[2]), sys.argv[3:]
+    print(f"Nucleo {NUCLEO}, {segundos} s por corrida, {reps} repeticiones")
+    print(f"Procesos: {specs}")
+    corridas = [una_corrida(specs, segundos) for _ in range(reps)]
+    for i, c in enumerate(corridas, 1):
+        print(f"  corrida {i}: " + "  ".join(f"{s}={x:5.1f}%" for s, x in zip(specs, c)))
+    prom = [sum(c[i] for c in corridas) / reps for i in range(len(specs))]
+    print("  promedio: " + "  ".join(f"{s}={x:5.1f}%" for s, x in zip(specs, prom)))
+    t = teorico(specs)
+    if t:
+        print("  teorico (pesos): " + "  ".join(f"{s}={x:5.1f}%" for s, x in zip(specs, t)))
+        print("  pesos usados: " + "  ".join(f"{s}->{PESOS[int(s.split(':')[1])]}" for s in specs))
+
+
+if __name__ == "__main__":
+    main()
