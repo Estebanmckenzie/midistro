@@ -1,0 +1,41 @@
+== Control: dos procesos iguales ==
+Nucleo 0, 10 s por corrida, 3 repeticiones
+Procesos: ['nice:0', 'nice:0']
+  corrida 1: nice:0= 49.9%  nice:0= 50.1%
+  corrida 2: nice:0= 50.0%  nice:0= 50.0%
+  corrida 3: nice:0= 50.0%  nice:0= 50.0%
+  promedio: nice:0= 50.0%  nice:0= 50.0%
+  teorico (pesos): nice:0= 50.0%  nice:0= 50.0%
+  pesos usados: nice:0->1024  nice:0->1024
+== nice 0 contra nice 5 ==
+Nucleo 0, 10 s por corrida, 3 repeticiones
+Procesos: ['nice:0', 'nice:5']
+  corrida 1: nice:0= 75.3%  nice:5= 24.7%
+  corrida 2: nice:0= 75.4%  nice:5= 24.6%
+  corrida 3: nice:0= 75.4%  nice:5= 24.6%
+  promedio: nice:0= 75.4%  nice:5= 24.6%
+  teorico (pesos): nice:0= 75.3%  nice:5= 24.7%
+  pesos usados: nice:0->1024  nice:5->335
+== nice 0 contra nice 10 ==
+Nucleo 0, 10 s por corrida, 3 repeticiones
+Procesos: ['nice:0', 'nice:10']
+  corrida 1: nice:0= 90.4%  nice:10=  9.6%
+  corrida 2: nice:0= 90.2%  nice:10=  9.8%
+  corrida 3: nice:0= 90.3%  nice:10=  9.7%
+  promedio: nice:0= 90.3%  nice:10=  9.7%
+  teorico (pesos): nice:0= 90.3%  nice:10=  9.7%
+  pesos usados: nice:0->1024  nice:10->110
+== Tiempo real: SCHED_FIFO 50 contra nice 0 ==
+Nucleo 0, 10 s por corrida, 3 repeticiones
+Procesos: ['nice:0', 'fifo:50']
+  corrida 1: nice:0=  5.1%  fifo:50= 94.9%
+  corrida 2: nice:0=  4.3%  fifo:50= 95.7%
+  corrida 3: nice:0=  4.7%  fifo:50= 95.3%
+  promedio: nice:0=  4.7%  fifo:50= 95.3%
+== Tiempo real: SCHED_RR 50 contra SCHED_RR 50 ==
+Nucleo 0, 10 s por corrida, 3 repeticiones
+Procesos: ['rr:50', 'rr:50']
+  corrida 1: rr:50= 48.5%  rr:50= 51.5%
+  corrida 2: rr:50= 49.6%  rr:50= 50.4%
+  corrida 3: rr:50= 49.3%  rr:50= 50.7%
+  promedio: rr:50= 49.1%  rr:50= 50.9%

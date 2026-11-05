@@ -19,3 +19,5 @@ dmenu
 xterm
 mesa
 virtualbox-guest-utils
+
+python
