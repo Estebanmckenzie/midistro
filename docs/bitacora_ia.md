@@ -18,8 +18,9 @@ Esta bitácora declara y documenta el uso de IA según el Anexo 3 del enunciado.
 | 7 | 2026-11-02 · Esteban | Capa 1 | Redacción de `docs/instalacion.md` | No |
 | 8 | 2026-11-04 · Esteban | Tema 7 | Medición del arranque con `systemd-analyze` y optimización | **Sí (errores 5, 6 y 7)** |
 | 9 | 2026-11-04 · Esteban | Tema 7 | Entrada de rescate en `systemd-boot` | **Sí (error 8)** |
+| 10 | 2026-11-05 · Esteban | Tema 1 | Herramienta de procesos y experimento de prioridades | **Sí (error 9)** |
 
-Componentes en los que todavía no se usó IA: Tema 1 y Tema 9 (más allá de la entrada 2). Se agregan entradas cuando ocurra.
+Componentes en los que todavía no se usó IA: Tema 9 (más allá de la entrada 2). Se agregan entradas cuando ocurra.
 
 ## Entradas
 
@@ -130,6 +131,18 @@ Componentes en los que todavía no se usó IA: Tema 1 y Tema 9 (más allá de la
 | Resultado obtenido | Archivo `arch-rescue.conf` con `systemd.unit=rescue.target` y bloque de comandos de evidencia |
 | Validado / corregido / descartado | **Error 8 de la IA:** el comando que generaba la entrada usaba `$(blkid ...)` sin permisos de root, que devuelve vacío; la entrada quedó con `root=UUID=` vacío y el arranque cayó a `emergency mode` («Timed out waiting for device /dev/disk/by-uuid/»). Tampoco advirtió que `rescue.target` exige la contraseña de root y la cuenta estaba bloqueada. Se corrigió copiando la entrada normal (con el UUID correcto) y cambiando solo título y `options`, se puso contraseña temporal a root para la demostración y luego se volvió a bloquear con `passwd -l root` |
 | Cómo se validó | Captura del fallo (`docs/evidencia/esteban/tema7-rescate-fallido.png`), `/proc/cmdline` dentro del rescate con el UUID completo, `systemctl list-units` mostrando `rescue.target` activo y comparación con `graphical.target` (`tema7-rescue.txt` y `tema7-normal.txt`) |
+
+### Entrada 10 · 2026-11-05 · Esteban
+
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
+| Componente | Tema 1: procesos y planificación |
+| Propósito | Escribir la herramienta de procesos y el experimento de nice contra tiempo real, e interpretar los resultados |
+| Consulta resumida | Herramienta que lea `/proc` y cambie nice y política; experimento con procesos fijados a un núcleo, comparado con la tabla de pesos del kernel |
+| Resultado obtenido | `bin/procesos` y `bin/experimento-prioridades` en Python, y la ficha con la explicación de EEVDF |
+| Validado / corregido / descartado | **Error 9 de la IA:** al ver que `SCHED_FIFO` dejaba al proceso normal con aproximadamente 5 % de CPU, la IA lo atribuyó al límite de tiempo real `sched_rt_runtime_us`. La evidencia de Esteban lo contradijo: `sched_rt_runtime_us` es igual a `sched_rt_period_us` (1 000 000), es decir, sin límite. La IA corrigió y propuso como causa el fair server del kernel, que se comprobó leyendo `/sys/kernel/debug/sched/fair_server/cpu0/` (runtime 50 000 000 ns, period 1 000 000 000 ns, es decir, 5 %). Se descartó escribir la explicación original en la ficha |
+| Cómo se validó | Se probó la herramienta (`listar`, `nice`, `politica`) en la VM y se corrió el experimento con 3 repeticiones por caso. Lo medido coincidió con la tabla de pesos con menos de 0.1 puntos porcentuales de diferencia. Evidencia en `docs/evidencia/esteban/tema1-experimento.txt` y `tema1-planificador.txt`. Documentación: `sched(7)` y documentación del kernel sobre EEVDF |
 
 ## Entradas de los demás integrantes
 
