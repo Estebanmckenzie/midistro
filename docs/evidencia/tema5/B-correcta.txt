@@ -1,0 +1,15 @@
+[supervisor pid=2721] limite=2000000 trabajadores=3 trozo=1000 mutex=SI reap=SI
+[supervisor] productor=2723 trabajadores=2724,2725,2726
+[supervisor] productor (pid=2723) salio con codigo 0
+[supervisor] trabajador 0 (pid=2724) salio con codigo 0
+[supervisor] trabajador 1 (pid=2725) salio con codigo 0
+[supervisor] trabajador 2 (pid=2726) salio con codigo 0
+---------------- RESULTADO ----------------
+primos en [2,2000000]      : 148933
+trozos procesados      : 2000 de 2000 esperados
+  trabajador 0        : 993 trozos
+  trabajador 1        : 1007 trozos
+  trabajador 2        : 0 trozos
+tiempo paralelo        : 0.359 s
+verificacion serial    : 148933 primos en 0.700 s  (aceleracion x1.95)
+ESTADO: CORRECTO

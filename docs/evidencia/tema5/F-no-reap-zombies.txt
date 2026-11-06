@@ -1,0 +1,15 @@
+--- ps (los hijos que ya terminaron aparecen con estado Z):
+    PID    PPID STAT COMMAND
+   2789    2787 S+   primes_ipc
+   2791    2789 Z+   primes_ipc <defunct>
+   2792    2789 Z+   primes_ipc <defunct>
+   2793    2789 Z+   primes_ipc <defunct>
+   2794    2789 Z+   primes_ipc <defunct>
+PID      PPID     COMANDO            PADRE
+2791     2789     primes_ipc         primes_ipc
+2792     2789     primes_ipc         primes_ipc
+2793     2789     primes_ipc         primes_ipc
+2794     2789     primes_ipc         primes_ipc
+Zombies: 4
+--- despues de que el padre salio (init/systemd adopta y recoge a los zombies):
+Zombies: 0

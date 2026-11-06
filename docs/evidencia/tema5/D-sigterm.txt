@@ -1,0 +1,10 @@
+--- arbol de procesos antes de SIGTERM
+    PID    PPID STAT COMMAND
+   2759    2757 S+   primes_ipc
+   2762    2759 S+   primes_ipc
+   2763    2759 S+   primes_ipc
+   2764    2759 S+   primes_ipc
+codigo de salida del supervisor: 143 (143 = 128+SIGTERM)
+--- procesos zombie despues:
+0
+Zombies: 0

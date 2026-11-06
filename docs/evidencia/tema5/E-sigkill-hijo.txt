@@ -1,0 +1,6 @@
+supervisor=2774, mato al trabajador pid=2779 con SIGKILL
+--- estado de los hijos 1 s despues del kill:
+    PID    PPID STAT COMMAND
+   2777    2774 S+   primes_ipc
+   2778    2774 S+   primes_ipc
+Zombies: 0

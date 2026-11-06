@@ -1,0 +1,35 @@
+2743  read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\300y\2\0\0\0\0\0"..., 1024) = 1024
+2743  write(1, "[supervisor pid=2743] limite=200"..., 78) = 78
+2743  write(1, "[supervisor] productor=2744 trab"..., 51) = 51
+2745  read(3 <unfinished ...>
+2746  read(3 <unfinished ...>
+2744  write(4, "\2\0\0\0\0\0\0\0\211\23\0\0\0\0\0\0", 16 <unfinished ...>
+2745  <... read resumed>, "\2\0\0\0\0\0\0\0\211\23\0\0\0\0\0\0", 16) = 16
+2744  <... write resumed>)              = 16
+2744  write(4, "\212\23\0\0\0\0\0\0\21'\0\0\0\0\0\0", 16 <unfinished ...>
+2746  <... read resumed>, "\212\23\0\0\0\0\0\0\21'\0\0\0\0\0\0", 16) = 16
+2744  <... write resumed>)              = 16
+2746  read(3 <unfinished ...>
+2745  read(3 <unfinished ...>
+2744  write(4, "\22'\0\0\0\0\0\0\231:\0\0\0\0\0\0", 16) = 16
+2744  write(4, "\232:\0\0\0\0\0\0 N\0\0\0\0\0\0", 16) = 16
+2746  <... read resumed>, "\22'\0\0\0\0\0\0\231:\0\0\0\0\0\0", 16) = 16
+2746  read(3 <unfinished ...>
+2745  <... read resumed>, "\232:\0\0\0\0\0\0 N\0\0\0\0\0\0", 16) = 16
+2746  <... read resumed>, "", 16)       = 0
+2744  +++ exited with 0 +++
+2746  +++ exited with 0 +++
+2743  --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=2744, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+2745  read(3, "", 16)                   = 0
+2745  +++ exited with 0 +++
+2743  write(1, "[supervisor] productor (pid=2744"..., 53) = 53
+2743  write(1, "[supervisor] trabajador 0 (pid=2"..., 56) = 56
+2743  write(1, "[supervisor] trabajador 1 (pid=2"..., 56) = 56
+2743  write(1, "---------------- RESULTADO -----"..., 44) = 44
+2743  write(1, "primos en [2,20000]      : 2262\n", 32) = 32
+2743  write(1, "trozos procesados      : 4 de 4 "..., 42) = 42
+2743  write(1, "  trabajador 0        : 2 trozos"..., 33) = 33
+2743  write(1, "  trabajador 1        : 2 trozos"..., 33) = 33
+2743  write(1, "tiempo paralelo        : 0.031 s"..., 33) = 33
+2743  write(1, "ESTADO: CORRECTO\n", 17) = 17
+2743  +++ exited with 0 +++

@@ -1,0 +1,14 @@
+[supervisor pid=2774] limite=2000000 trabajadores=3 trozo=1000 mutex=SI reap=SI
+[supervisor] productor=2776 trabajadores=2777,2778,2779
+[supervisor] productor (pid=2776) salio con codigo 0
+[supervisor] trabajador 0 (pid=2777) salio con codigo 0
+[supervisor] trabajador 1 (pid=2778) salio con codigo 0
+[supervisor] trabajador 2 (pid=2779) murio por senal 9 (Killed)
+---------------- RESULTADO ----------------
+primos en [2,2000000]      : 148865
+trozos procesados      : 1999 de 2000 esperados
+  trabajador 0        : 919 trozos
+  trabajador 1        : 917 trozos
+  trabajador 2        : 163 trozos
+tiempo paralelo        : 6.047 s
+ESTADO: INCORRECTO (se perdieron actualizaciones o trozos)

@@ -1,0 +1,58 @@
+2729  11:13:45.950163 pipe2([3, 4], 0)  = 0
+2729  11:13:45.952032 rt_sigaction(SIGTERM, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, NULL, 8) = 0
+2729  11:13:45.952639 rt_sigaction(SIGINT, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, NULL, 8) = 0
+2729  11:13:45.953164 rt_sigaction(SIGCHLD, {sa_handler=0x558f1cf5bfa0, sa_mask=[], sa_flags=SA_RESTORER|SA_NOCLDSTOP, sa_restorer=0x7efe8de3e6f0}, NULL, 8) = 0
+2729  11:13:45.954412 rt_sigprocmask(SIG_BLOCK, [INT TERM CHLD], [], 8) = 0
+2729  11:13:45.963269 rt_sigprocmask(SIG_BLOCK, ~[], [INT TERM CHLD], 8) = 0
+2729  11:13:45.964505 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7efe8e0afa10) = 2730
+2729  11:13:45.966188 rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) = 0
+2729  11:13:45.967853 rt_sigprocmask(SIG_BLOCK, ~[] <unfinished ...>
+2730  11:13:45.968150 rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) = 0
+2730  11:13:45.968283 rt_sigprocmask(SIG_SETMASK, [] <unfinished ...>
+2729  11:13:45.968395 <... rt_sigprocmask resumed>, [INT TERM CHLD], 8) = 0
+2729  11:13:45.969013 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+2730  11:13:45.969175 <... rt_sigprocmask resumed>, NULL, 8) = 0
+2730  11:13:45.970239 rt_sigaction(SIGTERM, {sa_handler=SIG_DFL, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0} <unfinished ...>
+2729  11:13:45.970382 <... clone resumed>, child_tidptr=0x7efe8e0afa10) = 2731
+2729  11:13:45.970422 rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) = 0
+2729  11:13:45.970453 rt_sigprocmask(SIG_BLOCK, ~[], [INT TERM CHLD], 8) = 0
+2729  11:13:45.970473 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+2730  11:13:45.971155 <... rt_sigaction resumed>, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2729  11:13:45.971307 <... clone resumed>, child_tidptr=0x7efe8e0afa10) = 2732
+2729  11:13:45.971336 rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) = 0
+2729  11:13:45.971415 rt_sigsuspend([], 8 <unfinished ...>
+2730  11:13:45.971628 rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0} <unfinished ...>
+2732  11:13:45.971674 rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) = 0
+2732  11:13:45.971703 rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+2732  11:13:45.971747 rt_sigaction(SIGTERM, {sa_handler=SIG_DFL, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0}, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2732  11:13:45.971782 rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0}, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2732  11:13:45.971841 rt_sigaction(SIGCHLD, {sa_handler=SIG_DFL, sa_mask=[CHLD], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0}, {sa_handler=0x558f1cf5bfa0, sa_mask=[], sa_flags=SA_RESTORER|SA_NOCLDSTOP, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2731  11:13:45.972465 rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD] <unfinished ...>
+2730  11:13:45.972946 <... rt_sigaction resumed>, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2731  11:13:45.973018 <... rt_sigprocmask resumed>, NULL, 8) = 0
+2731  11:13:45.973084 rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+2730  11:13:45.973121 rt_sigaction(SIGCHLD, {sa_handler=SIG_DFL, sa_mask=[CHLD], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0} <unfinished ...>
+2731  11:13:45.973269 rt_sigaction(SIGTERM, {sa_handler=SIG_DFL, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0}, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2731  11:13:45.973328 rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0}, {sa_handler=0x558f1cf5bf80, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2731  11:13:45.973379 rt_sigaction(SIGCHLD, {sa_handler=SIG_DFL, sa_mask=[CHLD], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7efe8de3e6f0}, {sa_handler=0x558f1cf5bfa0, sa_mask=[], sa_flags=SA_RESTORER|SA_NOCLDSTOP, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2730  11:13:45.974089 <... rt_sigaction resumed>, {sa_handler=0x558f1cf5bfa0, sa_mask=[], sa_flags=SA_RESTORER|SA_NOCLDSTOP, sa_restorer=0x7efe8de3e6f0}, 8) = 0
+2730  11:13:45.978435 exit_group(0)     = ?
+2730  11:13:45.979554 +++ exited with 0 +++
+2729  11:13:45.980982 <... rt_sigsuspend resumed>) = ? ERESTARTNOHAND (To be restarted if no handler)
+2729  11:13:45.981438 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=2730, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+2729  11:13:45.981975 wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], WNOHANG, NULL) = 2730
+2729  11:13:45.983110 wait4(-1, 0x7ffdde8f7b94, WNOHANG, NULL) = 0
+2729  11:13:45.984795 rt_sigsuspend([], 8 <unfinished ...>
+2731  11:13:45.993236 exit_group(0 <unfinished ...>
+2732  11:13:45.993961 exit_group(0 <unfinished ...>
+2731  11:13:45.994128 <... exit_group resumed>) = ?
+2732  11:13:45.994503 <... exit_group resumed>) = ?
+2731  11:13:45.994542 +++ exited with 0 +++
+2729  11:13:45.994565 <... rt_sigsuspend resumed>) = ? ERESTARTNOHAND (To be restarted if no handler)
+2729  11:13:45.994588 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=2731, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+2729  11:13:45.994619 wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], WNOHANG, NULL) = 2731
+2732  11:13:45.995362 +++ exited with 0 +++
+2729  11:13:45.996257 wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], WNOHANG, NULL) = 2732
+2729  11:13:45.997454 wait4(-1, 0x7ffdde8f7b94, WNOHANG, NULL) = -1 ECHILD (No child processes)
+2729  11:13:46.013291 exit_group(0)     = ?
+2729  11:13:46.015126 +++ exited with 0 +++

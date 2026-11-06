@@ -1,0 +1,12 @@
+modo       rep  trozos_hechos primos_contados
+sin-mutex  1    77052        70409       
+sin-mutex  2    79652        79407       
+sin-mutex  3    77336        65513       
+sin-mutex  4    78789        69405       
+sin-mutex  5    77084        62513       
+con-mutex  1    200000       148933      
+con-mutex  2    200000       148933      
+con-mutex  3    200000       148933      
+con-mutex  4    200000       148933      
+con-mutex  5    200000       148933      
+esperado: trozos=200000  primos=148933
