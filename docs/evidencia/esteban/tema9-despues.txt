@@ -1,0 +1,133 @@
+##### 1. Directorio compartido: permisos y ACL #####
+$ ls -ld /srv/equipo
+drwxrws--T+ 2 root equipo 4096 Nov  6 13:19 /srv/equipo
+(codigo de salida: 0)
+
+$ getfacl -p /srv/equipo
+# file: /srv/equipo
+# owner: root
+# group: equipo
+# flags: -st
+user::rwx
+user:invitado:r-x
+group::rwx
+mask::rwx
+other::---
+default:user::rwx
+default:user:invitado:r-x
+default:group::rwx
+default:group:equipo:rwx
+default:mask::rwx
+default:other::---
+
+(codigo de salida: 0)
+
+--- analista (miembro del grupo equipo): puede escribir ---
+$ sudo -u analista bash -c echo\ hola\ \>\ /srv/equipo/prueba-analista.txt
+(codigo de salida: 0)
+
+$ ls -l /srv/equipo
+total 4
+-rw-rw----+ 1 analista equipo 5 Nov  6 13:19 prueba-analista.txt
+(codigo de salida: 0)
+
+--- invitado (solo lectura por ACL): lee, pero no escribe ni borra ---
+$ sudo -u invitado ls /srv/equipo
+prueba-analista.txt
+(codigo de salida: 0)
+
+$ sudo -u invitado cat /srv/equipo/prueba-analista.txt
+hola
+(codigo de salida: 0)
+
+$ sudo -u invitado bash -c echo\ hola\ \>\ /srv/equipo/prueba-invitado.txt
+bash: line 1: /srv/equipo/prueba-invitado.txt: Permission denied
+(codigo de salida: 1)
+
+$ sudo -u invitado rm -f /srv/equipo/prueba-analista.txt
+rm: cannot remove '/srv/equipo/prueba-analista.txt': Permission denied
+(codigo de salida: 1)
+
+--- usuario sin relacion con el grupo: ni siquiera puede listar ---
+$ sudo -u nobody ls /srv/equipo
+ls: cannot open directory '/srv/equipo': Permission denied
+(codigo de salida: 2)
+
+##### 2. sudoers restringido por comando #####
+$ sudo -l -U analista
+Matching Defaults entries for analista on midistro:
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/bin
+
+Runas and Command-specific defaults for analista:
+    Defaults!/usr/bin/visudo env_keep+="SUDO_EDITOR EDITOR VISUAL"
+
+User analista may run the following commands on midistro:
+    (root) NOPASSWD: /usr/bin/systemctl restart sshd.service, /usr/bin/journalctl -u sshd.service --no-pager
+(codigo de salida: 0)
+
+--- comandos que NO estan permitidos ---
+$ sudo -l -U analista /usr/bin/cat /etc/shadow
+(codigo de salida: 1)
+
+$ sudo -l -U analista /usr/bin/systemctl restart nftables.service
+(codigo de salida: 1)
+
+--- mismo comando permitido, pero con un argumento extra (-n 3): tambien denegado ---
+$ sudo -l -U analista /usr/bin/journalctl -u sshd.service --no-pager -n 3
+(codigo de salida: 1)
+
+--- comando permitido, exactamente como esta escrito ---
+$ sudo -l -U analista /usr/bin/journalctl -u sshd.service --no-pager
+/usr/bin/journalctl -u sshd.service --no-pager
+(codigo de salida: 0)
+
+$ bash -c sudo\ -u\ analista\ sudo\ -n\ /usr/bin/journalctl\ -u\ sshd.service\ --no-pager\ \|\ tail\ -3
+Nov 06 13:05:04 midistro sshd-session[1350]: WARNING: connection from 192.168.56.1 port 6734 is not using a post-quantum key exchange algorithm: "curve25519-sha256" [preauth]
+Nov 06 13:05:04 midistro sshd-session[1350]: User root from 192.168.56.1 not allowed because not listed in AllowUsers
+Nov 06 13:05:04 midistro sshd-session[1350]: Connection reset by invalid user root 192.168.56.1 port 6734 [preauth]
+(codigo de salida: 0)
+
+--- intento real de leer /etc/shadow como analista (-n: no pedir contrasena) ---
+$ sudo -u analista sudo -n /usr/bin/cat /etc/shadow
+sudo: a password is required
+(codigo de salida: 1)
+
+##### 3. SSH: configuracion efectiva #####
+$ bash -c sshd\ -T\ \|\ grep\ -iE\ \"\^\(permitrootlogin\|passwordauthentication\|kbdinteractiveauthentication\|pubkeyauthentication\|allowusers\|maxauthtries\|logingracetime\|x11forwarding\|allowtcpforwarding\)\"
+LoginGraceTime 30
+MaxAuthTries 3
+PermitRootLogin no
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+X11Forwarding no
+AllowTcpForwarding no
+AllowUsers esteban
+(codigo de salida: 0)
+
+##### 4. Firewall #####
+$ nft list ruleset
+table inet filtro {
+	chain entrada {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iif "lo" accept
+		ip protocol icmp icmp type { destination-unreachable, echo-request, time-exceeded } limit rate 10/second burst 5 packets accept
+		ip6 nexthdr ipv6-icmp icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
+		udp sport 67 udp dport 68 accept
+		ip saddr { 10.0.2.0/24, 192.168.56.0/24 } tcp dport 22 ct state new accept
+		limit rate 5/minute burst 5 packets log prefix "nft-entrada-denegada: "
+		counter packets 20025 bytes 881694
+	}
+
+	chain reenvio {
+		type filter hook forward priority filter; policy drop;
+	}
+
+	chain salida {
+		type filter hook output priority filter; policy accept;
+	}
+}
+(codigo de salida: 0)
+

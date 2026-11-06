@@ -1,0 +1,26 @@
+== Antes: sockets en escucha ==
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+LISTEN 0      128          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=779,fd=6))
+LISTEN 0      5            0.0.0.0:8080      0.0.0.0:*    users:(("python",pid=781,fd=3))
+LISTEN 0      128             [::]:22           [::]:*    users:(("sshd",pid=779,fd=7))
+== Antes: firewall ==
+/usr/bin/nft
+== Antes: privilegios de esteban ==
+Matching Defaults entries for esteban on midistro:
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/bin
+
+Runas and Command-specific defaults for esteban:
+    Defaults!/usr/bin/visudo env_keep+="SUDO_EDITOR EDITOR VISUAL"
+
+User esteban may run the following commands on midistro:
+    (ALL : ALL) ALL
+== Antes: reglas nft ==
+== Antes: configuracion efectiva de sshd ==
+LoginGraceTime 120
+MaxAuthTries 6
+PermitRootLogin prohibit-password
+PubkeyAuthentication yes
+PasswordAuthentication yes
+KbdInteractiveAuthentication no
+X11Forwarding no
+AllowTcpForwarding yes
