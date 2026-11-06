@@ -3,7 +3,7 @@
 II Proyecto Programado, IC-6600 Principios de Sistemas Operativos, II semestre 2026.
 Alternativa A: midistro.
 
-Esta bitácora declara y documenta el uso de IA según el Anexo 3 del enunciado. Cada responsable registra sus propias consultas. Las entradas de Ryan y Geiner se agregan al final de este archivo conforme usen IA en sus temas.
+Esta bitácora declara y documenta el uso de IA según el Anexo 3 del enunciado. Cada responsable registra sus propias consultas.
 
 ## Resumen
 
@@ -19,6 +19,10 @@ Esta bitácora declara y documenta el uso de IA según el Anexo 3 del enunciado.
 | 8 | 2026-11-04 · Esteban | Tema 7 | Medición del arranque con `systemd-analyze` y optimización | **Sí (errores 5, 6 y 7)** |
 | 9 | 2026-11-04 · Esteban | Tema 7 | Entrada de rescate en `systemd-boot` | **Sí (error 8)** |
 | 10 | 2026-11-05 · Esteban | Tema 1 | Herramienta de procesos y experimento de prioridades | **Sí (error 9)** |
+| 11 | 2026-11-03 · Geiner | Tema 5 | Programa productor/consumidor y comando midistro-zombies | Sí (error 10) | 
+| 12 | 2026-11-04 · Geiner | Tema 5 | Interpretación de mediciones y redacción de la ficha | No | 
+| 13 | 2026-11-05 · Geiner | Tema 6 | Hook de ALPM y PKGBUILD de midistro-zombies | No | 
+| 14 | 2026-11-05 · Geiner | Tema 6 | Script de evidencia, interpretación de datos y ficha | Sí (errores 12 y 13) |
 
 Componentes en los que todavía no se usó IA: Tema 9 (más allá de la entrada 2). Se agregan entradas cuando ocurra.
 
@@ -144,6 +148,55 @@ Componentes en los que todavía no se usó IA: Tema 9 (más allá de la entrada 
 | Validado / corregido / descartado | **Error 9 de la IA:** al ver que `SCHED_FIFO` dejaba al proceso normal con aproximadamente 5 % de CPU, la IA lo atribuyó al límite de tiempo real `sched_rt_runtime_us`. La evidencia de Esteban lo contradijo: `sched_rt_runtime_us` es igual a `sched_rt_period_us` (1 000 000), es decir, sin límite. La IA corrigió y propuso como causa el fair server del kernel, que se comprobó leyendo `/sys/kernel/debug/sched/fair_server/cpu0/` (runtime 50 000 000 ns, period 1 000 000 000 ns, es decir, 5 %). Se descartó escribir la explicación original en la ficha |
 | Cómo se validó | Se probó la herramienta (`listar`, `nice`, `politica`) en la VM y se corrió el experimento con 3 repeticiones por caso. Lo medido coincidió con la tabla de pesos con menos de 0.1 puntos porcentuales de diferencia. Evidencia en `docs/evidencia/esteban/tema1-experimento.txt` y `tema1-planificador.txt`. Documentación: `sched(7)` y documentación del kernel sobre EEVDF |
 
+### Entrada 11 · 2026-11-03 · Geiner
+
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
+| Componente | Tema 5: concurrencia e IPC |
+| Propósito | Diseñar un mini-programa productor/consumidor con al menos dos mecanismos de IPC, manejo de `SIGTERM` y `SIGCHLD` sin zombies, y un comando que detecte zombies leyendo `/proc` |
+| Consulta resumida | Programa en C con esquema productor/consumidor, sincronización explícita y script que genere la evidencia (`strace`, `ps`, prueba de condición de carrera) |
+| Resultado obtenido | `src/primes_ipc.c` (pipe, memoria compartida con mutex `PTHREAD_PROCESS_SHARED` y señales, con las opciones `--no-lock` y `--no-reap`), `bin/midistro-zombies` y `scripts/tema5-evidencia.sh` |
+| Validado / corregido / descartado | Se aceptó el diseño y se leyó el código para poder revisarlo y explicarlo (cierre de `fds[1]`, trozos de 16 bytes, `while` con `waitpid` en el handler, `sigsuspend`). **Error 10 de la IA:** el script de evidencia filtraba las trazas con un `grep` que solo capturaba las líneas `write` completas. Con `strace -f` las llamadas bloqueadas se parten en `<unfinished ...>` y `<... read resumed>`, así que `C3-resumen.txt` salió sin ninguna línea `read`. Se detectó al mostrar el archivo y se completó buscando `read resumed` en la traza completa (`C3-strace-pipe-datos.txt`) |
+| Cómo se validó | `make` con `-Wall -Wextra`; `./src/primes_ipc -v` dio 148933 primos y 2000 de 2000 trozos; 5 corridas con y sin mutex (sin mutex se perdieron trozos en las 5; con mutex, 0); `SIGTERM` al supervisor con código de salida 143; `kill -9` a un trabajador (1999 de 2000 trozos, sin zombies); `--no-reap` con 4 zombies que `midistro-zombies` y `ps` mostraron. Evidencia en `docs/evidencia/tema5/` |
+
+### Entrada 12 · 2026-11-04 · Geiner
+
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
+| Componente | Tema 5: ficha de evidencia |
+| Propósito | Interpretar las mediciones y redactar `docs/tema-05-concurrencia-ipc.md` |
+| Consulta resumida | Cómo leer la tabla de la carrera, las trazas de `strace` y la aceleración con 2 vCPU |
+| Resultado obtenido | Borrador de la ficha con tablas, interpretación y referencias |
+| Validado / corregido / descartado | Se completó la ficha con los datos propios (4 corridas para la aceleración). Se reconoció como ruido de la VM la aceleración de x2.25, que supera el máximo teórico de x2 con 2 vCPU, y se descartó una corrida preliminar de x3.05. Se agregó el capítulo en la referencia del libro y se citó la medición manual de `-w 6` como observación, no como comparación controlada |
+| Cómo se validó | Contraste de cada cifra con `docs/evidencia/tema5/` (`A-carrera.txt`, `B-correcta.txt`, `C1` a `C3`, `00-entorno.txt` con 2 vCPU) y repetición de la medición de aceleración 3 veces más |
+
+### Entrada 13 · 2026-11-05 · Geiner
+
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
+| Componente | Tema 6: gestión de paquetes |
+| Propósito | Crear un hook de ALPM útil y empaquetar `midistro-zombies` con `PKGBUILD` |
+| Consulta resumida | Hook que registre los cambios de paquetes y actualice una lista, y `PKGBUILD` del comando de la Capa 3 |
+| Resultado obtenido | `pacman/midistro-pkglog.hook`, `pacman/midistro-pkglog` (hook `PostTransaction` con `NeedsTargets` que compara los paquetes explícitos antes y después) y `pacman/pkg-zombies/PKGBUILD` |
+| Validado / corregido / descartado | Se aceptó el diseño. El hook compara con `pacman -Qqe` para ver también los paquetes propios instalados con `-U`, y deja `pkglist.txt` solo con los nativos (`-Qqen`), que son los que `install.sh` puede instalar. Se actualizaron el nombre y el correo del `PKGBUILD` |
+| Cómo se validó | `ls -l` de los archivos instalados (644 y 755, de `root`); `pacman -S tree` y `pacman -R tree` mostraron el hook en pantalla (`(2/2) midistro: registrando...`) y `+ tree` / `- tree` en `/var/log/midistro-pkg.log`; `makepkg -f` con `sha256sums ... Passed`; `pacman -U` con `+ midistro-zombies` en el log; líneas `running '90-midistro-pkglog.hook'` en `/var/log/pacman.log` |
+
+### Entrada 14 · 2026-11-05 · Geiner
+
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
+| Componente | Tema 6: evidencia y ficha |
+| Propósito | Generar la evidencia medida de pacman (anatomía, dependencias, firmas, hook, paquete propio) y redactar la ficha |
+| Consulta resumida | Script que registre la base de datos local y sync, el árbol de `i3-wm`, la verificación de firmas con prueba negativa y el hook, e interpretación de los resultados |
+| Resultado obtenido | `scripts/tema6-evidencia.sh` y `docs/tema-06-gestion-paquetes.md` |
+| Validado / corregido / descartado | **Error 12 de la IA:** el script reportaba `codigo de salida: 141` en la prueba negativa de firma. 141 es 128 más 13 (`SIGPIPE`), porque el comando estaba encadenado a `head`; no era el código de `pacman-key`. Se detectó porque la salida mostraba `BAD signature` junto a un código incoherente, y se corrigió quitando el `head`. **Error 13 de la IA:** afirmó que las bases sync traen un archivo `depends` aparte además de `desc`. La salida de `bsdtar -tf` solo listaba `desc`; se comprobó que `%DEPENDS%` está dentro del `desc`, tanto en la base sync como en la local, y se corrigió la ficha |
+| Cómo se validó | Nueva corrida del script (`codigo de salida: 1`); `bsdtar -xOf /var/lib/pacman/sync/core.db acl-2.4.0-1/desc` (con `%DEPENDS%`, `%SHA256SUM%` y `%PGPSIG%`); `grep -A4 '%DEPENDS%' /var/lib/pacman/local/bash-*/desc`; `pacman -Qi bash` con `Validated By: Signature` frente a `None` del paquete propio. Evidencia en `docs/evidencia/tema6/` |
+
+
 ## Entradas de los demás integrantes
 
-_Pendiente: Ryan (Temas 2 y 4) y Geiner (Temas 5 y 6) agregan aquí sus entradas con el mismo formato, o declaran que no usaron IA en su componente._
+_Pendiente: Ryan (Temas 2 y 4) agregan aquí sus entradas con el mismo formato, o declaran que no usaron IA en su componente._
