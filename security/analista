@@ -1,0 +1,7 @@
+# El usuario "analista" solo puede ejecutar como root estos dos comandos EXACTOS.
+# Sin comodines: sudo compara el comando y todos sus argumentos tal como estan escritos.
+# "--no-pager" evita que journalctl abra "less", desde donde se podria escapar a una shell.
+Cmnd_Alias SSHD_ADMIN = /usr/bin/systemctl restart sshd.service, \
+                        /usr/bin/journalctl -u sshd.service --no-pager
+
+analista ALL=(root) NOPASSWD: SSHD_ADMIN
