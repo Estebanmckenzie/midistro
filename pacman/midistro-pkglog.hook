@@ -1,0 +1,20 @@
+# Hook ALPM propio de midistro (Tema 6)
+# Instalar en: /etc/pacman.d/hooks/90-midistro-pkglog.hook
+# Documentacion del formato: man 5 alpm-hooks
+#
+# Se ejecuta UNA vez al final de cada transaccion de pacman que instale, actualice o
+# elimine paquetes. Registra que cambio y mantiene al dia la lista de paquetes explicitos
+# (la base de pkglist.txt, que usa install.sh).
+
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Type = Package
+Target = *
+
+[Action]
+Description = midistro: registrando cambios de paquetes y actualizando la lista...
+When = PostTransaction
+Exec = /usr/local/bin/midistro-pkglog
+NeedsTargets

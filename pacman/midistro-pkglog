@@ -1,0 +1,41 @@
+#!/bin/bash
+# midistro-pkglog - script que ejecuta el hook 90-midistro-pkglog.hook (Tema 6)
+#
+# Instalar en: /usr/local/bin/midistro-pkglog  (root:root, 755)
+#
+# Entrada : nombres de los paquetes de la transaccion, uno por linea en stdin
+#           (los entrega pacman porque el hook declara NeedsTargets).
+# Salida  : - /var/log/midistro-pkg.log        historial legible de cambios (+ agregado / - quitado)
+#                                               sobre TODOS los paquetes explicitos (pacman -Qqe)
+#           - /var/lib/midistro/explicit.txt   esa lista (para comparar en la proxima transaccion)
+#           - /var/lib/midistro/pkglist.txt    solo los de repos oficiales (pacman -Qqen): base de install.sh
+#
+# El hook corre como root y en PostTransaction: la base de datos local ya esta actualizada,
+# por eso "pacman -Qqen" ya refleja el estado nuevo. Las consultas -Q no necesitan db.lck.
+
+set -u
+STATE_DIR=/var/lib/midistro
+LIST=$STATE_DIR/explicit.txt
+NATIVE=$STATE_DIR/pkglist.txt
+LOG=/var/log/midistro-pkg.log
+
+mkdir -p "$STATE_DIR"
+new=$(mktemp)
+trap 'rm -f "$new"' EXIT
+pacman -Qqe | sort > "$new"      # -Q consulta, -q solo nombres, -e explicitos (incluye paquetes propios locales)
+
+targets=$(tr '\n' ' ')
+{
+    echo "== $(date '+%F %T') | hook midistro-pkglog | pid=$$ ppid=$PPID | transaccion: ${targets:-(sin objetivos)}"
+    if [[ -f $LIST ]]; then
+        cambios=$(diff <(sort "$LIST") "$new" | sed -n 's/^< /  - /p; s/^> /  + /p')
+        echo "${cambios:-  (sin cambios en la lista de paquetes explicitos)}"
+    else
+        echo "  (primera ejecucion: $(wc -l < "$new") paquetes explicitos registrados)"
+    fi
+} >> "$LOG"
+
+install -m 644 "$new" "$LIST"
+pacman -Qqen | sort > "$NATIVE"   # -n = solo paquetes que vienen de repos oficiales (los que install.sh puede instalar con -S)
+chmod 644 "$NATIVE"
+exit 0
