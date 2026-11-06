@@ -1,0 +1,77 @@
+--- configuracion efectiva (pacman-conf)
+RootDir = /
+DBPath = /var/lib/pacman/
+CacheDir = /var/cache/pacman/pkg/
+HookDir = /etc/pacman.d/hooks/
+GPGDir = /etc/pacman.d/gnupg/
+LogFile = /var/log/pacman.log
+Architecture = x86_64
+SigLevel = PackageRequired
+SigLevel = PackageTrustedOnly
+SigLevel = DatabaseOptional
+SigLevel = DatabaseTrustedOnly
+LocalFileSigLevel = PackageOptional
+LocalFileSigLevel = PackageTrustedOnly
+
+--- base de datos LOCAL: un directorio por paquete instalado
+paquetes instalados (pacman -Q | wc -l): 414
+directorios en /var/lib/pacman/local   : 414
+tamano de la base local                : 14M
+
+--- contenido del directorio de un paquete (bash)
+total 28
+-rw-r--r-- 1 root root  464 Nov  3 14:30 desc
+-rw-r--r-- 1 root root 7782 Nov  3 14:30 files
+-rw-r--r-- 1 root root  454 Sep 15 13:47 install
+-rw-r--r-- 1 root root 9431 Sep 15 13:47 mtree
+
+--- /var/lib/pacman/local/bash-*/desc (primeras 25 lineas)
+%NAME%
+bash
+
+%VERSION%
+5.3.20-1
+
+%BASE%
+bash
+
+%DESC%
+The GNU Bourne Again shell
+
+%URL%
+https://www.gnu.org/software/bash/bash.html
+
+%ARCH%
+x86_64
+
+%BUILDDATE%
+1789501639
+
+%INSTALLDATE%
+1793737845
+
+%PACKAGER%
+
+--- bases de datos SYNC (copias de los repos)
+total 8.8M
+-rw-r--r-- 1 root root 130K Nov  3 07:32 core.db
+-rw-r--r-- 1 root root 8.6M Nov  3 16:04 extra.db
+
+--- que hay dentro de core.db (un directorio por paquete, con desc y depends)
+acl-2.4.0-1/
+acl-2.4.0-1/desc
+amd-ucode-20261019-1/
+amd-ucode-20261019-1/desc
+archlinux-keyring-20260909-1/
+archlinux-keyring-20260909-1/desc
+attr-2.6.0-1/
+attr-2.6.0-1/desc
+paquetes en core: 299   en extra: 15195
+
+--- cache de paquetes descargados
+829
+du: cannot read directory '/var/cache/pacman/pkg/download-inT0Da': Permission denied
+998M	/var/cache/pacman/pkg
+
+--- archivo de bloqueo (no existe salvo durante una transaccion)
+ls: cannot access '/var/lib/pacman/db.lck': No such file or directory

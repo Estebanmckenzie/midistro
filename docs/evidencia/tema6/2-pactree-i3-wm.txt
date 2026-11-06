@@ -1,0 +1,188 @@
+--- dependencias DIRECTAS (pacman -Qi / Depends On)
+Name            : i3-wm
+Version         : 4.25.1-1
+Depends On      : libev  libxkbcommon-x11  pango  startup-notification  ttf-font  xcb-util-cursor  xcb-util-keysyms  xcb-util-wm  xcb-util-xrm  yajl
+Optional Deps   : dmenu: for the default program launcher [installed]
+Required By     : None
+
+--- arbol (pactree i3-wm)
+i3-wm
+├─libev
+│ └─glibc
+│   ├─linux-api-headers>=4.10
+│   ├─tzdata
+│   └─filesystem
+│     └─iana-etc
+├─libxkbcommon-x11
+│ ├─glibc
+│ ├─libxcb
+│ │ ├─xcb-proto
+│ │ ├─libxdmcp
+│ │ │ ├─glibc
+│ │ │ └─xorgproto
+│ │ ├─libxau
+│ │ │ ├─glibc
+│ │ │ └─xorgproto
+│ │ └─glibc
+│ ├─libxkbcommon
+│ │ ├─glibc
+│ │ ├─libxml2
+│ │ │ ├─bash
+│ │ │ │ ├─readline
+│ │ │ │ │ ├─glibc
+│ │ │ │ │ ├─ncurses provides libncursesw.so=6-64
+│ │ │ │ │ │ ├─glibc
+│ │ │ │ │ │ ├─libgcc
+│ │ │ │ │ │ │ └─glibc>=2.27
+│ │ │ │ │ │ └─libstdc++
+│ │ │ │ │ │   ├─glibc>=2.27
+│ │ │ │ │ │   └─libgcc
+│ │ │ │ │ └─ncurses
+│ │ │ │ ├─readline provides libreadline.so=8-64
+│ │ │ │ ├─glibc
+│ │ │ │ └─ncurses
+│ │ │ ├─glibc
+│ │ │ ├─icu
+│ │ │ │ ├─glibc
+│ │ │ │ ├─libstdc++
+│ │ │ │ ├─libgcc
+│ │ │ │ └─bash provides sh
+│ │ │ ├─readline
+│ │ │ ├─zlib
+│ │ │ │ └─glibc
+│ │ │ └─icu provides libicuuc.so=78-64
+│ │ └─xkeyboard-config
+│ └─libxkbcommon provides libxkbcommon.so=0-64
+├─pango
+│ ├─cairo
+│ │ ├─bash
+│ │ ├─fontconfig
+│ │ │ ├─bash
+│ │ │ ├─expat
+│ │ │ │ └─glibc
+│ │ │ ├─freetype2
+│ │ │ │ ├─brotli
+│ │ │ │ │ └─glibc
+│ │ │ │ ├─bzip2
+│ │ │ │ │ ├─glibc
+│ │ │ │ │ └─bash provides sh
+│ │ │ │ ├─glibc
+│ │ │ │ ├─libpng
+│ │ │ │ │ ├─zlib
+│ │ │ │ │ └─bash provides sh
+│ │ │ │ └─zlib
+│ │ │ ├─glibc
+│ │ │ ├─expat provides libexpat.so=1-64
+│ │ │ └─freetype2 provides libfreetype.so=6-64
+│ │ ├─freetype2
+│ │ ├─glib2
+│ │ │ ├─bash
+│ │ │ ├─glibc
+│ │ │ ├─libffi
+│ │ │ │ └─glibc
+│ │ │ ├─libsysprof-capture
+│ │ │ ├─pcre2
+│ │ │ │ ├─bzip2
+│ │ │ │ ├─glibc
+│ │ │ │ ├─readline
+│ │ │ │ └─zlib
+│ │ │ ├─util-linux-libs
+│ │ │ │ ├─glibc
+│ │ │ │ └─sqlite
+│ │ │ │   ├─readline
+│ │ │ │   ├─zlib
+│ │ │ │   └─glibc
+│ │ │ ├─zlib
+│ │ │ ├─libffi provides libffi.so=8-64
+│ │ │ └─util-linux-libs provides libmount.so=1-64
+│ │ ├─glibc
+│ │ ├─libpng
+│ │ ├─libx11
+│ │ │ ├─libxcb
+│ │ │ ├─glibc
+│ │ │ └─xorgproto
+│ │ ├─libxcb
+│ │ ├─libxext
+│ │ │ ├─libx11
+│ │ │ ├─glibc
+│ │ │ └─xorgproto
+│ │ ├─libxrender
+│ │ │ ├─libx11
+│ │ │ ├─glibc
+│ │ │ └─xorgproto
+│ │ ├─lzo
+│ │ │ └─glibc
+│ │ ├─pixman
+│ │ │ └─glibc
+│ │ └─zlib
+│ ├─fontconfig
+│ ├─freetype2
+│ ├─fribidi
+│ │ └─glibc
+│ ├─glib2
+│ ├─glibc
+│ ├─harfbuzz
+│ │ ├─freetype2
+│ │ ├─freetype2 provides libfreetype.so=6-64
+│ │ ├─glib2
+│ │ ├─glib2 provides libglib-2.0.so=0-64
+│ │ ├─glib2 provides libgobject-2.0.so=0-64
+│ │ ├─glibc
+│ │ ├─graphite
+│ │ │ ├─glibc
+│ │ │ ├─libstdc++
+│ │ │ └─libgcc
+│ │ ├─graphite provides libgraphite2.so=3-64
+│ │ ├─libpng
+│ │ ├─libpng provides libpng16.so=16-64
+│ │ ├─zlib
+│ │ └─zlib provides libz.so=1-64
+│ ├─libsysprof-capture
+│ ├─libthai
+│ │ ├─glibc
+│ │ └─libdatrie
+│ │   └─glibc
+│ ├─libx11
+│ ├─libxft
+│ │ ├─fontconfig
+│ │ ├─libxrender
+│ │ ├─libx11
+│ │ ├─freetype2
+│ │ ├─glibc
+│ │ └─xorgproto
+│ └─libxrender
+├─startup-notification
+│ ├─glibc
+│ ├─libx11
+│ ├─libxcb
+│ └─xcb-util
+│   ├─libxcb
+│   └─glibc
+├─gnu-free-fonts provides ttf-font
+├─xcb-util-cursor
+│ ├─libxcb
+│ ├─xcb-util-renderutil
+│ │ ├─libxcb
+│ │ └─glibc
+│ ├─xcb-util-image
+│ │ ├─libxcb
+│ │ ├─xcb-util
+│ │ └─glibc
+│ └─glibc
+├─xcb-util-keysyms
+│ ├─libxcb
+│ └─glibc
+├─xcb-util-wm
+│ ├─libxcb
+│ └─glibc
+├─xcb-util-xrm
+│ └─xcb-util
+└─yajl
+  └─glibc
+
+--- conteo: dependencias directas vs transitivas
+directas   : 10
+transitivas: 57
+
+--- quien depende de i3-wm (arbol inverso)
+i3-wm

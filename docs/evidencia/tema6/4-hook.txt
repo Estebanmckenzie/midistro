@@ -1,0 +1,23 @@
+--- hook instalado
+-rwxr-xr-x 1 root root 1838 Nov  5 19:27 /usr/local/bin/midistro-pkglog
+
+/etc/pacman.d/hooks/:
+total 4
+-rw-r--r-- 1 root root 633 Nov  5 19:27 90-midistro-pkglog.hook
+
+--- registro del hook (/var/log/midistro-pkg.log)
+== 2026-11-05 19:28:45 | hook midistro-pkglog | pid=1184 ppid=1183 | transaccion:  
+  (primera ejecucion: 36 paquetes explicitos registrados)
+== 2026-11-05 19:29:43 | hook midistro-pkglog | pid=1229 ppid=1206 | transaccion: tree 
+  + tree
+== 2026-11-05 19:30:46 | hook midistro-pkglog | pid=1254 ppid=1248 | transaccion: tree 
+  - tree
+== 2026-11-05 19:52:15 | hook midistro-pkglog | pid=3241 ppid=3237 | transaccion: midistro-zombies 
+  + midistro-zombies
+
+--- lineas del hook en /var/log/pacman.log
+[2026-11-05T19:29:42-0600] [ALPM] running '90-midistro-pkglog.hook'...
+[2026-11-05T19:30:46-0600] [ALPM] running '90-midistro-pkglog.hook'...
+[2026-11-05T19:52:07-0600] [PACMAN] Running 'pacman -U midistro-zombies-1.0-1-any.pkg.tar.zst'
+[2026-11-05T19:52:14-0600] [ALPM] installed midistro-zombies (1.0-1)
+[2026-11-05T19:52:15-0600] [ALPM] running '90-midistro-pkglog.hook'...

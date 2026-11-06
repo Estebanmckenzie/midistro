@@ -1,0 +1,53 @@
+Name            : midistro-zombies
+Version         : 1.0-1
+Description     : Lista procesos zombie leyendo /proc (comando propio de midistro)
+Architecture    : any
+URL             : None
+Licenses        : MIT
+Groups          : None
+Provides        : None
+Depends On      : bash
+Optional Deps   : None
+Required By     : None
+Optional For    : None
+Conflicts With  : None
+Replaces        : None
+Installed Size  : 1560.00 B
+Packager        : Unknown Packager
+Build Date      : Thu 05 Nov 2026 07:51:06 PM CST
+Install Date    : Thu 05 Nov 2026 07:52:14 PM CST
+Install Reason  : Explicitly installed
+Install Script  : No
+Validated By    : None
+
+
+midistro-zombies /usr/
+midistro-zombies /usr/bin/
+midistro-zombies /usr/bin/midistro-zombies
+
+--- ¿a que paquete pertenece el comando? (pacman -Qo)
+/usr/bin/midistro-zombies is owned by midistro-zombies 1.0-1
+
+--- integridad de archivos del paquete (pacman -Qk)
+midistro-zombies: 3 total files, 0 missing files
+
+--- arbol de dependencias del paquete propio
+midistro-zombies
+└─bash
+  ├─readline
+  │ ├─glibc
+  │ │ ├─linux-api-headers>=4.10
+  │ │ ├─tzdata
+  │ │ └─filesystem
+  │ │   └─iana-etc
+  │ ├─ncurses provides libncursesw.so=6-64
+  │ │ ├─glibc
+  │ │ ├─libgcc
+  │ │ │ └─glibc>=2.27
+  │ │ └─libstdc++
+  │ │   ├─glibc>=2.27
+  │ │   └─libgcc
+  │ └─ncurses
+  ├─readline provides libreadline.so=8-64
+  ├─glibc
+  └─ncurses

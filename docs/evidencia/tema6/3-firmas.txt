@@ -1,0 +1,39 @@
+--- SigLevel configurado
+SigLevel = PackageRequired
+SigLevel = PackageTrustedOnly
+SigLevel = DatabaseOptional
+SigLevel = DatabaseTrustedOnly
+LocalFileSigLevel = PackageOptional
+LocalFileSigLevel = PackageTrustedOnly
+
+--- llaves de confianza (resumen)
+llaves en el llavero: 183
+/etc/pacman.d/gnupg/pubring.gpg
+-------------------------------
+pub   rsa4096 2026-11-03 [SC]
+      8B39EC4D73256D4692415429500994F9708AA4E1
+uid           [ultimate] Pacman Keyring Master Key <pacman@localhost>
+
+pub   rsa2048 2011-08-12 [SC]
+      02FD1C7A934E614545849F19A6234074498E9CEE
+      Revocable by: DD12A30E507068C7B405C18ED51C8A5363B4835B
+      Revocable by: BDF456E33168B3A87FEF7191829E9C732C3FFEBC
+uid           [  full  ] Christian Hesse <eworm@archlinux.org>
+sub   rsa2048 2011-08-12 [E]
+
+--- verificar la firma de un paquete de la cache
+paquete: /var/cache/pacman/pkg/acl-2.4.0-1-x86_64.pkg.tar.zst
+==> Checking /var/cache/pacman/pkg/acl-2.4.0-1-x86_64.pkg.tar.zst.sig... (detached)
+gpg: Signature made Mon 29 Jun 2026 07:18:16 AM CST
+gpg:                using EDDSA key 0429897DE5F3BDAC537A30696D42BDD116E0068F
+gpg: Note: trustdb not writable
+gpg: Good signature from "Christian Hesse <eworm@archlinux.org>" [full]
+
+--- PRUEBA NEGATIVA: alterar 1 byte de una copia y volver a verificar
+==> Checking /tmp/tmp.8Txhk20Our/acl-2.4.0-1-x86_64.pkg.tar.zst.sig... (detached)
+gpg: Signature made Mon 29 Jun 2026 07:18:16 AM CST
+gpg:                using EDDSA key 0429897DE5F3BDAC537A30696D42BDD116E0068F
+gpg: Note: trustdb not writable
+gpg: BAD signature from "Christian Hesse <eworm@archlinux.org>" [full]
+==> ERROR: The signature verification for /tmp/tmp.8Txhk20Our/acl-2.4.0-1-x86_64.pkg.tar.zst.sig failed.
+codigo de salida: 1
