@@ -1,0 +1,18 @@
+# Maintainer: Geiner Barrantes <barrantesgeiner06@gmail.com>
+# Paquete propio de midistro (Tema 6): empaqueta el comando midistro-zombies (Capa 3).
+# Construir con:  makepkg -f        Instalar con:  sudo pacman -U midistro-zombies-*.pkg.tar.zst
+# Referencias: man PKGBUILD, man makepkg, Arch Wiki "Creating packages".
+pkgname=midistro-zombies
+pkgver=1.0
+pkgrel=1
+pkgdesc="Lista procesos zombie leyendo /proc (comando propio de midistro)"
+arch=('any')
+license=('MIT')
+depends=('bash')
+source=('midistro-zombies')
+sha256sums=('785ce6caa294b9d78590d5af9bb5c63472491a5ba20125686800e4a11a97d996')
+
+package() {
+    # install -D crea los directorios intermedios; el destino es $pkgdir, NO el sistema real.
+    install -Dm755 "$srcdir/midistro-zombies" "$pkgdir/usr/bin/midistro-zombies"
+}

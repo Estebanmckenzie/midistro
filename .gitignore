@@ -1,2 +1,5 @@
 src/primes_ipc
 docs/evidencia/*/*.tmp
+pacman/pkg-zombies/src/
+pacman/pkg-zombies/pkg/
+*.pkg.tar.zst
