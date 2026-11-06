@@ -14,8 +14,8 @@ El equipo implementa **7 de los 9 temas** de la Capa 2, y cada integrante es res
 | Tema 1 · Procesos y planificación | Esteban McKenzie | Geiner | `bin/` (herramienta de procesos y script del experimento de prioridades) | `docs/tema-01-procesos.md` |
 | Tema 2 · Memoria, swap y zram | Ryan | Esteban | `bin/`, `systemd/` (configuración de zram) | `docs/tema-02-memoria.md` |
 | Tema 4 · Gestión de servicios systemd | Ryan | Geiner | `systemd/` (unit file y timer) | `docs/tema-04-servicios.md` |
-| Tema 5 · Concurrencia e IPC | Geiner | Ryan | `src/` | `docs/tema-05-ipc.md` |
-| Tema 6 · Gestión de paquetes | Geiner | Esteban | `pacman/` (hook de ALPM y PKGBUILD) | `docs/tema-06-paquetes.md` |
+| Tema 5 · Concurrencia e IPC | Geiner | Ryan | `src/`, `bin/midistro-zombies`, `scripts/tema5-evidencia.sh`, `docs/evidencia/tema5/` | `docs/tema-05-concurrencia-ipc.md` |
+| Tema 6 · Gestión de paquetes | Geiner | Esteban | `pacman/` (hook de ALPM y PKGBUILD), `scripts/tema6-evidencia.sh`, `docs/evidencia/tema6/` | `docs/tema-06-gestion-paquetes.md` |
 | Tema 7 · Proceso de arranque | Esteban McKenzie | Ryan | `docs/` y `docs/evidencia/` | `docs/tema-07-arranque.md` |
 | Tema 9 · Protección y seguridad | Esteban McKenzie | Geiner | `security/` | `docs/tema-09-seguridad.md` |
 
