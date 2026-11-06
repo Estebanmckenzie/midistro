@@ -1,0 +1,8 @@
+== 1. esteban con llave (permitido) == 
+acceso-con-llave-OK
+== 2. esteban SIN llave, por contrasena (denegado) == 
+esteban@192.168.56.101: Permission denied (publickey).
+== 3. analista (denegado, no esta en AllowUsers) == 
+analista@192.168.56.101: Permission denied (publickey).
+== 4. root (denegado) == 
+root@192.168.56.101: Permission denied (publickey).
