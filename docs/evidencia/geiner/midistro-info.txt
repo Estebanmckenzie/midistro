@@ -1,0 +1,18 @@
+midistro-info  midistro
+----------------------------------------------------------
+Kernel          7.2.14-arch1-1
+Uptime          0 d 0 h 33 min
+Carga           0.00 0.01 0.03  (entidades ejecutables/total: 2/171)
+CPU             AMD Ryzen 7 5700U with Radeon Graphics
+Nucleos         2 logicos
+GPU (card0)     VMware SVGA II Adapter
+  driver        vmwgfx  [PCI 15ad:0405]
+NPU             no detectada (/sys/class/accel esta vacio)
+Memoria         535 MiB usados de 3888 MiB  (disponible: 3353 MiB)
+Swap            no hay swap activa
+zram            no activo
+Procesos        121 en total (1 ejecutandose, 120 durmiendo/esperando, 0 zombies)
+Planificador    EEVDF (Earliest Eligible Virtual Deadline First)
+  este proceso  SCHED_OTHER, nice 0
+  tiempo real   runtime 1000000 us por periodo de 1000000 us (sin limite efectivo)
+Raiz (/)        ext4 en /dev/sda2, 5.1 GiB usados de 28.4 GiB
