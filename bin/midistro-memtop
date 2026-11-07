@@ -1,0 +1,70 @@
+#!/bin/bash
+# midistro-memtop - los procesos que mas memoria residente (RSS) usan, leidos de /proc/[pid]/status
+# Comando libre de la Capa 3 de midistro.
+#
+# Interfaz del SO que usa: /proc/[pid]/status (campos Name, Uid, VmRSS, RssAnon, RssFile, RssShmem)
+#                          y /proc/meminfo (MemTotal, para calcular el porcentaje).
+#   VmRSS = memoria fisica que el proceso tiene en RAM ahora mismo (RSS = Resident Set Size).
+#   Columnas: PRIV = RssAnon (privada: heap, pila); ARCH = RssFile (archivos mapeados, p. ej. bibliotecas);
+#             COMP = RssShmem (memoria compartida). RSS = PRIV + ARCH + COMP.
+#   Los hilos del kernel no tienen VmRSS (no tienen espacio de usuario) y se omiten.
+#
+# Uso: midistro-memtop [-n N] [-u USUARIO] [-h]
+#   -n N        cuantos procesos mostrar (por defecto 10)
+#   -u USUARIO  solo los procesos de ese usuario
+# Codigos de salida: 0 bien, 1 argumentos invalidos, 2 usuario inexistente
+# Referencias: man 5 proc (seccion /proc/pid/status)
+
+LC_ALL=C
+set -u
+
+n=10; usuario=""
+uso() { sed -n '/^# Uso:/,/^# Codigos/p' "$0" | sed 's/^# \{0,1\}//'; }
+while getopts ":n:u:h" o; do
+    case $o in
+        n) n=$OPTARG ;;
+        u) usuario=$OPTARG ;;
+        h) uso; exit 0 ;;
+        :) echo "midistro-memtop: la opcion -$OPTARG necesita un valor" >&2; exit 1 ;;
+        *) echo "midistro-memtop: opcion desconocida -$OPTARG (use -h)" >&2; exit 1 ;;
+    esac
+done
+[[ $n =~ ^[1-9][0-9]*$ ]] || { echo "midistro-memtop: -n debe ser un entero positivo" >&2; exit 1; }
+
+uid_filtro=""
+if [[ -n $usuario ]]; then
+    uid_filtro=$(awk -F: -v u="$usuario" '$1==u {print $3}' /etc/passwd)
+    [[ -n $uid_filtro ]] || { echo "midistro-memtop: el usuario '$usuario' no existe" >&2; exit 2; }
+fi
+
+# MemTotal para el porcentaje
+while read -r k v _; do [[ $k == MemTotal: ]] && { mt=$v; break; }; done < /proc/meminfo
+
+# uid -> nombre (una sola lectura de /etc/passwd)
+declare -A nombre_de
+while IFS=: read -r u _ id _; do nombre_de[$id]=$u; done < /etc/passwd
+
+lineas=""
+for d in /proc/[0-9]*; do
+    pid=${d#/proc/}; name=""; uid=""; rss=""; anon=0; file=0; shm=0
+    while IFS=$'\t' read -r k v; do
+        case $k in
+            Name:)     name=$v ;;
+            Uid:)      uid=${v%%$'\t'*} ;;
+            VmRSS:)    read -r rss _ <<< "$v" ;;
+            RssAnon:)  read -r anon _ <<< "$v" ;;
+            RssFile:)  read -r file _ <<< "$v" ;;
+            RssShmem:) read -r shm _ <<< "$v" ;;
+        esac
+    done < "$d/status" 2>/dev/null
+    [[ -n $rss ]] || continue                                  # hilo del kernel o proceso ya terminado
+    [[ -z $uid_filtro || $uid == "$uid_filtro" ]] || continue
+    lineas+="$rss $pid ${nombre_de[$uid]:-$uid} $anon $file $shm $name"$'\n'
+done
+
+printf '%-8s %-12s %9s %6s %9s %9s %9s  %s\n' PID USUARIO RSS_MiB '%MEM' PRIV_MiB ARCH_MiB COMP_MiB COMANDO
+printf '%s' "$lineas" | sort -rn -k1,1 | head -n "$n" | \
+awk -v mt="$mt" '{
+    name=$7; for (i=8; i<=NF; i++) name = name " " $i
+    printf "%-8s %-12s %9.1f %6.1f %9.1f %9.1f %9.1f  %s\n", $2, $3, $1/1024, $1*100/mt, $4/1024, $5/1024, $6/1024, name
+}'
