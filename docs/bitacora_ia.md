@@ -20,15 +20,16 @@ Esta bitácora declara y documenta el uso de IA según el Anexo 3 del enunciado.
 | 9 | 2026-11-04 · Esteban | Tema 7 | Entrada de rescate en `systemd-boot` | **Sí (error 8)** |
 | 10 | 2026-11-05 · Esteban | Tema 1 | Herramienta de procesos y experimento de prioridades | **Sí (error 9)** |
 | 11 | 2026-11-06 · Esteban | Tema 9 | Firewall, sudoers, ACL y endurecimiento de SSH | **Sí (errores 10 y 11)** |
-| 12 | 2026-11-03 · Geiner | Tema 5 | Programa productor/consumidor y comando midistro-zombies | Sí (error 10) | 
-| 13 | 2026-11-04 · Geiner | Tema 5 | Interpretación de mediciones y redacción de la ficha | No | 
-| 14 | 2026-11-05 · Geiner | Tema 6 | Hook de ALPM y PKGBUILD de midistro-zombies | No | 
-| 15 | 2026-11-05 · Geiner | Tema 6 | Script de evidencia, interpretación de datos y ficha | Sí (errores 12 y 13) |
-| 16 | 2026-11-05 · Geiner | Capa 3 | Comando obligatorio midistro-info | Sí (error 14) | 
-| 17 | 2026-11-06 · Geiner | Capa 3 | Comando libre midistro-memtop | No | 
-| 18 | 2026-11-06 · Geiner | Capa 3 | Atajos libres de i3 y coordinación con el equipo | No | 
+| 12 | 2026-11-03 · Geiner | Tema 5 | Programa productor/consumidor y comando midistro-zombies | Sí (error 12) |
+| 13 | 2026-11-04 · Geiner | Tema 5 | Interpretación de mediciones y redacción de la ficha | No |
+| 14 | 2026-11-05 · Geiner | Tema 6 | Hook de ALPM y PKGBUILD de midistro-zombies | No |
+| 15 | 2026-11-05 · Geiner | Tema 6 | Script de evidencia, interpretación de datos y ficha | Sí (errores 13 y 14) |
+| 16 | 2026-11-05 · Geiner | Capa 3 | Comando obligatorio midistro-info | Sí (error 15) |
+| 17 | 2026-11-06 · Geiner | Capa 3 | Comando libre midistro-memtop | No |
+| 18 | 2026-11-06 · Geiner | Capa 3 | Atajos libres de i3 y coordinación con el equipo | No |
+| 19 | 2026-11-07 · Esteban | Capa 3 / documentación | Atajos de i3, comandos propios, README, matriz e `install.sh` | **Sí (errores 16 y 17)** |
 
-Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las entradas de Ryan y Geiner se agregan al final.
+Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las entradas de Ryan se agregan al final. Los errores de la IA se numeran de forma continua entre los integrantes (del 1 al 17).
 
 ## Entradas
 
@@ -173,7 +174,7 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | Propósito | Diseñar un mini-programa productor/consumidor con al menos dos mecanismos de IPC, manejo de `SIGTERM` y `SIGCHLD` sin zombies, y un comando que detecte zombies leyendo `/proc` |
 | Consulta resumida | Programa en C con esquema productor/consumidor, sincronización explícita y script que genere la evidencia (`strace`, `ps`, prueba de condición de carrera) |
 | Resultado obtenido | `src/primes_ipc.c` (pipe, memoria compartida con mutex `PTHREAD_PROCESS_SHARED` y señales, con las opciones `--no-lock` y `--no-reap`), `bin/midistro-zombies` y `scripts/tema5-evidencia.sh` |
-| Validado / corregido / descartado | Se aceptó el diseño y se leyó el código para poder explicarlo (cierre de `fds[1]`, trozos de 16 bytes, `while` con `waitpid` en el handler, `sigsuspend`). **Error 10 de la IA:** el script de evidencia filtraba las trazas con un `grep` que solo capturaba las líneas `write` completas. Con `strace -f` las llamadas bloqueadas se parten en `<unfinished ...>` y `<... read resumed>`, así que `C3-resumen.txt` salió sin ninguna línea `read`. Se detectó al mostrar el archivo y se completó buscando `read resumed` en la traza completa (`C3-strace-pipe-datos.txt`) |
+| Validado / corregido / descartado | Se aceptó el diseño y se leyó el código para poder explicarlo (cierre de `fds[1]`, trozos de 16 bytes, `while` con `waitpid` en el handler, `sigsuspend`). **Error 12 de la IA:** el script de evidencia filtraba las trazas con un `grep` que solo capturaba las líneas `write` completas. Con `strace -f` las llamadas bloqueadas se parten en `<unfinished ...>` y `<... read resumed>`, así que `C3-resumen.txt` salió sin ninguna línea `read`. Se detectó al mostrar el archivo y se completó buscando `read resumed` en la traza completa (`C3-strace-pipe-datos.txt`) |
 | Cómo se validó | `make` con `-Wall -Wextra`; `./src/primes_ipc -v` dio 148933 primos y 2000 de 2000 trozos; 5 corridas con y sin mutex (sin mutex se perdieron trozos en las 5; con mutex, 0); `SIGTERM` al supervisor con código de salida 143; `kill -9` a un trabajador (1999 de 2000 trozos, sin zombies); `--no-reap` con 4 zombies que `midistro-zombies` y `ps` mostraron. Evidencia en `docs/evidencia/tema5/` |
 
 ### Entrada 13 · 2026-11-04 · Geiner
@@ -209,7 +210,7 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | Propósito | Generar la evidencia medida de pacman (anatomía, dependencias, firmas, hook, paquete propio) y redactar la ficha |
 | Consulta resumida | Script que registre la base de datos local y sync, el árbol de `i3-wm`, la verificación de firmas con prueba negativa y el hook, e interpretación de los resultados |
 | Resultado obtenido | `scripts/tema6-evidencia.sh` y `docs/tema-06-gestion-paquetes.md` |
-| Validado / corregido / descartado | **Error 12 de la IA:** el script reportaba `codigo de salida: 141` en la prueba negativa de firma. 141 es 128 más 13 (`SIGPIPE`), porque el comando estaba encadenado a `head`; no era el código de `pacman-key`. Se detectó porque la salida mostraba `BAD signature` junto a un código incoherente, y se corrigió quitando el `head`. **Error 13 de la IA:** afirmó que las bases sync traen un archivo `depends` aparte además de `desc`. La salida de `bsdtar -tf` solo listaba `desc`; se comprobó que `%DEPENDS%` está dentro del `desc`, tanto en la base sync como en la local, y se corrigió la ficha |
+| Validado / corregido / descartado | **Error 13 de la IA:** el script reportaba `codigo de salida: 141` en la prueba negativa de firma. 141 es 128 más 13 (`SIGPIPE`), porque el comando estaba encadenado a `head`; no era el código de `pacman-key`. Se detectó porque la salida mostraba `BAD signature` junto a un código incoherente, y se corrigió quitando el `head`. **Error 14 de la IA:** afirmó que las bases sync traen un archivo `depends` aparte además de `desc`. La salida de `bsdtar -tf` solo listaba `desc`; se comprobó que `%DEPENDS%` está dentro del `desc`, tanto en la base sync como en la local, y se corrigió la ficha |
 | Cómo se validó | Nueva corrida del script (`codigo de salida: 1`); `bsdtar -xOf /var/lib/pacman/sync/core.db acl-2.4.0-1/desc` (con `%DEPENDS%`, `%SHA256SUM%` y `%PGPSIG%`); `grep -A4 '%DEPENDS%' /var/lib/pacman/local/bash-*/desc`; `pacman -Qi bash` con `Validated By: Signature` frente a `None` del paquete propio. Evidencia en `docs/evidencia/tema6/` |
 
 ### Entrada 16 · 2026-11-05 · Geiner
@@ -221,7 +222,7 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | Propósito | Escribir un comando que muestre información del sistema leída directamente de `/proc` y `/sys` |
 | Consulta resumida | Qué datos expone realmente la VM (kernel, CPU, GPU y NPU con su driver, memoria, swap, zram, procesos, planificador y sistema de archivos raíz) y un comando que los muestre sin usar neofetch ni fastfetch |
 | Resultado obtenido | `bin/midistro-info` en bash, que lee `/proc/sys/kernel/osrelease`, `/proc/uptime`, `/proc/cpuinfo`, `/sys/class/drm`, `/sys/class/accel`, `/proc/meminfo`, `/proc/swaps`, `/sys/block/zram*`, `/proc/[pid]/stat`, `/proc/self/stat` y `/proc/self/mountinfo`, y `docs/comando-midistro-info.md` con la fuente de cada dato |
-| Validado / corregido / descartado | Primero se ejecutaron en la VM los comandos de exploración (`uname -r`, `/proc/cpuinfo`, `readlink` del driver de la GPU, `lspci -k`, `/sys/class/accel`, `/proc/meminfo`, `findmnt`) para ver qué datos existían antes de escribir el comando. Se descartó usar herramientas externas como fuente principal. El planificador se deduce de la versión del kernel (EEVDF desde la 6.6), porque no hay un archivo público de `/proc` que lo declare sin permisos de administrador, y esa limitación quedó documentada. **Error 14 de la IA:** la línea de tiempo real mostraba `runtime 1000000 us por periodo de 1000000 us (-1 = sin limite)`. En la VM el valor no era -1, sino igual al periodo, de modo que el mensaje era ambiguo. Se detectó al ver la salida real y se corrigió para decir `sin limite efectivo` cuando el runtime es -1 o igual al periodo, y para calcular el porcentaje cuando hay tope |
+| Validado / corregido / descartado | Primero se ejecutaron en la VM los comandos de exploración (`uname -r`, `/proc/cpuinfo`, `readlink` del driver de la GPU, `lspci -k`, `/sys/class/accel`, `/proc/meminfo`, `findmnt`) para ver qué datos existían antes de escribir el comando. Se descartó usar herramientas externas como fuente principal. El planificador se deduce de la versión del kernel (EEVDF desde la 6.6), porque no hay un archivo público de `/proc` que lo declare sin permisos de administrador, y esa limitación quedó documentada. **Error 15 de la IA:** la línea de tiempo real mostraba `runtime 1000000 us por periodo de 1000000 us (-1 = sin limite)`. En la VM el valor no era -1, sino igual al periodo, de modo que el mensaje era ambiguo. Se detectó al ver la salida real y se corrigió para decir `sin limite efectivo` cuando el runtime es -1 o igual al periodo, y para calcular el porcentaje cuando hay tope |
 | Cómo se validó | Salida en la VM (kernel 7.2.14-arch1-1, AMD Ryzen 7 5700U, 2 núcleos lógicos, GPU `VMware SVGA II Adapter` con driver `vmwgfx`, sin NPU, sin swap ni zram, raíz `ext4` en `/dev/sda2`), coincidente con los comandos de exploración; `nice -n 5 midistro-info` mostró `nice 5`; el conteo de procesos (119) difirió de `ps -e --no-headers \| wc -l` (122) solo por los procesos de la propia medición. Evidencia en `docs/evidencia/geiner/midistro-info.txt` |
 
 ### Entrada 17 · 2026-11-06 · Geiner
@@ -230,7 +231,7 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | --- | --- |
 | Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
 | Componente | Capa 3: comando libre |
-| Propósito | Tener un segundo comando libre que use una interfaz del sistema distinta de las anteriores (el primero es `midistro-zombies`, entrada 11) |
+| Propósito | Tener un segundo comando libre que use una interfaz del sistema distinta de las anteriores (el primero es `midistro-zombies`, entrada 12) |
 | Consulta resumida | Un comando que liste los procesos que más memoria residente usan, leyendo `/proc/[pid]/status` |
 | Resultado obtenido | `bin/midistro-memtop` (opciones `-n`, `-u` y `-h`, códigos de salida 0, 1 y 2) y `docs/comando-midistro-memtop.md`, que separa el RSS en memoria privada (`RssAnon`), de archivos (`RssFile`) y compartida (`RssShmem`) |
 | Validado / corregido / descartado | Se aceptó el diseño de entre dos opciones propuestas (la otra era un comando que enviara señales a los padres de zombies). Se dejó documentada la limitación de que las páginas compartidas se cuentan en cada proceso, y que para repartirlas haría falta `Pss` de `smaps_rollup` |
@@ -248,7 +249,18 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | Validado / corregido / descartado | Al revisar el enunciado contra el `config`, se comprobó que `Super + W` hacía `layout tabbed` (línea 100) y que cerrar ventana solo estaba en `Super + Shift + Q`, por lo que faltaba uno de los 4 atajos obligatorios; se propuso agregar `Super + Q` y se pidió coordinarlo con el equipo en vez de editar el archivo compartido sin avisar. Se descartó usar rutas absolutas con `/home/geiner` y se usó `$HOME/midistro/bin/...`, que sirve en cualquier VM. Al principio los atajos parecían no responder, porque se había presionado `Super + Shift + Q` (que cierra la ventana) en lugar de `Super + Shift + C` para recargar; se recargó con `i3-msg reload` |
 | Cómo se validó | `i3 -C -c dotfiles/i3/config` devolvió 0; `i3-msg reload` respondió `success`; `i3-msg -t get_config \| grep midistro` mostró las tres líneas y la regla `for_window`; el comando lanzado con `i3-msg exec` abrió la ventana flotante; los tres atajos abrieron sus ventanas en la VM |
 
+### Entrada 19 · 2026-11-07 · Esteban
+
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | Claude (Anthropic), Claude Sonnet 5.5 |
+| Componente | Capa 3 (atajos y comandos libres), README, matriz de responsabilidades e `install.sh` |
+| Propósito | Configurar y probar los atajos de i3, documentar los comandos propios, redactar el README, actualizar la matriz y enlazar los comandos y el hook de pacman desde `install.sh` |
+| Consulta resumida | Atajos obligatorios y libres, paso de `install.sh` que enlaza `bin/` a `/usr/local/bin`, resolución de un conflicto de Git en `dotfiles/i3/config`, revisión del comando obligatorio de Geiner y del hook que no se instalaba |
+| Resultado obtenido | Atajos en `dotfiles/i3/config`, `install.sh` con los pasos de hook y de comandos, `docs/comando-procesos.md`, `docs/comando-medir-arranque.md`, `docs/cheatsheet.md`, `README.md` con diagrama y matriz actualizada |
+| Validado / corregido / descartado | **Error 16 de la IA:** presentó como hecho que el comando obligatorio era el que Geiner empaquetaba con `PKGBUILD` para el Tema 6, y el enunciado dice solo «al menos uno de los comandos propios de la Capa 3»; se descubrió al leer la ficha del Tema 6, que empaqueta `midistro-zombies`, y se descartó el mensaje que se iba a mandar a Geiner con esa suposición. **Error 17:** propuso subir versiones locales de `responsabilidades.md` y de la bitácora sin comprobar si otros integrantes las habían editado; se detectó con `git log` antes de subirlas y Geiner sí había modificado ambas, por lo que se descartó la versión local y se fusionó sobre la del repositorio. Además, el atajo `Super+Ctrl+P` de Geiner fallaba en la máquina de Esteban porque `install.sh` no instalaba el hook de pacman (`/etc/pacman.d/hooks/` no existía); se agregó el paso `1/6` al script |
+| Cómo se validó | `i3 -C -c dotfiles/i3/config` sin errores, conflicto de Git resuelto sin atajos repetidos, los siete atajos probados dentro de i3, y `install.sh` corrido de nuevo con el hook instalado: se generó una transacción de pacman (`pacman -S` y `pacman -R tree`) y `Super+Ctrl+P` mostró las dos líneas del registro. Revisión de `git log` sobre los archivos compartidos antes de modificarlos |
 
 ## Entradas de los demás integrantes
 
-_Pendiente: Ryan (Temas 2 y 4) agrega aquí sus entradas con el mismo formato, o declara que no uso IA en su componente._
+_Pendiente: Ryan (Temas 2 y 4) agrega aquí sus entradas con el mismo formato, o declara que no usó IA en su componente._
