@@ -1,0 +1,149 @@
+#!/bin/bash
+# midistro-info - resumen del sistema leido DIRECTAMENTE de /proc, /sys y llamadas al sistema.
+# Comando obligatorio de la Capa 3 de midistro. No envuelve neofetch/fastfetch ni herramientas similares.
+#
+# Fuente de cada dato (la defensa pregunta "de donde sale esto"):
+#   kernel ........ /proc/sys/kernel/osrelease, /proc/sys/kernel/hostname
+#   uptime / carga  /proc/uptime, /proc/loadavg
+#   CPU ........... /proc/cpuinfo (modelo, nucleos logicos)
+#   GPU ........... /sys/class/drm/card*/device/{vendor,device,driver}; nombre: pci.ids (hwdata)
+#   NPU ........... /sys/class/accel/accel*/device/driver (aparece si el kernel expone un acelerador)
+#   memoria / swap  /proc/meminfo, /proc/swaps
+#   zram .......... /sys/block/zram*/{disksize,mm_stat}  (tasa de compresion = original / comprimido)
+#   procesos ...... /proc/[pid]/stat (campo 3 = estado)
+#   planificador .. /proc/sys/kernel/osrelease (EEVDF desde el kernel 6.6), /proc/self/stat (campos 19 y 41)
+#                   y /proc/sys/kernel/sched_rt_* (limite de tiempo real)
+#   raiz .......... /proc/self/mountinfo (origen y tipo) y statfs(2) via "stat -f" (espacio)
+#
+# Uso: midistro-info        (no necesita permisos de administrador)
+# Referencias: man 5 proc, man 5 sysfs, man 2 statfs, Documentation/admin-guide/blockdev/zram.rst
+
+LC_ALL=C
+set -u
+
+if [[ -t 1 ]]; then B=$'\e[1m'; R=$'\e[0m'; else B=""; R=""; fi
+campo() { printf '%s%-15s%s %s\n' "$B" "$1" "$R" "$2"; }
+
+mib()  { awk -v k="$1" 'BEGIN{printf "%.0f", k/1024}'; }       # kB -> MiB
+leer() { local v; read -r v < "$1" 2>/dev/null && printf '%s' "$v"; }
+
+# ---------------- kernel, host y uptime ----------------
+rel=$(leer /proc/sys/kernel/osrelease)
+host=$(leer /proc/sys/kernel/hostname)
+read -r up _ < /proc/uptime
+up=${up%.*}
+read -r l1 l5 l15 ejec _ < /proc/loadavg
+printf '%smidistro-info%s  %s\n' "$B" "$R" "$host"
+printf -- '----------------------------------------------------------\n'
+campo "Kernel" "$rel"
+campo "Uptime" "$((up/86400)) d $((up%86400/3600)) h $((up%3600/60)) min"
+campo "Carga" "$l1 $l5 $l15  (entidades ejecutables/total: $ejec)"
+
+# ---------------- CPU ----------------
+modelo=$(awk -F': ' '/^model name/{print $2; exit}' /proc/cpuinfo)
+nuc=$(grep -c '^processor' /proc/cpuinfo)
+campo "CPU" "${modelo:-desconocido}"
+campo "Nucleos" "$nuc logicos"
+
+# ---------------- GPU ----------------
+pci_nombre() {   # $1 = vendor (hex), $2 = device (hex) -> "Fabricante Dispositivo" segun pci.ids
+    local f=${PCI_IDS:-/usr/share/hwdata/pci.ids}
+    [[ -r $f ]] || return 1
+    awk -v v="$1" -v d="$2" '
+        /^#/ { next }
+        /^[0-9a-f][0-9a-f][0-9a-f][0-9a-f]  / { inv = (substr($0,1,4) == v); if (inv) vn = substr($0,7); next }
+        inv && /^\t[0-9a-f][0-9a-f][0-9a-f][0-9a-f]  / && substr($0,2,4) == d { print vn " " substr($0,8); found=1; exit }
+        END { exit !found }' "$f"
+}
+
+hay_gpu=0
+for c in /sys/class/drm/card*; do
+    [[ $c =~ /card[0-9]+$ ]] || continue          # excluye card0-Virtual-1, etc. (conectores)
+    d=$c/device
+    [[ -e $d ]] || continue
+    hay_gpu=1
+    drv=$(readlink "$d/driver" 2>/dev/null); drv=${drv##*/}
+    ven=$(leer "$d/vendor"); ven=${ven#0x}
+    dev=$(leer "$d/device"); dev=${dev#0x}
+    nombre=$(pci_nombre "$ven" "$dev") || nombre="PCI ${ven}:${dev}"
+    campo "GPU (${c##*/})" "$nombre"
+    campo "  driver" "${drv:-sin driver}  [PCI ${ven}:${dev}]"
+done
+(( hay_gpu )) || campo "GPU" "no detectada en /sys/class/drm"
+
+# ---------------- NPU ----------------
+hay_npu=0
+for a in /sys/class/accel/accel*; do
+    [[ -e $a ]] || continue
+    hay_npu=1
+    drv=$(readlink "$a/device/driver" 2>/dev/null); drv=${drv##*/}
+    campo "NPU (${a##*/})" "driver: ${drv:-desconocido}"
+done
+(( hay_npu )) || campo "NPU" "no detectada (/sys/class/accel esta vacio)"
+
+# ---------------- memoria, swap, zram ----------------
+mt=0; ma=0; st=0; sf=0
+while read -r k v _; do
+    case $k in
+        MemTotal:) mt=$v ;; MemAvailable:) ma=$v ;; SwapTotal:) st=$v ;; SwapFree:) sf=$v ;;
+    esac
+done < /proc/meminfo
+campo "Memoria" "$(mib $((mt-ma))) MiB usados de $(mib "$mt") MiB  (disponible: $(mib "$ma") MiB)"
+if (( st > 0 )); then
+    campo "Swap" "$(mib $((st-sf))) MiB usados de $(mib "$st") MiB"
+    while read -r nombre tipo tam usado prio; do
+        [[ $nombre == Filename ]] && continue
+        campo "  dispositivo" "$nombre ($tipo) prioridad $prio"
+    done < /proc/swaps
+else
+    campo "Swap" "no hay swap activa"
+fi
+hay_z=0
+for z in /sys/block/zram*; do
+    [[ -d $z ]] || continue
+    hay_z=1
+    ds=$(leer "$z/disksize")
+    read -r orig comp _ < "$z/mm_stat" 2>/dev/null
+    if [[ ${comp:-0} -gt 0 ]]; then
+        ratio=$(awk -v o="$orig" -v c="$comp" 'BEGIN{printf "%.2f", o/c}')
+        campo "zram (${z##*/})" "disco $(mib $((ds/1024))) MiB, datos $(mib $((orig/1024))) MiB -> $(mib $((comp/1024))) MiB, compresion ${ratio}:1"
+    else
+        campo "zram (${z##*/})" "disco $(mib $((ds/1024))) MiB, sin datos comprimidos todavia"
+    fi
+done
+(( hay_z )) || campo "zram" "no activo"
+
+# ---------------- procesos ----------------
+tot=0; run=0; dor=0; zom=0
+for p in /proc/[0-9]*; do
+    read -r stat < "$p/stat" 2>/dev/null || continue
+    rest=${stat##*) }; estado=${rest%% *}
+    tot=$((tot+1))
+    case $estado in R) run=$((run+1)) ;; Z) zom=$((zom+1)) ;; *) dor=$((dor+1)) ;; esac
+done
+campo "Procesos" "$tot en total ($run ejecutandose, $dor durmiendo/esperando, $zom zombies)"
+
+# ---------------- planificador ----------------
+IFS=.- read -r maj min _ <<< "$rel"
+if (( maj > 6 || (maj == 6 && min >= 6) )); then plan="EEVDF (Earliest Eligible Virtual Deadline First)"; else plan="CFS (Completely Fair Scheduler)"; fi
+read -r pstat < /proc/self/stat
+read -ra f <<< "${pstat##*) }"          # f[0] = campo 3 de stat
+nice=${f[16]}; pol=${f[38]}              # campo 19 = nice, campo 41 = policy
+case $pol in 0) pn=SCHED_OTHER ;; 1) pn=SCHED_FIFO ;; 2) pn=SCHED_RR ;; 3) pn=SCHED_BATCH ;; 5) pn=SCHED_IDLE ;; 6) pn=SCHED_DEADLINE ;; *) pn="politica $pol" ;; esac
+campo "Planificador" "$plan"
+campo "  este proceso" "$pn, nice $nice"
+rt_run=$(leer /proc/sys/kernel/sched_rt_runtime_us); rt_per=$(leer /proc/sys/kernel/sched_rt_period_us)
+if [[ -n $rt_run ]]; then
+    if [[ $rt_run == -1 || $rt_run == "$rt_per" ]]; then lim="sin limite efectivo"; else lim="limite: $((rt_run*100/rt_per)) % del tiempo"; fi
+    campo "  tiempo real" "runtime ${rt_run} us por periodo de ${rt_per} us ($lim)"
+fi
+
+# ---------------- sistema de archivos raiz ----------------
+read -r fs src < <(awk '$5=="/" { for(i=6;i<=NF;i++) if($i=="-"){ f=$(i+1); s=$(i+2) } } END{ print f, s }' /proc/self/mountinfo)
+read -r bs total libres < <(stat -f -c '%S %b %a' / 2>/dev/null)
+if [[ -n ${bs:-} ]]; then
+    gib() { awk -v n="$1" -v b="$bs" 'BEGIN{printf "%.1f", n*b/1073741824}'; }
+    campo "Raiz (/)" "$fs en $src, $(gib $((total-libres))) GiB usados de $(gib "$total") GiB"
+else
+    campo "Raiz (/)" "$fs en $src"
+fi
