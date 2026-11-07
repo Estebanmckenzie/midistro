@@ -25,15 +25,15 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
-msg "1/4 Paquetes (pkglist.txt)"
+msg "1/5 Paquetes (pkglist.txt)"
 grep -vE '^[[:space:]]*(#|$)' "$REPO/pkglist.txt" | sudo pacman -S --needed --noconfirm -
 
-msg "2/4 Dotfiles"
+msg "2/5 Dotfiles"
 enlazar "$REPO/dotfiles/xinitrc"    "$HOME/.xinitrc"
 enlazar "$REPO/dotfiles/Xresources" "$HOME/.Xresources"
 enlazar "$REPO/dotfiles/i3/config"  "$HOME/.config/i3/config"
 
-msg "3/4 Unit files propios (systemd/)"
+msg "3/5 Unit files propios (systemd/)"
 for f in "$REPO"/systemd/*.service "$REPO"/systemd/*.timer "$REPO"/systemd/*.socket; do
     [ -e "$f" ] || continue
     sudo install -m 644 "$f" /etc/systemd/system/
@@ -41,7 +41,14 @@ for f in "$REPO"/systemd/*.service "$REPO"/systemd/*.timer "$REPO"/systemd/*.soc
 done
 sudo systemctl daemon-reload
 
-msg "4/4 Servicios"
+msg "4/5 Comandos propios (bin/ -> /usr/local/bin)"
+for f in "$REPO"/bin/*; do
+    [ -f "$f" ] && [ -x "$f" ] || continue
+    sudo ln -sfn "$f" "/usr/local/bin/$(basename "$f")"
+    echo "   /usr/local/bin/$(basename "$f") -> $f"
+done
+
+msg "5/5 Servicios"
 sudo systemctl enable --now NetworkManager systemd-timesyncd vboxservice
 sudo localectl set-x11-keymap latam
 
