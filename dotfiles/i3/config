@@ -188,3 +188,11 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
 }
+
+# ---------------------------------------------------------------
+# Atajos libres de Geiner (Capa 3). Abren una ventana flotante que no se cierra sola.
+# ---------------------------------------------------------------
+for_window [title="^midistro-"] floating enable, resize set 960 540, move position center
+bindsym $mod+Ctrl+i exec --no-startup-id xterm -T midistro-info -hold -e $HOME/midistro/bin/midistro-info
+bindsym $mod+Ctrl+m exec --no-startup-id xterm -T midistro-memtop -hold -e $HOME/midistro/bin/midistro-memtop
+bindsym $mod+Ctrl+p exec --no-startup-id xterm -T midistro-pkglog -hold -e tail -n 25 /var/log/midistro-pkg.log
