@@ -1,0 +1,207 @@
+Fecha: 2026-11-11T19:49:02-06:00
+Kernel: 7.2.15-arch1-1
+systemd: systemd 262 (262.2-1-arch)
+cgroup v2: cpuset cpu io memory hugetlb pids rdma misc dmem
+
+--- Configuracion efectiva ---
+# /etc/systemd/system/midistro-estado.service
+[Unit]
+Description=Registro periodico del estado de MiDistro
+Wants=systemd-journald.service
+After=local-fs.target systemd-journald.service
+StartLimitIntervalSec=30s
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/midistro/midistro-estado
+EnvironmentFile=-/etc/midistro/tema4.conf
+Restart=on-failure
+RestartSec=2s
+TimeoutStartSec=90s
+CPUQuota=20%
+MemoryMax=128M
+TasksMax=32
+StateDirectory=midistro
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+ReadWritePaths=/var/lib/midistro
+
+# /etc/systemd/system/midistro-estado.timer
+[Unit]
+Description=Temporizador del registro de estado de MiDistro
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Unit=midistro-estado.service
+
+[Install]
+WantedBy=timers.target
+--- Timer ---
+NEXT                        LEFT LAST                           PASSED UNIT                  ACTIVATES
+Wed 2026-11-11 19:54:30 CST 5min Wed 2026-11-11 19:22:31 CST 26min ago midistro-estado.timer midistro-estado.service
+
+1 timers listed.
+--- Ejecucion normal ---
+○ midistro-estado.service - Registro periodico del estado de MiDistro
+     Loaded: loaded (/etc/systemd/system/midistro-estado.service; static)
+     Active: inactive (dead) since Wed 2026-11-11 19:49:02 CST; 13ms ago
+ Invocation: 39ed1eb33aa54a48a8c9ce8090a628dd
+TriggeredBy: ○ midistro-estado.timer
+    Process: 7362 ExecStart=/usr/local/lib/midistro/midistro-estado (code=exited, status=0/SUCCESS)
+   Main PID: 7362 (code=exited, status=0/SUCCESS)
+   Mem peak: 5.3M
+        CPU: 41ms
+
+Nov 11 19:49:02 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:49:02 midistro midistro-estado[7362]: timestamp=2026-11-11T19:49:02-06:00 uptime_s=6562.89 processes=158 mem_available_mib=524 swap_used_mib=230 root_available_mib=18031
+Nov 11 19:49:02 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:49:02 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+ActiveState=inactive
+Result=success
+NRestarts=0
+ControlGroup=
+MemoryPeak=5623808
+CPUUsageNSec=41051000
+--- Registro persistido ---
+timestamp=2026-11-11T19:43:31-06:00 uptime_s=6231.93 processes=159 mem_available_mib=600 swap_used_mib=229 root_available_mib=18032
+timestamp=2026-11-11T19:44:30-06:00 uptime_s=6290.92 processes=160 mem_available_mib=630 swap_used_mib=229 root_available_mib=18032
+timestamp=2026-11-11T19:49:02-06:00 uptime_s=6562.89 processes=158 mem_available_mib=524 swap_used_mib=230 root_available_mib=18031
+--- Journal ---
+Nov 11 19:44:30 midistro systemd[1]: midistro-estado.service: Main process exited, code=killed, status=15/TERM
+Nov 11 19:44:30 midistro systemd[1]: midistro-estado.service: Failed with result 'timeout'.
+Nov 11 19:44:30 midistro systemd[1]: Stopped Registro periodico del estado de MiDistro.
+Nov 11 19:44:30 midistro systemd[1]: midistro-estado.service: Consumed 8.581s CPU time over 58.235s wall clock time, 5.3M memory peak.
+Nov 11 19:44:30 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:44:30 midistro midistro-estado[6777]: timestamp=2026-11-11T19:44:30-06:00 uptime_s=6290.92 processes=160 mem_available_mib=630 swap_used_mib=229 root_available_mib=18032
+Nov 11 19:44:31 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:44:31 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+Nov 11 19:49:02 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:49:02 midistro midistro-estado[7362]: timestamp=2026-11-11T19:49:02-06:00 uptime_s=6562.89 processes=158 mem_available_mib=524 swap_used_mib=230 root_available_mib=18031
+Nov 11 19:49:02 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:49:02 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+--- Prueba de CPUQuota=20% ---
+Unit midistro-estado.service (/system.slice/midistro-estado.service):
+└─7433 python3 /usr/local/lib/midistro/midistro-estado
+cpu.max: 20000 100000
+ventana_s,delta_cpu_us,porcentaje_de_un_nucleo,nr_throttled,throttled_usec,estado
+5,959535,19.1,50,3992236,activating
+5,982455,19.5,50,4099704,activating
+5,982574,19.5,50,4013793,activating
+5,968245,19.2,50,4063347,activating
+5,1006813,19.9,50,3966427,activating
+5,920000,18.2,50,4122758,activating
+Servicio finalizado antes de completar la siguiente ventana; se omite la ventana parcial.
+Maximo observado (% de un nucleo): 19.9
+Limite configurado: CPUQuota=20% (umbral de aceptacion: 30% en ventanas de 5 s).
+Resultado de cuota: PASS
+--- Prueba de reinicio tras fallo ---
+ActiveState=activating
+SubState=start
+Result=success
+NRestarts=1
+Resultado de reinicio: PASS (NRestarts=1)
+Nov 11 19:49:38 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:49:39 midistro midistro-estado[7555]: fallo provocado para verificar Restart=on-failure
+Nov 11 19:49:39 midistro systemd[1]: midistro-estado.service: Main process exited, code=exited, status=42/n/a
+Nov 11 19:49:39 midistro systemd[1]: midistro-estado.service: Failed with result 'exit-code'.
+Nov 11 19:49:39 midistro systemd[1]: Failed to start Registro periodico del estado de MiDistro.
+Nov 11 19:49:41 midistro systemd[1]: midistro-estado.service: Scheduled restart job, restart counter is at 1.
+Nov 11 19:49:41 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+--- systemd-cgls ---
+CGroup /:
+-.slice
+├─user.slice
+│ └─user-1000.slice
+│   ├─user@1000.service …
+│   │ ├─session.slice
+│   │ │ ├─dbus-broker.service
+│   │ │ │ ├─487 /usr/bin/dbus-broker-launch --scope user
+│   │ │ │ └─488 dbus-broker --log 11 --controller 10 --machine-id e448b9dbd85f4…
+│   │ │ └─at-spi-dbus-bus.service
+│   │ │   ├─489 /usr/lib/at-spi-bus-launcher
+│   │ │   ├─495 /usr/bin/dbus-broker-launch --config-file=/usr/share/defaults/a…
+│   │ │   └─496 dbus-broker --log 10 --controller 9 --machine-id e448b9dbd85f45…
+│   │ ├─app.slice
+│   │ │ ├─app-code-oss-2584.scope
+│   │ │ │ ├─2584 /usr/lib/electron42/electron /usr/lib/code/code.mjs
+│   │ │ │ ├─2671 /usr/lib/electron42/electron --type=utility --utility-sub-type…
+│   │ │ │ ├─2690 /usr/lib/electron42/electron --type=utility --utility-sub-type…
+│   │ │ │ ├─2708 /usr/lib/electron42/electron --type=utility --utility-sub-type…
+│   │ │ │ ├─2721 /usr/lib/electron42/electron --type=utility --utility-sub-type…
+│   │ │ │ ├─2727 /usr/lib/electron42/electron --type=utility --utility-sub-type…
+│   │ │ │ ├─2767 /usr/bin/bash --init-file /usr/lib/code/out/vs/workbench/contr…
+│   │ │ │ ├─2777 /usr/lib/electron42/electron /usr/lib/code/extensions/markdown…
+│   │ │ │ ├─2778 /usr/bin/bash --init-file /usr/lib/code/out/vs/workbench/contr…
+│   │ │ │ └─2861 /usr/lib/electron42/electron /usr/lib/code/node_modules.asar.u…
+│   │ │ └─app-dbus\x2d:1.4\x2dorg.a11y.atspi.Registry.slice
+│   │ │   └─dbus-:1.4-org.a11y.atspi.Registry@0.service
+│   │ │     └─521 /usr/lib/at-spi2-registryd --use-gnome-session
+│   │ └─init.scope
+│   │   ├─371 /usr/lib/systemd/systemd --user
+│   │   └─373 (sd-pam)
+│   └─session-1.scope
+│     ├─ 354 login -- ryan
+│     ├─ 380 -bash
+│     ├─ 397 /bin/sh /usr/bin/startx
+│     ├─ 417 xinit /home/ryan/.xinitrc -- /etc/X11/xinit/xserverrc :0 vt1 -keep…
+│     ├─ 418 /usr/lib/Xorg -nolisten tcp :0 vt1 -keeptty -auth /tmp/serverauth.…
+│     ├─ 432 i3
+│     ├─ 440 /usr/bin/VBoxClient --clipboard
+│     ├─ 442 /usr/bin/VBoxClient --clipboard
+│     ├─ 448 /usr/bin/VBoxClient --seamless
+│     ├─ 450 /usr/bin/VBoxClient --seamless
+│     ├─ 456 /usr/bin/VBoxClient --draganddrop
+│     ├─ 458 /usr/bin/VBoxClient --draganddrop
+│     ├─ 472 /usr/bin/VBoxClient --vmsvga-session
+│     ├─ 473 /usr/bin/VBoxClient --vmsvga-session
+│     ├─ 482 i3bar --bar_id=bar-0 --socket=/run/user/1000/i3/ipc-socket.432
+│     ├─ 484 i3status
+│     ├─2587 /usr/lib/electron42/electron --type=zygote --no-zygote-sandbox
+│     ├─2588 /usr/lib/electron42/electron --type=zygote
+│     ├─2590 /usr/lib/electron42/electron --type=zygote
+│     ├─2604 /usr/lib/electron42/chrome_crashpad_handler --monitor-self-annotat…
+│     ├─2615 /usr/lib/electron42/electron --type=gpu-process --ozone-platform=x…
+│     ├─2619 /usr/lib/electron42/electron --type=utility --utility-sub-type=net…
+│     ├─2642 /usr/lib/electron42/electron --type=renderer --crashpad-handler-pi…
+│     ├─3585 xfce4-terminal
+│     ├─3605 bash
+│     ├─7272 sudo bash scripts/tema4-evidencia.sh
+│     ├─7274 sudo bash scripts/tema4-evidencia.sh
+│     ├─7275 bash scripts/tema4-evidencia.sh
+│     ├─7286 tee /home/ryan/midistro/docs/evidencia/tema4/servicio-20261111-194…
+│     └─7582 systemd-cgls --no-pager
+├─init.scope
+│ └─1 /usr/lib/systemd/systemd --switched-root --system --deserialize=55
+└─system.slice
+  ├─systemd-udevd.service …
+  │ └─udev
+  │   └─243 /usr/lib/systemd/systemd-udevd
+  ├─dbus-broker.service
+  │ ├─301 /usr/bin/dbus-broker-launch --scope system --audit
+  │ └─302 dbus-broker --log 10 --controller 9 --machine-id e448b9dbd85f45d298af…
+  ├─polkit.service
+  │ └─618 /usr/lib/polkit-1/polkitd --no-debug --log-level=notice
+  ├─systemd-journald.service
+  │ └─203 /usr/lib/systemd/systemd-journald
+  ├─vboxservice.service
+  │ ├─328 /usr/bin/VBoxDRMClient
+  │ └─331 /usr/bin/VBoxService
+  ├─NetworkManager.service
+  │ └─303 /usr/bin/NetworkManager --no-daemon
+  ├─midistro-estado.service
+  │ └─7578 /usr/bin/env python3 /usr/local/lib/midistro/midistro-estado
+  ├─systemd-userdbd.service
+  │ ├─ 227 /usr/lib/systemd/systemd-userdbd
+  │ ├─7136 systemd-userwork: waiting...
+  │ ├─7151 systemd-userwork: waiting...
+  │ └─7208 systemd-userwork: waiting...
+  ├─systemd-timesyncd.service
+  │ └─237 /usr/lib/systemd/systemd-timesyncd
+  └─systemd-logind.service
+    └─304 /usr/lib/systemd/systemd-logind
+Evidencia guardada en: /home/ryan/midistro/docs/evidencia/tema4/servicio-20261111-194902.txt

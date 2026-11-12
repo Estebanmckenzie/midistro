@@ -1,0 +1,23 @@
+[Unit]
+Description=Registro periodico del estado de MiDistro
+Wants=systemd-journald.service
+After=local-fs.target systemd-journald.service
+StartLimitIntervalSec=30s
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/midistro/midistro-estado
+EnvironmentFile=-/etc/midistro/tema4.conf
+Restart=on-failure
+RestartSec=2s
+TimeoutStartSec=90s
+CPUQuota=20%
+MemoryMax=128M
+TasksMax=32
+StateDirectory=midistro
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+ReadWritePaths=/var/lib/midistro

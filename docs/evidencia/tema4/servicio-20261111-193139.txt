@@ -1,0 +1,124 @@
+Fecha: 2026-11-11T19:31:40-06:00
+Kernel: 7.2.15-arch1-1
+systemd: systemd 262 (262.2-1-arch)
+cgroup v2: cpuset cpu io memory hugetlb pids rdma misc dmem
+
+--- Configuracion efectiva ---
+# /etc/systemd/system/midistro-estado.service
+[Unit]
+Description=Registro periodico del estado de MiDistro
+Wants=systemd-journald.service
+After=local-fs.target systemd-journald.service
+StartLimitIntervalSec=30s
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/midistro/midistro-estado
+EnvironmentFile=-/etc/midistro/tema4.conf
+Restart=on-failure
+RestartSec=2s
+TimeoutStartSec=45s
+CPUQuota=20%
+MemoryMax=128M
+TasksMax=32
+StateDirectory=midistro
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+ReadWritePaths=/var/lib/midistro
+
+# /etc/systemd/system/midistro-estado.timer
+[Unit]
+Description=Temporizador del registro de estado de MiDistro
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Unit=midistro-estado.service
+
+[Install]
+WantedBy=timers.target
+--- Timer ---
+NEXT                        LEFT LAST                          PASSED UNIT                  ACTIVATES
+Wed 2026-11-11 19:38:29 CST 6min Wed 2026-11-11 19:22:31 CST 9min ago midistro-estado.timer midistro-estado.service
+
+1 timers listed.
+--- Ejecucion normal ---
+○ midistro-estado.service - Registro periodico del estado de MiDistro
+     Loaded: loaded (/etc/systemd/system/midistro-estado.service; static)
+     Active: inactive (dead) since Wed 2026-11-11 19:31:40 CST; 12ms ago
+ Invocation: 7b0ca6f0725a4f23815bffc4c84b2e2d
+TriggeredBy: ○ midistro-estado.timer
+    Process: 4893 ExecStart=/usr/local/lib/midistro/midistro-estado (code=exited, status=0/SUCCESS)
+   Main PID: 4893 (code=exited, status=0/SUCCESS)
+   Mem peak: 12.3M
+        CPU: 60ms
+
+Nov 11 19:31:40 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:31:40 midistro midistro-estado[4893]: timestamp=2026-11-11T19:31:40-06:00 uptime_s=5520.37 processes=163 mem_available_mib=558 swap_used_mib=224 root_available_mib=18033
+Nov 11 19:31:40 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:31:40 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+ActiveState=inactive
+Result=success
+NRestarts=0
+ControlGroup=
+MemoryPeak=12910592
+CPUUsageNSec=60880000
+--- Registro persistido ---
+timestamp=2026-11-11T19:31:40-06:00 uptime_s=5520.37 processes=163 mem_available_mib=558 swap_used_mib=224 root_available_mib=18033
+--- Journal ---
+Nov 11 19:28:29 midistro (idistro-estado)[4308]: midistro-estado.service: Failed at step EXEC spawning /usr/local/bin/midistro-estado: No such file or directory
+Nov 11 19:28:29 midistro systemd[1]: midistro-estado.service: Main process exited, code=exited, status=203/EXEC
+Nov 11 19:28:29 midistro systemd[1]: midistro-estado.service: Failed with result 'exit-code'.
+Nov 11 19:28:29 midistro systemd[1]: Failed to start Registro periodico del estado de MiDistro.
+Nov 11 19:28:31 midistro systemd[1]: midistro-estado.service: Scheduled restart job, restart counter is at 3.
+Nov 11 19:28:31 midistro systemd[1]: midistro-estado.service: Start request repeated too quickly.
+Nov 11 19:28:31 midistro systemd[1]: midistro-estado.service: Failed with result 'start-limit-hit'.
+Nov 11 19:28:31 midistro systemd[1]: Failed to start Registro periodico del estado de MiDistro.
+Nov 11 19:31:40 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:31:40 midistro midistro-estado[4893]: timestamp=2026-11-11T19:31:40-06:00 uptime_s=5520.37 processes=163 mem_available_mib=558 swap_used_mib=224 root_available_mib=18033
+Nov 11 19:31:40 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:31:40 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+--- Prueba de CPUQuota=20% ---
+Unit midistro-estado.service (/system.slice/midistro-estado.service):
+└─4963 python3 /usr/local/lib/midistro/midistro-estado
+segundos_transcurridos,uso_cpu_acumulado_us,porcentaje_de_un_nucleo
+0,31291,48.5
+1,231626,20.8
+2,447704,20.9
+3,612259,19.0
+4,829520,19.2
+5,1048124,19.6
+6,1230199,19.1
+7,1436618,19.2
+8,1651091,19.4
+9,1852747,19.4
+14,6335669,45.2
+15,6335669,42.1
+16,6335669,39.4
+17,6335669,37.0
+18,6335669,34.9
+19,6335669,33.0
+20,6335669,31.4
+21,6335669,29.8
+22,6335669,28.4
+23,6335669,27.2
+24,6335669,26.0
+25,6335669,25.0
+26,6335669,24.0
+27,6335669,23.1
+28,6335669,22.2
+29,6335669,21.5
+30,6335669,20.7
+31,6335669,20.1
+32,6335669,19.4
+33,6335669,18.8
+34,6335669,18.3
+35,6335669,17.7
+36,6335669,17.2
+Maximo observado (% de un nucleo): 48.5
+Limite configurado: CPUQuota=20% (se admite hasta 30% por granularidad de muestreo).
+FALLO: el uso observado supero la tolerancia de la cuota.

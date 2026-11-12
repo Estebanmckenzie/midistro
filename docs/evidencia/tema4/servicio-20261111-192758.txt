@@ -1,0 +1,51 @@
+Fecha: 2026-11-11T19:27:59-06:00
+Kernel: 7.2.15-arch1-1
+systemd: systemd 262 (262.2-1-arch)
+cgroup v2: cpuset cpu io memory hugetlb pids rdma misc dmem
+
+--- Configuracion efectiva ---
+# /etc/systemd/system/midistro-estado.service
+[Unit]
+Description=Registro periodico del estado de MiDistro
+Wants=systemd-journald.service
+After=local-fs.target systemd-journald.service
+StartLimitIntervalSec=30s
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/midistro-estado
+EnvironmentFile=-/etc/midistro/tema4.conf
+Restart=on-failure
+RestartSec=2s
+TimeoutStartSec=45s
+CPUQuota=20%
+MemoryMax=128M
+TasksMax=32
+StateDirectory=midistro
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+ReadWritePaths=/var/lib/midistro
+
+# /etc/systemd/system/midistro-estado.timer
+[Unit]
+Description=Temporizador del registro de estado de MiDistro
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Unit=midistro-estado.service
+
+[Install]
+WantedBy=timers.target
+--- Timer ---
+NEXT                        LEFT LAST                          PASSED UNIT                  ACTIVATES
+Wed 2026-11-11 19:33:40 CST 5min Wed 2026-11-11 19:22:31 CST 5min ago midistro-estado.timer midistro-estado.service
+
+1 timers listed.
+--- Ejecucion normal ---
+Job for midistro-estado.service failed because the control process exited with error code.
+See "systemctl status midistro-estado.service" and "journalctl -xeu midistro-estado.service" for details.

@@ -1,0 +1,11 @@
+[Unit]
+Description=Temporizador del registro de estado de MiDistro
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Unit=midistro-estado.service
+
+[Install]
+WantedBy=timers.target

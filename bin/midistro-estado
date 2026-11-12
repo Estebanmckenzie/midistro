@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Registra un resumen de salud del sistema o ejecuta modos de prueba."""
+
+import datetime
+import os
+from pathlib import Path
+import sys
+import time
+
+
+LOG_PATH = Path("/var/lib/midistro/estado.log")
+
+
+def read_meminfo():
+    values = {}
+    with open("/proc/meminfo", encoding="ascii") as meminfo:
+        for line in meminfo:
+            key, value, *_ = line.split()
+            values[key.rstrip(":")] = int(value)
+    return values
+
+
+def snapshot():
+    meminfo = read_meminfo()
+    uptime = Path("/proc/uptime").read_text(encoding="ascii").split()[0]
+    process_count = sum(path.name.isdecimal() for path in Path("/proc").iterdir())
+    stat = os.statvfs("/")
+    root_available_mib = stat.f_bavail * stat.f_frsize // (1024 * 1024)
+    timestamp = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+    return (
+        f"timestamp={timestamp} uptime_s={uptime} processes={process_count} "
+        f"mem_available_mib={meminfo['MemAvailable'] // 1024} "
+        f"swap_used_mib={(meminfo['SwapTotal'] - meminfo['SwapFree']) // 1024} "
+        f"root_available_mib={root_available_mib}"
+    )
+
+
+def cpu_load(cpu_seconds):
+    deadline = time.process_time() + cpu_seconds
+    value = 1
+    while time.process_time() < deadline:
+        value = (value * 3 + 1) % 1000000007
+    print(f"cpu-test-complete cpu_seconds={cpu_seconds} checksum={value}")
+
+
+def main():
+    mode = os.environ.get("MIDISTRO_TEMA4_MODE", "normal")
+    if mode == "normal":
+        record = snapshot()
+        LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with LOG_PATH.open("a", encoding="utf-8") as log:
+            log.write(record + "\n")
+        print(record)
+        return 0
+    if mode == "cpu":
+        cpu_seconds = int(os.environ.get("MIDISTRO_TEMA4_CPU_SECONDS", "6"))
+        if not 1 <= cpu_seconds <= 10:
+            print("MIDISTRO_TEMA4_CPU_SECONDS debe estar entre 1 y 10", file=sys.stderr)
+            return 2
+        cpu_load(cpu_seconds)
+        return 0
+    if mode == "fail":
+        print("fallo provocado para verificar Restart=on-failure", file=sys.stderr)
+        return 42
+    print(f"modo de prueba desconocido: {mode}", file=sys.stderr)
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

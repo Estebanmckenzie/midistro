@@ -1,0 +1,96 @@
+Fecha: 2026-11-11T19:37:46-06:00
+Kernel: 7.2.15-arch1-1
+systemd: systemd 262 (262.2-1-arch)
+cgroup v2: cpuset cpu io memory hugetlb pids rdma misc dmem
+
+--- Configuracion efectiva ---
+# /etc/systemd/system/midistro-estado.service
+[Unit]
+Description=Registro periodico del estado de MiDistro
+Wants=systemd-journald.service
+After=local-fs.target systemd-journald.service
+StartLimitIntervalSec=30s
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/midistro/midistro-estado
+EnvironmentFile=-/etc/midistro/tema4.conf
+Restart=on-failure
+RestartSec=2s
+TimeoutStartSec=45s
+CPUQuota=20%
+MemoryMax=128M
+TasksMax=32
+StateDirectory=midistro
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+ReadWritePaths=/var/lib/midistro
+
+# /etc/systemd/system/midistro-estado.timer
+[Unit]
+Description=Temporizador del registro de estado de MiDistro
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Unit=midistro-estado.service
+
+[Install]
+WantedBy=timers.target
+--- Timer ---
+NEXT                            LEFT LAST                           PASSED UNIT                  ACTIVATES
+Wed 2026-11-11 19:42:18 CST 4min 32s Wed 2026-11-11 19:22:31 CST 15min ago midistro-estado.timer midistro-estado.service
+
+1 timers listed.
+--- Ejecucion normal ---
+○ midistro-estado.service - Registro periodico del estado de MiDistro
+     Loaded: loaded (/etc/systemd/system/midistro-estado.service; static)
+     Active: inactive (dead) since Wed 2026-11-11 19:37:46 CST; 12ms ago
+ Invocation: 1f0bebf1a1db4985a49fcdc5eb87da18
+TriggeredBy: ○ midistro-estado.timer
+    Process: 5855 ExecStart=/usr/local/lib/midistro/midistro-estado (code=exited, status=0/SUCCESS)
+   Main PID: 5855 (code=exited, status=0/SUCCESS)
+   Mem peak: 5.6M
+        CPU: 39ms
+
+Nov 11 19:37:46 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:37:46 midistro midistro-estado[5855]: timestamp=2026-11-11T19:37:46-06:00 uptime_s=5886.54 processes=160 mem_available_mib=615 swap_used_mib=229 root_available_mib=18032
+Nov 11 19:37:46 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:37:46 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+ActiveState=inactive
+Result=success
+NRestarts=0
+ControlGroup=
+MemoryPeak=5890048
+CPUUsageNSec=39612000
+--- Registro persistido ---
+timestamp=2026-11-11T19:31:40-06:00 uptime_s=5520.37 processes=163 mem_available_mib=558 swap_used_mib=224 root_available_mib=18033
+timestamp=2026-11-11T19:32:18-06:00 uptime_s=5558.84 processes=163 mem_available_mib=635 swap_used_mib=224 root_available_mib=18033
+timestamp=2026-11-11T19:37:46-06:00 uptime_s=5886.54 processes=160 mem_available_mib=615 swap_used_mib=229 root_available_mib=18032
+--- Journal ---
+Nov 11 19:32:17 midistro midistro-estado[4963]: cpu-test-complete seconds=20 checksum=339521405
+Nov 11 19:32:17 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:32:17 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+Nov 11 19:32:17 midistro systemd[1]: midistro-estado.service: Consumed 6.341s CPU time over 37.128s wall clock time, 5.3M memory peak.
+Nov 11 19:32:18 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:32:18 midistro midistro-estado[5248]: timestamp=2026-11-11T19:32:18-06:00 uptime_s=5558.84 processes=163 mem_available_mib=635 swap_used_mib=224 root_available_mib=18033
+Nov 11 19:32:18 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:32:18 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+Nov 11 19:37:46 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 11 19:37:46 midistro midistro-estado[5855]: timestamp=2026-11-11T19:37:46-06:00 uptime_s=5886.54 processes=160 mem_available_mib=615 swap_used_mib=229 root_available_mib=18032
+Nov 11 19:37:46 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 11 19:37:46 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+--- Prueba de CPUQuota=20% ---
+Unit midistro-estado.service (/system.slice/midistro-estado.service):
+└─5926 python3 /usr/local/lib/midistro/midistro-estado
+cpu.max: 20000 100000
+ventana_s,delta_cpu_us,porcentaje_de_un_nucleo,estado
+5,999049,19.9,activating
+5,1040059,20.5,activating
+5,968513,19.2,activating
+5,999248,19.9,activating
+awk: fatal: cannot open file `/sys/fs/cgroup/system.slice/midistro-estado.service/cpu.stat' for reading: No such file or directory
