@@ -28,6 +28,7 @@ Esta bitácora declara y documenta el uso de IA según el Anexo 3 del enunciado.
 | 17 | 2026-11-06 · Geiner | Capa 3 | Comando libre midistro-memtop | No |
 | 18 | 2026-11-06 · Geiner | Capa 3 | Atajos libres de i3 y coordinación con el equipo | No |
 | 19 | 2026-11-07 · Esteban | Capa 3 / documentación | Atajos de i3, comandos propios, README, matriz e `install.sh` | **Sí (errores 16 y 17)** |
+| 20 | 2026-11-11 · Ryan | Capa 3 | Dos comandos libres y tres atajos de i3 | **Sí (error 18)** |
 
 Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las entradas de Ryan se agregan al final. Los errores de la IA se numeran de forma continua entre los integrantes (del 1 al 17).
 
@@ -261,6 +262,16 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | Validado / corregido / descartado | **Error 16 de la IA:** presentó como hecho que el comando obligatorio era el que Geiner empaquetaba con `PKGBUILD` para el Tema 6, y el enunciado dice solo «al menos uno de los comandos propios de la Capa 3»; se descubrió al leer la ficha del Tema 6, que empaqueta `midistro-zombies`, y se descartó el mensaje que se iba a mandar a Geiner con esa suposición. **Error 17:** propuso subir versiones locales de `responsabilidades.md` y de la bitácora sin comprobar si otros integrantes las habían editado; se detectó con `git log` antes de subirlas y Geiner sí había modificado ambas, por lo que se descartó la versión local y se fusionó sobre la del repositorio. Además, el atajo `Super+Ctrl+P` de Geiner fallaba en la máquina de Esteban porque `install.sh` no instalaba el hook de pacman (`/etc/pacman.d/hooks/` no existía); se agregó el paso `1/6` al script |
 | Cómo se validó | `i3 -C -c dotfiles/i3/config` sin errores, conflicto de Git resuelto sin atajos repetidos, los siete atajos probados dentro de i3, y `install.sh` corrido de nuevo con el hook instalado: se generó una transacción de pacman (`pacman -S` y `pacman -R tree`) y `Super+Ctrl+P` mostró las dos líneas del registro. Revisión de `git log` sobre los archivos compartidos antes de modificarlos |
 
-## Entradas de los demás integrantes
+### Entrada 20 · 2026-11-11 · Ryan
 
-_Pendiente: Ryan (Temas 2 y 4) agrega aquí sus entradas con el mismo formato, o declara que no usó IA en su componente._
+| Campo | Contenido |
+| --- | --- |
+| Herramienta | GitHub Copilot en VS Code |
+| Componente | Capa 3: comandos libres y atajos de i3 |
+| Propósito | Completar los dos comandos libres y los tres atajos que faltaban para Ryan |
+| Consulta resumida | Revisar los comandos y atajos existentes y añadir herramientas propias para observar PSI/paginación y límites/uso de cgroups, documentarlas e integrarlas en i3 |
+| Resultado obtenido | `bin/midistro-presion`, `bin/midistro-cgroup`, tres atajos en `dotfiles/i3/config`, documentación individual, cheatsheet y matriz actualizados |
+| Validado / corregido / descartado | **Error 18 de la IA:** la primera versión de `midistro-presion` pasaba un intervalo `None` a `max()` en la captura sin `--watch`; la ejecución real lo detectó y se corrigió usando un intervalo inicial de 1 segundo. No se hicieron cambios al bootstrap porque ya enlaza automáticamente los ejecutables de `bin/` |
+| Cómo se validó | `midistro-presion` leyó PSI y `/proc/vmstat`; `midistro-cgroup systemd-journald.service` leyó propiedades de systemd y cgroup v2; `i3 -C -c dotfiles/i3/config`, `bash -n install.sh` y `git diff --check` finalizaron sin errores |
+
+Las consultas previas de Ryan para los Temas 2 y 4 todavía deben registrarse en sus respectivas entradas.

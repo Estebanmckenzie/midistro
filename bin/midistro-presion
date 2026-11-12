@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Muestra presión CPU/memoria/E/S (PSI) y actividad de paginación."""
+
+import argparse
+from pathlib import Path
+import time
+
+
+PSI_PATH = Path("/proc/pressure")
+VMSTAT_PATH = Path("/proc/vmstat")
+
+
+def read_psi(resource):
+    values = {}
+    path = PSI_PATH / resource
+    try:
+        lines = path.read_text(encoding="ascii").splitlines()
+    except OSError:
+        return None
+    for line in lines:
+        fields = line.split()
+        if not fields:
+            continue
+        values[fields[0]] = dict(field.split("=", 1) for field in fields[1:])
+    return values
+
+
+def read_vmstat():
+    counters = {}
+    try:
+        lines = VMSTAT_PATH.read_text(encoding="ascii").splitlines()
+    except OSError:
+        return counters
+    for line in lines:
+        key, _, value = line.partition(" ")
+        if key in {"pgfault", "pgmajfault", "pswpin", "pswpout"}:
+            counters[key] = int(value)
+    return counters
+
+
+def show_snapshot(previous, elapsed):
+    print("midistro-presion | PSI y paginacion")
+    for resource in ("cpu", "memory", "io"):
+        values = read_psi(resource)
+        if values is None:
+            print(f"{resource}: PSI no disponible")
+            continue
+        for scope in ("some", "full"):
+            metrics = values.get(scope)
+            if metrics is None:
+                continue
+            print("{} {:<4} avg10={:>6}% avg60={:>6}% avg300={:>6}% total={}us".format(
+                resource, scope, metrics.get("avg10", "?"),
+                metrics.get("avg60", "?"), metrics.get("avg300", "?"),
+                metrics.get("total", "?")))
+
+    current = read_vmstat()
+    labels = {
+        "pgfault": "fallos de pagina",
+        "pgmajfault": "fallos mayores",
+        "pswpin": "paginas leidas de swap",
+        "pswpout": "paginas escritas a swap",
+    }
+    print("\nContadores de /proc/vmstat")
+    for key, label in labels.items():
+        value = current.get(key)
+        if value is None:
+            print(f"{label}: no disponible")
+            continue
+        old = previous.get(key) if previous is not None else None
+        if old is None:
+            print(f"{label}: {value} (acumulado desde el arranque)")
+        else:
+            rate = max(0, value - old) / elapsed
+            print(f"{label}: {value} (+{rate:.1f}/s)")
+    return current
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Inspecciona PSI y contadores de paginacion del kernel.")
+    parser.add_argument("-w", "--watch", type=float, metavar="SEGUNDOS",
+                        help="actualiza repetidamente con este intervalo")
+    args = parser.parse_args()
+    if args.watch is not None and args.watch <= 0:
+        parser.error("el intervalo debe ser mayor que cero")
+
+    previous = None
+    previous_time = None
+    try:
+        while True:
+            now = time.monotonic()
+            elapsed = (args.watch or 1.0) if previous_time is None else now - previous_time
+            previous = show_snapshot(previous, max(elapsed, 0.001))
+            previous_time = now
+            if args.watch is None:
+                break
+            time.sleep(max(0, args.watch - (time.monotonic() - now)))
+            print("\n")
+    except KeyboardInterrupt:
+        print("\nMonitor detenido.")
+
+
+if __name__ == "__main__":
+    main()

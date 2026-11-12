@@ -203,3 +203,11 @@ for_window [title="^midistro-"] floating enable, resize set 960 540, move positi
 bindsym $mod+Ctrl+i exec --no-startup-id xterm -T midistro-info -hold -e $HOME/midistro/bin/midistro-info
 bindsym $mod+Ctrl+m exec --no-startup-id xterm -T midistro-memtop -hold -e $HOME/midistro/bin/midistro-memtop
 bindsym $mod+Ctrl+p exec --no-startup-id xterm -T midistro-pkglog -hold -e tail -n 25 /var/log/midistro-pkg.log
+
+# --- Atajos libres de Ryan (Capa 3) ---
+# Super+Ctrl+R: presion de CPU/memoria/E/S y fallos de pagina (Tema 2)
+bindsym $mod+Ctrl+r exec --no-startup-id xterm -T midistro-presion -hold -e $HOME/midistro/bin/midistro-presion -w 2
+# Super+Ctrl+G: limites y consumo del cgroup del servicio propio (Tema 4)
+bindsym $mod+Ctrl+g exec --no-startup-id xterm -T midistro-cgroup -hold -e $HOME/midistro/bin/midistro-cgroup midistro-estado.service
+# Super+Ctrl+E: ejecutar ahora la captura systemd del estado y ver el journal
+bindsym $mod+Ctrl+e exec --no-startup-id xterm -T midistro-estado -hold -e $HOME/midistro/scripts/tema4-manual.sh

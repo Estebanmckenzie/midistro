@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+"""Inspecciona límites y uso actual de una unidad systemd en cgroup v2."""
+
+import argparse
+from pathlib import Path
+import subprocess
+import sys
+
+
+CGROUP_ROOT = Path("/sys/fs/cgroup")
+
+
+def systemd_property(unit, name):
+    result = subprocess.run(
+        ["systemctl", "show", unit, f"--property={name}", "--value"],
+        check=False, capture_output=True, text=True)
+    if result.returncode != 0:
+        message = result.stderr.strip() or f"systemctl fallo consultando {unit}"
+        raise RuntimeError(message)
+    return result.stdout.strip()
+
+
+def read_values(path):
+    values = {}
+    try:
+        for line in path.read_text(encoding="ascii").splitlines():
+            key, _, value = line.partition(" ")
+            values[key] = value
+    except OSError:
+        return {}
+    return values
+
+
+def bytes_text(value):
+    if value == "max":
+        return "sin limite"
+    try:
+        amount = int(value)
+    except ValueError:
+        return value or "no disponible"
+    return f"{amount / (1024 * 1024):.1f} MiB"
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Muestra propiedades systemd y uso cgroup v2 de una unidad.")
+    parser.add_argument("unidad", help="por ejemplo midistro-estado.service")
+    args = parser.parse_args()
+    unit = args.unidad
+
+    try:
+        state = systemd_property(unit, "ActiveState")
+        control_group = systemd_property(unit, "ControlGroup")
+        cpu_quota = systemd_property(unit, "CPUQuotaPerSecUSec")
+        memory_limit = systemd_property(unit, "MemoryMax")
+        tasks_limit = systemd_property(unit, "TasksMax")
+        result = systemd_property(unit, "Result")
+    except RuntimeError as error:
+        print(error, file=sys.stderr)
+        return 1
+
+    print(f"Unidad: {unit}")
+    print(f"Estado: {state} (resultado: {result})")
+    print(f"CPUQuota: {cpu_quota or 'no configurada'}")
+    print(f"MemoryMax: {bytes_text(memory_limit)}")
+    print(f"TasksMax: {tasks_limit or 'no configurado'}")
+    if not control_group:
+        print("Cgroup: inactivo; systemd ya retiro el cgroup de esta unidad.")
+        return 0
+
+    cgroup = CGROUP_ROOT / control_group.lstrip("/")
+    print(f"Cgroup: {control_group}")
+    cpu_max = (cgroup / "cpu.max").read_text(encoding="ascii").strip() \
+        if (cgroup / "cpu.max").is_file() else "no disponible"
+    print(f"cpu.max: {cpu_max}")
+    memory_current = (cgroup / "memory.current").read_text(encoding="ascii").strip() \
+        if (cgroup / "memory.current").is_file() else ""
+    print(f"memory.current: {bytes_text(memory_current)}")
+
+    cpu_stats = read_values(cgroup / "cpu.stat")
+    if cpu_stats:
+        print("cpu.stat: usage_usec={} nr_periods={} nr_throttled={} throttled_usec={}".format(
+            cpu_stats.get("usage_usec", "?"), cpu_stats.get("nr_periods", "?"),
+            cpu_stats.get("nr_throttled", "?"), cpu_stats.get("throttled_usec", "?")))
+    else:
+        print("cpu.stat: no disponible")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

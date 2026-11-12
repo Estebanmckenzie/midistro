@@ -38,14 +38,15 @@ Las ventanas de estos tres atajos se quedan abiertas hasta cerrarlas con `Super 
 | `Super + Ctrl + P` | Últimos 25 movimientos del registro de paquetes del hook de pacman (Tema 6) | Hook de ALPM y `/var/log/midistro-pkg.log` |
 
 Las ventanas se abren flotantes y centradas (regla `for_window` para los títulos `midistro-*`).
+Las ventanas lanzadas con `xterm -hold` permanecen abiertas para poder leer la salida; ciérralas con `Super + W`.
 
 ### Ryan Vargas
 
 | Atajo | Qué hace | Interfaz del sistema que usa |
 | --- | --- | --- |
-| _pendiente_ | _pendiente_ | _pendiente_ |
-| _pendiente_ | _pendiente_ | _pendiente_ |
-| _pendiente_ | _pendiente_ | _pendiente_ |
+| `Super + Ctrl + R` | Monitor de PSI de CPU, memoria y E/S, más tasas de fallos de página y swap (`midistro-presion`) | `/proc/pressure/*`, `/proc/vmstat` |
+| `Super + Ctrl + G` | Muestra límites y uso actual del cgroup del servicio `midistro-estado` (`midistro-cgroup`) | `systemctl show`, cgroup v2 (`cpu.max`, `cpu.stat`, `memory.current`) |
+| `Super + Ctrl + E` | Ejecuta `scripts/tema4-manual.sh`: activa el servicio de captura y muestra sus últimas entradas de journal | systemd y journal |
 
 ## Resumen por diseñador
 
@@ -53,4 +54,4 @@ Las ventanas se abren flotantes y centradas (regla `for_window` para los título
 | --- | --- | --- |
 | Esteban | 3 | Los 3 (`procesos`, firewall del Tema 9, `systemd-analyze` del Tema 7) |
 | Geiner | 3 | Los 3 (`midistro-info`, `midistro-memtop`, registro del Tema 6) |
-| Ryan | pendiente | pendiente |
+| Ryan | 3 | Los 2 comandos propios (`midistro-presion`, `midistro-cgroup`) y el servicio del Tema 4 |

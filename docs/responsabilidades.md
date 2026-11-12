@@ -38,10 +38,10 @@ Resumen por integrante: Esteban lleva 3 temas (1, 7 y 9), Ryan 2 (2 y 4) y Geine
 | Comando obligatorio (lee de `/proc` y `/sys`): `midistro-info` | Geiner | Esteban | `bin/midistro-info`, `docs/comando-midistro-info.md` | Cerrado |
 | Comandos libres de Esteban: `procesos` y `medir-arranque` | Esteban McKenzie | n/a | `bin/`, `docs/comando-procesos.md`, `docs/comando-medir-arranque.md` | Cerrado |
 | Comandos libres de Geiner: `midistro-memtop` y `midistro-zombies` | Geiner | n/a | `bin/`, `docs/comando-midistro-memtop.md`, `docs/tema-06-gestion-paquetes.md` | Cerrado |
-| Comandos libres de Ryan (2) | Ryan | n/a | `bin/` | Pendiente |
-| 3 atajos libres por integrante y los 4 obligatorios | Cada integrante | n/a | `dotfiles/i3/config` | Esteban y Geiner cerrados; Ryan pendiente |
-| Cheatsheet de atajos | Esteban McKenzie (compila los de los tres) | Ryan y Geiner | `docs/cheatsheet.md` | Falta la parte de Ryan |
-| Bitácora de uso de IA | Cada responsable registra sus consultas | n/a | `docs/bitacora_ia.md` | Esteban y Geiner cerrados; falta Ryan |
+| Comandos libres de Ryan: `midistro-presion` y `midistro-cgroup` | Ryan Vargas | n/a | `bin/midistro-presion`, `bin/midistro-cgroup`, `docs/comando-midistro-presion.md`, `docs/comando-midistro-cgroup.md` | Cerrado |
+| 3 atajos libres por integrante y los 4 obligatorios | Cada integrante | n/a | `dotfiles/i3/config` | Cerrado |
+| Cheatsheet de atajos | Esteban McKenzie (compila los de los tres) | Ryan y Geiner | `docs/cheatsheet.md` | Cerrado |
+| Bitácora de uso de IA | Cada responsable registra sus consultas | n/a | `docs/bitacora_ia.md` | Esteban y Geiner cerrados; Ryan agregó Capa 3, faltan consultas de Temas 2 y 4 |
 | README e informe final | Esteban McKenzie | Ryan y Geiner aportan sus secciones | `README.md`, informe en PDF | README listo; informe pendiente |
 
 ## Acuerdos de trabajo
