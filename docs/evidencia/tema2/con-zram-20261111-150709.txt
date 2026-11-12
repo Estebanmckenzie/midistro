@@ -1,0 +1,896 @@
+Modo: con-zram
+Inicio: 2026-11-11T15:07:09-06:00
+Duracion: 45 s
+Carga solicitada: 90%
+Kernel: 7.2.15-arch1-1
+
+--- Estado inicial ---
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1482.9 / 1915.5 MiB | disponible: 432.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+942     python3                        -          -       2567         10
+933     bash                           -          -        409          0
+856     bash                           -          -       1374          3
+788     electron                       -          -      53005         51
+735     electron                       -          -      11472          7
+711     bash                           -          -        715          0
+691     electron                       -          -      23117          1
+648     electron                       -          -      12702          2
+644     electron                       -          -      93239          0
+635     electron                       -          -     239790          4
+
+--- /proc/vmstat inicial ---
+pswpin 0
+pswpout 0
+pgfault 1313464
+pgmajfault 706
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1474.9 / 1915.5 MiB | disponible: 440.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+946     tee                            -          -        120          1
+945     stress-ng                      -          -        157         12
+944     python3                        -          -       2597          0
+933     bash                           -          -        512          0
+856     bash                           -          -       1374          3
+788     electron                       -          -      53005         51
+735     electron                       -          -      11472          7
+711     bash                           -          -        715          0
+691     electron                       -          -      23117          1
+648     electron                       -          -      12702          2
+stress-ng: info:  [945] setting to a 45 secs run per stressor
+stress-ng: info:  [945] dispatching hogs: 1 vm
+stress-ng: info:  [945] note: system has only 3072 MB of free memory and swap, recommend using --oom-avoid
+stress-ng: info:  [947] vm: using 60.05MB per stressor instance (total 60.05MB of 66.24MB available memory)
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1542.0 / 1915.5 MiB | disponible: 373.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+945     stress-ng                  521.4        3.0        680         15
+603     electron                  3499.3        1.0     541799         30
+204     systemd-journal             35.9        1.0       3196          5
+691     electron                   570.3        0.0      23689          1
+542     electron                   391.8        0.0      13979         10
+788     electron                   376.8        0.0      53383         51
+648     electron                    56.8        0.0      12759          2
+509     code-oss                    46.9        0.0      81512         66
+635     electron                    23.9        0.0     239814          4
+423     Xorg                        16.0        0.0      20933         82
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1551.0 / 1915.5 MiB | disponible: 364.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2707.1        0.0     544507         30
+691     electron                    66.0        0.0      23755          1
+648     electron                    23.0        0.0      12782          2
+944     python3                      5.0        0.0       2614          0
+635     electron                     4.0        0.0     239818          4
+509     code-oss                     3.0        0.0      81515         66
+542     electron                     2.0        0.0      13981         10
+948     stress-ng-vm                 0.0        0.0      11332          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1535.0 / 1915.5 MiB | disponible: 380.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3168.4        0.0     547677         30
+948     stress-ng-vm               489.7        0.0      11822          0
+648     electron                    18.0        0.0      12800          2
+635     electron                    12.0        0.0     239830          4
+509     code-oss                     5.0        0.0      81520         66
+691     electron                     1.0        0.0      23756          1
+615     electron                     1.0        0.0      36920          4
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1544.9 / 1915.5 MiB | disponible: 370.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+542     electron                    63.6        1.0      14046         11
+603     electron                  3635.8        0.0     551390         30
+635     electron                  1132.0        0.0     240986          4
+948     stress-ng-vm               407.4        0.0      12238          0
+648     electron                    69.5        0.0      12871          2
+509     code-oss                    15.7        0.0      81536         66
+546     electron                     2.0        0.0       4907          5
+944     python3                      1.0        0.0       2615          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1537.6 / 1915.5 MiB | disponible: 377.8 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3217.5        0.0     554615         30
+635     electron                   359.2        0.0     241346          4
+691     electron                   111.7        0.0      23868          1
+542     electron                    59.9        0.0      14106         11
+509     code-oss                    34.9        0.0      81571         66
+648     electron                    19.0        0.0      12890          2
+615     electron                    11.0        0.0      36931          4
+644     electron                     4.0        0.0      93247          0
+948     stress-ng-vm                 0.0        0.0      12238          0
+947     stress-ng-vm                 0.0        0.0         63          0
+stress-ng: info:  [948] vm: x86 movdiri instruction not supported, dropping back to plain 64 bit writes
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1538.1 / 1915.5 MiB | disponible: 377.3 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3194.9        0.0     557816         30
+691     electron                   785.5        0.0      24655          1
+635     electron                    73.9        0.0     241420          4
+648     electron                    63.9        0.0      12954          2
+509     code-oss                    19.0        0.0      81590         66
+948     stress-ng-vm                 2.0        0.0      12240          0
+991     sleep                          -          -        100          0
+982     cpuUsage.sh                    -          -        634          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1543.2 / 1915.5 MiB | disponible: 372.3 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  6112.6        0.0     563937         30
+509     code-oss                   157.8        0.0      81748         66
+648     electron                    18.0        0.0      12972          2
+691     electron                     7.0        0.0      24662          1
+635     electron                     2.0        0.0     241422          4
+944     python3                      1.0        0.0       2616          0
+615     electron                     1.0        0.0      36932          4
+948     stress-ng-vm                 0.0        0.0      12240          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1524.1 / 1915.5 MiB | disponible: 391.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2516.4        0.0     566462         30
+644     electron                   256.1        0.0      93504          0
+542     electron                    57.8        0.0      14164         11
+648     electron                    17.9        0.0      12990          2
+635     electron                     5.0        0.0     241427          4
+546     electron                     2.0        0.0       4909          5
+948     stress-ng-vm                 0.0        0.0      12240          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1509.5 / 1915.5 MiB | disponible: 405.9 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  4410.2        0.0     570884         30
+635     electron                  1621.7        0.0     243053          4
+948     stress-ng-vm               389.0        0.0      12630          0
+648     electron                    92.8        0.0      13083          2
+542     electron                    43.9        0.0      14208         11
+691     electron                     3.0        0.0      24665          1
+509     code-oss                     1.0        0.0      81749         66
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1509.7 / 1915.5 MiB | disponible: 405.8 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3321.8        0.0     574207         30
+635     electron                   246.9        0.0     243300          4
+691     electron                   138.9        0.0      24804          1
+648     electron                    37.0        0.0      13120          2
+509     code-oss                    31.0        0.0      81780         66
+615     electron                    11.0        0.0      36943          4
+944     python3                      1.0        0.0       2617          0
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1440.9 / 1915.5 MiB | disponible: 474.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2345.8        0.0     576556         30
+691     electron                   552.3        0.0      25357          1
+635     electron                   516.3        0.0     243817          4
+648     electron                    18.0        0.0      13138          2
+509     code-oss                     4.0        0.0      81784         66
+542     electron                     3.0        0.0      14211         11
+615     electron                     1.0        0.0      36944          4
+423     Xorg                         1.0        0.0      20934         82
+1022    sleep                          -          -         97          0
+1013    cpuUsage.sh                    -          -        636          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1442.9 / 1915.5 MiB | disponible: 472.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2355.9        0.0     578921         30
+542     electron                    98.6        0.0      14310         11
+635     electron                    47.8        0.0     243865          4
+648     electron                    17.9        0.0      13156          2
+691     electron                     8.0        0.0      25365          1
+546     electron                     3.0        0.0       4912          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1444.8 / 1915.5 MiB | disponible: 470.7 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3066.4        0.0     581990         30
+635     electron                   135.9        0.0     244001          4
+691     electron                    66.9        0.0      25432          1
+648     electron                    21.0        0.0      13177          2
+335     VBoxService                  1.0        0.0        148          1
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1450.6 / 1915.5 MiB | disponible: 464.9 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3548.7        0.0     585539         30
+635     electron                  1487.9        0.0     245489          4
+648     electron                    99.0        0.0      13276          2
+691     electron                    28.0        0.0      25460          1
+542     electron                     5.0        0.0      14315         11
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1452.0 / 1915.5 MiB | disponible: 463.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2750.3        0.0     588290         30
+691     electron                    43.0        0.0      25503          1
+509     code-oss                    40.0        0.0      81824         66
+635     electron                    28.0        0.0     245517          4
+648     electron                    17.0        0.0      13293          2
+542     electron                    17.0        0.0      14332         11
+615     electron                    13.0        0.0      36957          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1453.4 / 1915.5 MiB | disponible: 462.1 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2905.5        0.0     591218         30
+542     electron                    86.3        0.0      14419         11
+648     electron                    18.9        0.0      13312          2
+635     electron                    10.9        0.0     245528          4
+546     electron                     2.0        0.0       4914          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1441.0 / 1915.5 MiB | disponible: 474.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  4125.4        0.0     595360         30
+635     electron                   175.3        0.0     245704          4
+644     electron                    20.9        0.0      93525          0
+648     electron                    19.9        0.0      13332          2
+542     electron                    12.9        0.0      14432         11
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1442.0 / 1915.5 MiB | disponible: 473.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3273.7        0.0     598638         30
+648     electron                    38.9        0.0      13371          2
+635     electron                    13.0        0.0     245717          4
+691     electron                     6.0        0.0      25509          1
+542     electron                     1.0        0.0      14433         11
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1444.1 / 1915.5 MiB | disponible: 471.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3577.2        0.0     602219         30
+635     electron                  1343.6        0.0     247062          4
+648     electron                    67.9        0.0      13439          2
+691     electron                     8.0        0.0      25517          1
+509     code-oss                     6.0        0.0      81830         66
+615     electron                     3.0        0.0      36960          4
+546     electron                     3.0        0.0       4917          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1443.4 / 1915.5 MiB | disponible: 472.1 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2658.6        0.0     604882         30
+542     electron                   100.8        0.0      14534         11
+615     electron                    39.9        0.0      37000          4
+509     code-oss                    35.9        0.0      81866         66
+691     electron                    33.9        0.0      25551          1
+635     electron                    25.0        0.0     247087          4
+648     electron                    18.0        0.0      13457          2
+546     electron                     1.0        0.0       4918          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1443.1 / 1915.5 MiB | disponible: 472.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2248.7        0.0     607137         30
+635     electron                    98.7        0.0     247186          4
+648     electron                    19.9        0.0      13477          2
+644     electron                    19.9        0.0      93545          0
+546     electron                     3.0        0.0       4921          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1442.6 / 1915.5 MiB | disponible: 472.9 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3019.3        0.0     610158         30
+648     electron                    50.0        0.0      13527          2
+542     electron                    15.0        0.0      14549         11
+635     electron                    13.0        0.0     247199          4
+691     electron                     7.0        0.0      25558          1
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1442.8 / 1915.5 MiB | disponible: 472.7 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3068.7        0.0     613228         30
+648     electron                    18.0        0.0      13545          2
+509     code-oss                     6.0        0.0      81872         66
+615     electron                     3.0        0.0      37003          4
+635     electron                     2.0        0.0     247201          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1446.2 / 1915.5 MiB | disponible: 469.3 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3045.0        0.0     616287         30
+635     electron                  1193.5        0.0     248400          4
+648     electron                    66.7        0.0      13612          2
+542     electron                    38.8        0.0      14588         11
+546     electron                     1.0        0.0       4922          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1429.9 / 1915.5 MiB | disponible: 485.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  4414.2        0.0     620705         30
+635     electron                   138.9        0.0     248539          4
+542     electron                    45.0        0.0      14633         11
+691     electron                    35.0        0.0      25593          1
+509     code-oss                    35.0        0.0      81907         66
+644     electron                    20.0        0.0      93565          0
+648     electron                    18.0        0.0      13630          2
+615     electron                    10.0        0.0      37013          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1429.8 / 1915.5 MiB | disponible: 485.7 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2743.7        0.0     623451         30
+648     electron                    37.0        0.0      13667          2
+635     electron                    17.0        0.0     248556          4
+691     electron                    12.0        0.0      25605          1
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1432.0 / 1915.5 MiB | disponible: 483.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3344.1        0.0     626801         30
+648     electron                    18.0        0.0      13685          2
+635     electron                    16.0        0.0     248572          4
+509     code-oss                     6.0        0.0      81913         66
+542     electron                     3.0        0.0      14636         11
+691     electron                     1.0        0.0      25606          1
+615     electron                     1.0        0.0      37014          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1436.4 / 1915.5 MiB | disponible: 479.0 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2732.8        0.0     629538         30
+648     electron                    50.9        0.0      13736          2
+542     electron                    45.9        0.0      14682         11
+635     electron                     6.0        0.0     248578          4
+546     electron                     2.0        0.0       4924          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1439.6 / 1915.5 MiB | disponible: 475.9 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  4089.5        0.0     633669         30
+635     electron                  1375.1        0.0     249967          4
+648     electron                    88.1        0.0      13825          2
+542     electron                    44.5        0.0      14727         11
+644     electron                    19.8        0.0      93585          0
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1440.5 / 1915.5 MiB | disponible: 475.0 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2786.3        0.0     636457         30
+691     electron                    44.0        0.0      25650          1
+509     code-oss                    36.0        0.0      81949         66
+635     electron                    26.0        0.0     249993          4
+648     electron                    20.0        0.0      13845          2
+615     electron                    11.0        0.0      37025          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1442.4 / 1915.5 MiB | disponible: 473.1 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2942.2        0.0     639407         30
+648     electron                    18.0        0.0      13863          2
+635     electron                    14.0        0.0     250007          4
+509     code-oss                     6.0        0.0      81955         66
+615     electron                     1.0        0.0      37026          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1425.7 / 1915.5 MiB | disponible: 489.8 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3256.9        0.0     642670         30
+542     electron                   116.8        0.0      14844         11
+648     electron                    18.0        0.0      13881          2
+635     electron                     4.0        0.0     250011          4
+546     electron                     2.0        0.0       4926          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1426.1 / 1915.5 MiB | disponible: 489.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2987.4        0.0     645667         30
+635     electron                    88.7        0.0     250100          4
+648     electron                    19.9        0.0      13901          2
+644     electron                    19.9        0.0      93605          0
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1429.1 / 1915.5 MiB | disponible: 486.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3518.5        0.0     649187         30
+635     electron                  1100.5        0.0     251201          4
+648     electron                   124.9        0.0      14026          2
+691     electron                     9.0        0.0      25659          1
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1432.2 / 1915.5 MiB | disponible: 483.3 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2532.2        0.0     651722         30
+509     code-oss                    56.9        0.0      82012         66
+691     electron                    35.0        0.0      25694          1
+635     electron                    32.0        0.0     251233          4
+648     electron                    18.0        0.0      14044          2
+615     electron                    12.0        0.0      37038          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1433.9 / 1915.5 MiB | disponible: 481.6 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2782.5        0.0     654514         30
+542     electron                   115.6        0.0      14960         11
+635     electron                    22.9        0.0     251256          4
+648     electron                    17.9        0.0      14062          2
+546     electron                     2.0        0.0       4928          5
+509     code-oss                     2.0        0.0      82014         66
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1437.0 / 1915.5 MiB | disponible: 478.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2758.2        0.0     657278         30
+635     electron                    83.8        0.0     251340          4
+648     electron                    43.9        0.0      14106          2
+644     electron                    20.0        0.0      93625          0
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1443.1 / 1915.5 MiB | disponible: 472.4 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2635.0        0.0     659930         30
+648     electron                    36.8        0.0      14143          2
+635     electron                    23.8        0.0     251364          4
+691     electron                     8.9        0.0      25703          1
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2617          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1449.8 / 1915.5 MiB | disponible: 465.7 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3055.3        0.0     662986         30
+635     electron                  1049.7        0.0     252414          4
+648     electron                   125.0        0.0      14268          2
+509     code-oss                     4.0        0.0      82018         66
+615     electron                     3.0        0.0      37041          4
+944     python3                      1.0        0.0       2618          0
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1437.0 / 1915.5 MiB | disponible: 478.5 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3793.1        0.0     666787         30
+542     electron                   105.8        0.0      15066         11
+691     electron                    34.9        0.0      25738          1
+509     code-oss                    34.9        0.0      82053         66
+648     electron                    28.9        0.0      14297          2
+635     electron                    27.9        0.0     252442          4
+615     electron                    11.0        0.0      37052          4
+546     electron                     2.0        0.0       4930          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1437.5 / 1915.5 MiB | disponible: 478.0 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2994.7        0.0     669801         30
+635     electron                   168.9        0.0     252612          4
+644     electron                    19.9        0.0      93645          0
+648     electron                    16.9        0.0      14314          2
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2618          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1438.6 / 1915.5 MiB | disponible: 476.9 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  3053.9        0.0     672879         30
+648     electron                    83.3        0.0      14398          2
+635     electron                    18.9        0.0     252631          4
+691     electron                     8.9        0.0      25747          1
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2618          0
+933     bash                         0.0        0.0        512          0
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1440.3 / 1915.5 MiB | disponible: 475.2 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2671.7        0.0     675554         30
+648     electron                    17.0        0.0      14415          2
+542     electron                    15.0        0.0      15081         11
+635     electron                    10.0        0.0     252641          4
+509     code-oss                     5.0        0.0      82058         66
+615     electron                     1.0        0.0      37053          4
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1438.4 / 1915.5 MiB | disponible: 477.0 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+603     electron                  2974.3        0.0     678530         30
+635     electron                  1305.3        0.0     253947          4
+542     electron                    71.0        0.0      15152         11
+648     electron                    58.0        0.0      14473          2
+546     electron                     2.0        0.0       4932          5
+948     stress-ng-vm                 0.0        0.0      12630          0
+947     stress-ng-vm                 0.0        0.0         63          0
+946     tee                          0.0        0.0        120          1
+945     stress-ng                    0.0        0.0        680         15
+944     python3                      0.0        0.0       2618          0
+stress-ng: metrc: [945] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: metrc: [945]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: metrc: [945] vm              2743784     45.03     42.40      0.28     60936.42       64275.70
+stress-ng: info:  [945] skipped: 0
+stress-ng: info:  [945] passed: 1: vm (1)
+stress-ng: info:  [945] failed: 0
+stress-ng: info:  [945] metrics untrustworthy: 0
+stress-ng: info:  [945] successful run completed in 45.03 secs
+
+Fin: 2026-11-11T15:07:55-06:00
+Codigo de salida de stress-ng: 0
+
+--- Estado final ---
+midistro-memoria | memoria en vivo desde /proc y /sys
+RAM usada: 1372.5 / 1915.5 MiB | disponible: 543.0 MiB
+Swap: 0.0 / 3005.5 MiB usados
+  /swapfile: 0.0 / 2048.0 MiB | prioridad 10
+  /dev/zram0: 0.0 / 957.5 MiB | prioridad 100
+zram0: tamano 957.5 MiB | datos 0.0 -> 0.0 MiB | compresion 64.00:1 (98.4% ahorrado)
+
+PID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT
+1069    python3                        -          -       2560          4
+1067    tee                            -          -        124          0
+1066    bash                           -          -        111          0
+933     bash                           -          -        598          0
+856     bash                           -          -       1374          3
+788     electron                       -          -      53383         51
+735     electron                       -          -      11472          7
+711     bash                           -          -        715          0
+691     electron                       -          -      25904          1
+648     electron                       -          -      14527          2
+
+--- /proc/vmstat final ---
+pswpin 0
+pswpout 0
+pgfault 1524603
+pgmajfault 752
+
+--- vmstat posterior ---
+procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu
+ 6  0      0 250116   7544 552568    0    0  5923   211 4028    7 13 15 71  1  0  0
+ 5  0      0 247096   7764 552836    0    0   192   124 4787 2290 11 15 74  0  0  0
+ 2  0      0 270496   7788 552836    0    0     0   116 5959 2241 13 19 68  0  0  0
+ 0  0      0 271792   7812 556804    0    0  3968   100 4063 1835  9 14 76  1  0  0
+ 4  0      0 265504   7836 556804    0    0     0   100 4271 2158  9 15 75  0  0  0
+
+--- zramctl ---
+NAME       ALGORITHM DISKSIZE DATA COMPR TOTAL STREAMS MOUNTPOINT
+/dev/zram0 zstd        957.5M   4K   64B   20K         [SWAP]

@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""Monitor de memoria y fallos de pagina leyendo las interfaces de /proc y /sys."""
+
+import argparse
+import glob
+import os
+import time
+
+
+def read_meminfo():
+    values = {}
+    with open("/proc/meminfo", encoding="ascii") as meminfo:
+        for line in meminfo:
+            key, value, *_ = line.split()
+            values[key.rstrip(":")] = int(value)
+    return values
+
+
+def read_swaps():
+    swaps = []
+    with open("/proc/swaps", encoding="ascii") as swapfile:
+        next(swapfile, None)
+        for line in swapfile:
+            fields = line.split()
+            if len(fields) >= 5:
+                swaps.append((fields[0], int(fields[2]), int(fields[3]), int(fields[4])))
+    return swaps
+
+
+def read_zram():
+    devices = []
+    for stats_path in glob.glob("/sys/block/zram*/mm_stat"):
+        device_path = os.path.dirname(stats_path)
+        try:
+            with open(stats_path, encoding="ascii") as stats_file:
+                stats = [int(value) for value in stats_file.read().split()]
+            with open(os.path.join(device_path, "disksize"), encoding="ascii") as size_file:
+                disk_size = int(size_file.read().strip())
+        except (OSError, ValueError):
+            continue
+        original = stats[0] if stats else 0
+        compressed = stats[1] if len(stats) > 1 else 0
+        devices.append((os.path.basename(device_path), disk_size, original, compressed))
+    return devices
+
+
+def read_processes():
+    processes = {}
+    for stat_path in glob.glob("/proc/[0-9]*/stat"):
+        try:
+            with open(stat_path, encoding="utf-8", errors="replace") as stat_file:
+                stat = stat_file.read().strip()
+            closing_paren = stat.rfind(")")
+            pid = int(stat[:stat.find(" ")])
+            name = stat[stat.find("(") + 1:closing_paren]
+            fields = stat[closing_paren + 2:].split()
+            minor_faults = int(fields[7])
+            major_faults = int(fields[9])
+            start_time = int(fields[19])
+        except (OSError, ValueError, IndexError):
+            continue
+        processes[pid] = (name, start_time, minor_faults, major_faults)
+    return processes
+
+
+def mib(byte_count):
+    return byte_count / (1024 * 1024)
+
+
+def snapshot(previous, elapsed, limit, clear):
+    memory = read_meminfo()
+    swaps = read_swaps()
+    zram_devices = read_zram()
+    current = read_processes()
+
+    if clear:
+        print("\033[H\033[2J", end="")
+    available = memory.get("MemAvailable", 0) * 1024
+    total = memory.get("MemTotal", 0) * 1024
+    print("midistro-memoria | memoria en vivo desde /proc y /sys")
+    print("RAM usada: {:.1f} / {:.1f} MiB | disponible: {:.1f} MiB".format(
+        mib(total - available), mib(total), mib(available)))
+
+    swap_total = memory.get("SwapTotal", 0) * 1024
+    swap_free = memory.get("SwapFree", 0) * 1024
+    print("Swap: {:.1f} / {:.1f} MiB usados".format(mib(swap_total - swap_free), mib(swap_total)))
+    if swaps:
+        for name, size, used, priority in swaps:
+            print("  {}: {:.1f} / {:.1f} MiB | prioridad {}".format(
+                name, mib(used * 1024), mib(size * 1024), priority))
+    else:
+        print("  No hay dispositivos swap activos")
+
+    if zram_devices:
+        for name, size, original, compressed in zram_devices:
+            meaningful_data = original >= 1024 * 1024 and compressed > 0
+            ratio = "{:.2f}:1".format(original / compressed) if meaningful_data else "datos insuficientes"
+            savings = (1 - compressed / original) * 100 if meaningful_data else 0
+            print("{}: tamano {:.1f} MiB | datos {:.1f} -> {:.1f} MiB | "
+                  "compresion {}{}".format(
+                      name, mib(size), mib(original), mib(compressed), ratio,
+                      " ({:.1f}% ahorrado)".format(savings) if meaningful_data else ""))
+    else:
+        print("zram: no activa")
+
+    print("\nPID     PROCESO                 MINFLT/s   MAJFLT/s     MINFLT     MAJFLT")
+    ranked = []
+    for pid, (name, start_time, minor, major) in current.items():
+        old = previous.get(pid)
+        if old is not None and old[1] == start_time:
+            minor_rate = max(0, minor - old[2]) / elapsed
+            major_rate = max(0, major - old[3]) / elapsed
+        else:
+            minor_rate = None
+            major_rate = None
+        ranked.append((major_rate or 0, minor_rate or 0, pid, name,
+                       minor_rate, major_rate, minor, major))
+
+    for _, _, pid, name, minor_rate, major_rate, minor, major in sorted(
+            ranked, reverse=True)[:limit]:
+        minor_text = "-" if minor_rate is None else "{:.1f}".format(minor_rate)
+        major_text = "-" if major_rate is None else "{:.1f}".format(major_rate)
+        print("{:<7} {:<22.22} {:>9} {:>10} {:>10} {:>10}".format(
+            pid, name, minor_text, major_text, minor, major))
+    return current
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Muestra RAM, swap, compresion zram y fallos de pagina por proceso.")
+    parser.add_argument("-i", "--intervalo", type=float, default=1.0,
+                        help="intervalo entre lecturas en segundos (por defecto: 1)")
+    parser.add_argument("-n", "--top", type=int, default=10,
+                        help="procesos con mas fallos que se muestran (por defecto: 10)")
+    parser.add_argument("--once", action="store_true", help="imprime una lectura y termina")
+    args = parser.parse_args()
+    if args.intervalo <= 0 or args.top <= 0:
+        parser.error("el intervalo y el numero de procesos deben ser positivos")
+
+    previous = {}
+    previous_time = None
+    try:
+        while True:
+            started = time.monotonic()
+            elapsed = args.intervalo if previous_time is None else started - previous_time
+            previous = snapshot(previous, max(elapsed, 0.001), args.top, os.isatty(1))
+            previous_time = started
+            if args.once:
+                break
+            time.sleep(max(0, args.intervalo - (time.monotonic() - started)))
+    except KeyboardInterrupt:
+        print("\nMonitor detenido.")
+
+
+if __name__ == "__main__":
+    main()

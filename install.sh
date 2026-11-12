@@ -27,22 +27,28 @@ fi
 
 # El hook va ANTES de instalar paquetes: asi la primera transaccion de pacman
 # ya lo dispara y crea /var/log/midistro-pkg.log (Tema 6).
-msg "1/6 Hook de pacman propio (pacman/)"
+msg "1/7 Hook de pacman propio (pacman/)"
 sudo install -d /etc/pacman.d/hooks /var/lib/midistro
 sudo install -m 644 "$REPO/pacman/midistro-pkglog.hook" /etc/pacman.d/hooks/90-midistro-pkglog.hook
 sudo install -m 755 "$REPO/pacman/midistro-pkglog" /usr/local/bin/midistro-pkglog
 echo "   /etc/pacman.d/hooks/90-midistro-pkglog.hook"
 echo "   /usr/local/bin/midistro-pkglog"
 
-msg "2/6 Paquetes (pkglist.txt)"
+msg "2/7 Paquetes (pkglist.txt)"
 grep -vE '^[[:space:]]*(#|$)' "$REPO/pkglist.txt" | sudo pacman -S --needed --noconfirm -
 
-msg "3/6 Dotfiles"
+msg "3/7 Dotfiles"
 enlazar "$REPO/dotfiles/xinitrc"    "$HOME/.xinitrc"
 enlazar "$REPO/dotfiles/Xresources" "$HOME/.Xresources"
 enlazar "$REPO/dotfiles/i3/config"  "$HOME/.config/i3/config"
 
-msg "4/6 Unit files propios (systemd/)"
+msg "4/7 Memoria: swap y zram (Tema 2)"
+sudo install -m 644 "$REPO/systemd/zram-generator.conf" /etc/systemd/zram-generator.conf
+sudo bash "$REPO/scripts/configurar-swap.sh"
+sudo systemctl daemon-reload
+sudo systemctl start dev-zram0.swap
+
+msg "5/7 Unit files propios (systemd/)"
 for f in "$REPO"/systemd/*.service "$REPO"/systemd/*.timer "$REPO"/systemd/*.socket; do
     [ -e "$f" ] || continue
     sudo install -m 644 "$f" /etc/systemd/system/
@@ -50,14 +56,14 @@ for f in "$REPO"/systemd/*.service "$REPO"/systemd/*.timer "$REPO"/systemd/*.soc
 done
 sudo systemctl daemon-reload
 
-msg "5/6 Comandos propios (bin/ -> /usr/local/bin)"
+msg "6/7 Comandos propios (bin/ -> /usr/local/bin)"
 for f in "$REPO"/bin/*; do
     [ -f "$f" ] && [ -x "$f" ] || continue
     sudo ln -sfn "$f" "/usr/local/bin/$(basename "$f")"
     echo "   /usr/local/bin/$(basename "$f") -> $f"
 done
 
-msg "6/6 Servicios"
+msg "7/7 Servicios"
 sudo systemctl enable --now NetworkManager systemd-timesyncd vboxservice
 sudo localectl set-x11-keymap latam
 

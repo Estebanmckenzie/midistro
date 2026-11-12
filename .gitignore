@@ -3,3 +3,4 @@ docs/evidencia/*/*.tmp
 pacman/pkg-zombies/src/
 pacman/pkg-zombies/pkg/
 *.pkg.tar.zst
+indicaciones_distro.md

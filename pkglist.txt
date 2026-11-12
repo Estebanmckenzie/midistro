@@ -21,3 +21,7 @@ mesa
 virtualbox-guest-utils
 
 python
+zram-generator
+stress-ng
+btrfs-progs
+procps-ng
