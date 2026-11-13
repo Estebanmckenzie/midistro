@@ -1,0 +1,88 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 520' width='900' height='520' role='img' aria-label='Arquitectura de midistro: cadena de arranque y tres capas'>
+<rect width='900' height='520' fill='#ffffff'/>
+<defs><marker id='a' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto'><path d='M0,0 L10,5 L0,10 z' fill='#52606d'/></marker></defs>
+<text x='450' y='24' font-family='Helvetica, Arial, sans-serif' font-size='14' font-weight='bold' fill='#1f2933' text-anchor='middle'>Cadena de arranque de midistro</text>
+<rect x='22' y='36' width='128' height='52' rx='8' fill='#f1f5f9' stroke='#9aa5b1' stroke-width='1.5'/>
+<text x='86.0' y='67.0' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='middle'>Firmware UEFI</text>
+<line x1='152' y1='62.0' x2='168' y2='62.0' stroke='#52606d' stroke-width='1.6' marker-end='url(#a)'/>
+<rect x='170' y='36' width='128' height='52' rx='8' fill='#f1f5f9' stroke='#9aa5b1' stroke-width='1.5'/>
+<text x='234.0' y='58' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='middle'>systemd-boot</text>
+<text x='234.0' y='74' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#52606d' text-anchor='middle'>(ESP en /boot)</text>
+<line x1='300' y1='62.0' x2='316' y2='62.0' stroke='#52606d' stroke-width='1.6' marker-end='url(#a)'/>
+<rect x='318' y='36' width='128' height='52' rx='8' fill='#f1f5f9' stroke='#9aa5b1' stroke-width='1.5'/>
+<text x='382.0' y='58' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='middle'>Kernel Linux</text>
+<text x='382.0' y='74' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#52606d' text-anchor='middle'>(planificador EEVDF)</text>
+<line x1='448' y1='62.0' x2='464' y2='62.0' stroke='#52606d' stroke-width='1.6' marker-end='url(#a)'/>
+<rect x='466' y='36' width='128' height='52' rx='8' fill='#f1f5f9' stroke='#9aa5b1' stroke-width='1.5'/>
+<text x='530.0' y='58' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='middle'>initramfs</text>
+<text x='530.0' y='74' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#52606d' text-anchor='middle'>(mkinitcpio)</text>
+<line x1='596' y1='62.0' x2='612' y2='62.0' stroke='#52606d' stroke-width='1.6' marker-end='url(#a)'/>
+<rect x='614' y='36' width='128' height='52' rx='8' fill='#f1f5f9' stroke='#9aa5b1' stroke-width='1.5'/>
+<text x='678.0' y='58' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='middle'>systemd</text>
+<text x='678.0' y='74' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#52606d' text-anchor='middle'>(PID 1)</text>
+<line x1='744' y1='62.0' x2='760' y2='62.0' stroke='#52606d' stroke-width='1.6' marker-end='url(#a)'/>
+<rect x='762' y='36' width='128' height='52' rx='8' fill='#f1f5f9' stroke='#9aa5b1' stroke-width='1.5'/>
+<text x='826.0' y='67.0' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='middle'>i3 (startx)</text>
+<rect x='22' y='120' width='856' height='92' rx='8' fill='#faf5ff' stroke='#7e22ce' stroke-width='1.5'/>
+<text x='40' y='144' font-family='Helvetica, Arial, sans-serif' font-size='14' font-weight='bold' fill='#6b21a8' text-anchor='start'>Capa 3 · Comandos y atajos propios</text>
+<rect x='40' y='160' width='111.60000000000001' height='32' rx='6' fill='#dcfce7' stroke='#15803d' stroke-width='1.5'/>
+<text x='95.80000000000001' y='181' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>midistro-info</text>
+<rect x='161.60000000000002' y='160' width='126.0' height='32' rx='6' fill='#dcfce7' stroke='#15803d' stroke-width='1.5'/>
+<text x='224.60000000000002' y='181' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>midistro-memtop</text>
+<rect x='297.6' y='160' width='133.2' height='32' rx='6' fill='#dcfce7' stroke='#15803d' stroke-width='1.5'/>
+<text x='364.20000000000005' y='181' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>midistro-zombies</text>
+<rect x='440.8' y='160' width='75.6' height='32' rx='6' fill='#dbeafe' stroke='#1d4ed8' stroke-width='1.5'/>
+<text x='478.6' y='181' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>procesos</text>
+<rect x='526.4' y='160' width='118.8' height='32' rx='6' fill='#dbeafe' stroke='#1d4ed8' stroke-width='1.5'/>
+<text x='585.8' y='181' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>medir-arranque</text>
+<rect x='655.2' y='160' width='205.20000000000002' height='32' rx='6' fill='#ffffff' stroke='#7e22ce' stroke-width='1.5'/>
+<text x='757.8000000000001' y='181' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>atajos de i3 (Super + ...)</text>
+<rect x='22' y='226' width='856' height='148' rx='8' fill='#f0fdfa' stroke='#0f766e' stroke-width='1.5'/>
+<text x='40' y='250' font-family='Helvetica, Arial, sans-serif' font-size='14' font-weight='bold' fill='#115e59' text-anchor='start'>Capa 2 · Siete temas de Sistemas Operativos</text>
+<rect x='36' y='264' width='108' height='98' rx='8' fill='#dbeafe' stroke='#1d4ed8' stroke-width='1.5'/>
+<text x='90.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#1d4ed8' text-anchor='middle'>Tema 1</text>
+<text x='90.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Procesos y</text>
+<text x='90.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>planificación</text>
+<text x='90.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1d4ed8' text-anchor='middle'>Esteban</text>
+<rect x='154' y='264' width='108' height='98' rx='8' fill='#fef3c7' stroke='#b45309' stroke-width='1.5'/>
+<text x='208.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#b45309' text-anchor='middle'>Tema 2</text>
+<text x='208.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Memoria,</text>
+<text x='208.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>swap y zram</text>
+<text x='208.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#b45309' text-anchor='middle'>Ryan</text>
+<rect x='272' y='264' width='108' height='98' rx='8' fill='#fef3c7' stroke='#b45309' stroke-width='1.5'/>
+<text x='326.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#b45309' text-anchor='middle'>Tema 4</text>
+<text x='326.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Servicios</text>
+<text x='326.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>systemd</text>
+<text x='326.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#b45309' text-anchor='middle'>Ryan</text>
+<rect x='390' y='264' width='108' height='98' rx='8' fill='#dcfce7' stroke='#15803d' stroke-width='1.5'/>
+<text x='444.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#15803d' text-anchor='middle'>Tema 5</text>
+<text x='444.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Concurrencia</text>
+<text x='444.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>e IPC</text>
+<text x='444.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#15803d' text-anchor='middle'>Geiner</text>
+<rect x='508' y='264' width='108' height='98' rx='8' fill='#dcfce7' stroke='#15803d' stroke-width='1.5'/>
+<text x='562.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#15803d' text-anchor='middle'>Tema 6</text>
+<text x='562.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Gestión de</text>
+<text x='562.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>paquetes</text>
+<text x='562.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#15803d' text-anchor='middle'>Geiner</text>
+<rect x='626' y='264' width='108' height='98' rx='8' fill='#dbeafe' stroke='#1d4ed8' stroke-width='1.5'/>
+<text x='680.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#1d4ed8' text-anchor='middle'>Tema 7</text>
+<text x='680.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Proceso de</text>
+<text x='680.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>arranque</text>
+<text x='680.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1d4ed8' text-anchor='middle'>Esteban</text>
+<rect x='744' y='264' width='108' height='98' rx='8' fill='#dbeafe' stroke='#1d4ed8' stroke-width='1.5'/>
+<text x='798.0' y='286' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='bold' fill='#1d4ed8' text-anchor='middle'>Tema 9</text>
+<text x='798.0' y='308' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>Protección y</text>
+<text x='798.0' y='323' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='middle'>seguridad</text>
+<text x='798.0' y='350' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1d4ed8' text-anchor='middle'>Esteban</text>
+<rect x='22' y='388' width='856' height='82' rx='8' fill='#fff7ed' stroke='#c2410c' stroke-width='1.5'/>
+<text x='40' y='412' font-family='Helvetica, Arial, sans-serif' font-size='14' font-weight='bold' fill='#9a3412' text-anchor='start'>Capa 1 · Base común</text>
+<text x='450' y='436' font-family='Helvetica, Arial, sans-serif' font-size='13' font-weight='normal' fill='#1f2933' text-anchor='middle'>Arch Linux instalado a mano en UEFI/GPT (ext4, systemd-boot) por cada integrante</text>
+<text x='450' y='456' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#52606d' text-anchor='middle'>install.sh idempotente · pkglist.txt · dotfiles (i3, xterm) · enlaces de bin/ a /usr/local/bin</text>
+<text x='22' y='498' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='bold' fill='#1f2933' text-anchor='start'>Responsable:</text>
+<rect x='112' y='486' width='16' height='16' rx='4' fill='#dbeafe' stroke='#1d4ed8' stroke-width='1.5'/>
+<text x='136' y='498' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='start'>Esteban</text>
+<rect x='212' y='486' width='16' height='16' rx='4' fill='#fef3c7' stroke='#b45309' stroke-width='1.5'/>
+<text x='236' y='498' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='start'>Ryan</text>
+<rect x='288' y='486' width='16' height='16' rx='4' fill='#dcfce7' stroke='#15803d' stroke-width='1.5'/>
+<text x='312' y='498' font-family='Helvetica, Arial, sans-serif' font-size='12' font-weight='normal' fill='#1f2933' text-anchor='start'>Geiner</text>
+</svg>
