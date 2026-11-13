@@ -204,4 +204,287 @@ _Pendiente: Ryan completa esta sección con sus decisiones, evidencia y problema
 
 ## 9. Instalación de Geiner
 
-_Pendiente: Geiner completa esta sección con sus decisiones, evidencia y problemas._
+La instalación de Arch Linux se hizo **a mano, sin `archinstall`**, en una máquina virtual de VirtualBox sobre Windows 11, siguiendo la guía del equipo (basada en la Installation guide de la Arch Wiki). Después se configuró el sistema para trabajar con `midistro`: entorno gráfico, portapapeles compartido, conexión con GitHub y bootstrap con `install.sh`. Las decisiones técnicas son las mismas que las de la sección 2; aquí se registra lo que se hizo en esta máquina y lo que fue distinto.
+
+### 9.1 Resumen de la instalación
+
+| Característica | Valor |
+| --- | --- |
+| Sistema anfitrión | Windows 11 Home de 64 bits (procesador AMD Ryzen 7 5700U) |
+| Hipervisor | VirtualBox |
+| Memoria RAM | 4096 MB configurados (3888 MiB visibles dentro de la VM) |
+| Procesadores | 2 |
+| Disco | 30 GB, virtual y dinámico; la raíz mide 28.4 GiB |
+| Firmware | UEFI (opción *Enable EFI* marcada) |
+| Pantalla | controlador gráfico VMSVGA y 128 MB de memoria de vídeo |
+| Red | NAT (tarjeta Intel 82540EM emulada) |
+| Nombre del equipo | `midistro` |
+| Usuario | `geiner` |
+| ISO | `archlinux-2026.10.01-x86_64.iso` |
+| Kernel | Linux 7.2.14-arch1-1 |
+| Init | systemd |
+| Bootloader | systemd-boot |
+| Entorno gráfico | i3 sobre Xorg |
+
+Se usó UEFI porque permite trabajar con el esquema de particiones GPT y con `systemd-boot`, que fue el gestor de arranque elegido para el proyecto. La memoria y los procesadores se asignaron dejando recursos suficientes para Windows mientras corre la VM. El driver gráfico `vmwgfx` y la GPU `VMware SVGA II Adapter` que reporta `midistro-info` corresponden a la configuración VMSVGA de la VM.
+
+### 9.2 Verificar UEFI, teclado y red
+
+Antes de empezar se comprobó que el sistema arrancó por UEFI, se configuró el teclado latinoamericano y se verificó la conexión a internet.
+
+```bash
+ls /sys/firmware/efi/efivars
+loadkeys la-latin1
+ping -c 3 archlinux.org
+lsblk
+```
+
+- La carpeta `efivars` solo existe si el firmware arrancó en modo UEFI. Se comprueba primero porque la partición EFI y el bootloader dependen de eso.
+- `loadkeys la-latin1` configura el teclado latinoamericano solo para la sesión de instalación.
+- `ping` confirma que hay red, necesaria porque `pacstrap` descarga los paquetes.
+- `lsblk` muestra los discos y permite identificar el que se va a particionar (`sda`) antes de escribir sobre él.
+
+### 9.3 Particionado del disco
+
+Se usó `cfdisk` con una tabla de particiones **GPT** en `/dev/sda` y dos particiones:
+
+| Partición | Tamaño | Tipo | Formato | Punto de montaje |
+| --- | --- | --- | --- | --- |
+| `/dev/sda1` | 1 GiB | EFI System | FAT32 | `/boot` |
+| `/dev/sda2` | el resto (unos 28 GiB) | Linux filesystem | ext4 | `/` |
+
+- **GPT** es la tabla que se usa con el arranque UEFI y no tiene el límite de cuatro particiones primarias de MBR.
+- La partición EFI va en **FAT32** porque la especificación UEFI solo obliga a los firmwares a leer FAT.
+- Se montó directamente en `/boot` (y no en `/boot/efi`) para que el kernel y el initramfs queden dentro de esa partición, que es la que `systemd-boot` sabe leer. Por eso se le dio 1 GiB.
+- La raíz usa **ext4**, el sistema de archivos clásico de Linux, estable y bien soportado.
+- No se creó partición de swap: el swap y zram se configuran más adelante como parte del tema de memoria del equipo.
+
+### 9.4 Formato y montaje
+
+```bash
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+mount /dev/sda2 /mnt
+mount --mkdir /dev/sda1 /mnt/boot
+lsblk -f
+```
+
+`mkfs` crea el sistema de archivos dentro de cada partición. Primero se monta la raíz y después `/boot` dentro de ella, porque `/mnt/boot` es una carpeta que vive en la raíz. `lsblk -f` confirma los formatos y los puntos de montaje. Evidencia: `docs/evidencia/geiner/lsblk.txt`.
+
+### 9.5 Instalación del sistema base
+
+```bash
+pacstrap -K /mnt base linux linux-firmware networkmanager sudo vim base-devel git man-db
+genfstab -U /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
+```
+
+| Paquete | Para qué sirve |
+| --- | --- |
+| `base` | utilidades básicas de Linux y systemd |
+| `linux` | el kernel |
+| `linux-firmware` | archivos que el kernel necesita para manejar hardware |
+| `networkmanager` | manejo de la red |
+| `sudo`, `vim` | ejecutar comandos como administrador y editar texto |
+| `base-devel` | compiladores y herramientas para construir paquetes (se usan en el `PKGBUILD` del Tema 6) |
+| `git`, `man-db` | control de versiones y manuales de los comandos |
+
+La opción `-K` de `pacstrap` crea el llavero de firmas del sistema nuevo, para que `pacman` pueda verificar paquetes. `genfstab -U` genera la tabla de montaje identificando cada partición por su **UUID** y no por `sda1`, porque el nombre del dispositivo puede cambiar entre arranques y el UUID no. Evidencia: `docs/evidencia/geiner/fstab.txt`.
+
+### 9.6 Configuración dentro del chroot
+
+`arch-chroot /mnt` entra al sistema recién instalado; desde ahí todo afecta al disco y no a la ISO.
+
+```bash
+ln -sf /usr/share/zoneinfo/America/Costa_Rica /etc/localtime
+hwclock --systohc
+sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "KEYMAP=la-latin1" > /etc/vconsole.conf
+echo "midistro" > /etc/hostname
+mkinitcpio -P
+passwd
+useradd -m -G wheel -s /bin/bash geiner
+passwd geiner
+echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
+chmod 440 /etc/sudoers.d/wheel
+```
+
+| Configuración | Para qué |
+| --- | --- |
+| Zona horaria `America/Costa_Rica` y `hwclock --systohc` | hora local correcta y sincronizada con el reloj de la placa |
+| `locale-gen` y `LANG=en_US.UTF-8` | idioma y codificación UTF-8 |
+| `KEYMAP=la-latin1` | teclado latinoamericano permanente en la consola |
+| `/etc/hostname` con `midistro` | nombre de la máquina |
+| `mkinitcpio -P` | regenera el initramfs, el mini-sistema que carga el kernel antes de montar la raíz real |
+| Usuario `geiner` en el grupo `wheel` | cuenta normal con carpeta personal; se trabaja con ella y no como `root` por el principio de mínimo privilegio |
+| `/etc/sudoers.d/wheel` con permisos 440 | el grupo `wheel` puede usar `sudo`; `sudo` rechaza el archivo si se puede modificar libremente |
+
+### 9.7 Gestor de arranque y permisos de /boot
+
+```bash
+bootctl install
+sed -i 's/fmask=0022,dmask=0022/fmask=0077,dmask=0077/' /etc/fstab
+cat > /boot/loader/loader.conf <<EOF
+default arch.conf
+timeout 3
+editor no
+EOF
+cat > /boot/loader/entries/arch.conf <<EOF
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=UUID=$(blkid -s UUID -o value /dev/sda2) rw
+EOF
+```
+
+Se usó `systemd-boot` porque es solo para UEFI, viene con `systemd` y su configuración son dos archivos de texto cortos. La entrada indica el kernel, el initramfs y la raíz por UUID (que se inserta con `blkid` para no copiarlo a mano), y `editor no` impide cambiar los parámetros del kernel desde el menú.
+
+**Permisos de /boot.** `bootctl install` mostró advertencias en rojo (`security hole`) porque `/boot` se monta con `fmask=0022` y deja legible para cualquier usuario el archivo de semilla aleatoria. Se cambió a `fmask=0077,dmask=0077` en el `fstab`, de modo que solo `root` accede. Consecuencia esperada: `bootctl status` sin `sudo` responde `Permission denied`.
+
+**Registro en el firmware.** Dentro del chroot, `bootctl install` también avisó que el sistema no estaba arrancado por EFI y no pudo escribir su entrada en las variables del firmware. El sistema arranca igual por la ruta por defecto, pero ya con el sistema instalado y arrancado en UEFI se repitió:
+
+```bash
+sudo bootctl install
+sudo efibootmgr -v
+sudo bootctl status
+```
+
+Después aparece `Linux Boot Manager` en las variables EFI. Evidencia: `docs/evidencia/geiner/bootctl-status.txt` y `docs/evidencia/geiner/efibootmgr.txt`.
+
+### 9.8 Servicios, primer arranque y evidencia base
+
+```bash
+systemctl enable NetworkManager systemd-timesyncd
+exit
+umount -R /mnt
+poweroff
+```
+
+`systemctl enable` hace que el servicio arranque solo en cada encendido (`NetworkManager` para la red y `systemd-timesyncd` para la hora). `umount -R /mnt` desmonta todo para que el disco quede escrito antes de apagar. Se retiró la ISO de la VM y se encendió: apareció el menú de `systemd-boot` y luego el login con el usuario `geiner`.
+
+Ya en el sistema instalado se guardaron las salidas pedidas como evidencia:
+
+```bash
+mkdir -p /home/geiner/evidencia
+lsblk -f > /home/geiner/evidencia/lsblk.txt
+cat /etc/fstab > /home/geiner/evidencia/fstab.txt
+sudo bootctl status > /home/geiner/evidencia/bootctl-status.txt
+sudo efibootmgr -v > /home/geiner/evidencia/efibootmgr.txt
+journalctl --list-boots > /home/geiner/evidencia/list-boots.txt
+systemctl --failed > /home/geiner/evidencia/failed-services.txt
+```
+
+`journalctl --list-boots` lista los arranques registrados por `journald`, y `systemctl --failed` muestra los servicios que fallaron al arrancar.
+
+### 9.9 Entorno gráfico y comparación de i3 con XFCE
+
+Se instaló Xorg con i3, un gestor de ventanas ligero, y XFCE para comparar su consumo de recursos.
+
+```bash
+sudo pacman -S --needed xorg-server xorg-xinit i3-wm i3status dmenu xterm mesa virtualbox-guest-utils
+sudo systemctl enable --now vboxservice
+sudo localectl set-x11-keymap latam
+```
+
+| Paquete | Para qué sirve |
+| --- | --- |
+| `xorg-server` | el servidor gráfico X11 |
+| `xorg-xinit` | trae `startx`, el comando que arranca el entorno gráfico |
+| `i3-wm`, `i3status`, `dmenu` | el gestor de ventanas, su barra de estado y el lanzador de aplicaciones |
+| `xterm` | una terminal gráfica simple, la más segura dentro de una VM |
+| `mesa` | controladores gráficos por software |
+| `virtualbox-guest-utils` | integración con VirtualBox: resolución automática y portapapeles |
+
+El archivo `.xinitrc` indica qué se ejecuta con `startx`: primero `VBoxClient-all &` (integración con VirtualBox) y al final `exec i3`. Para probar XFCE se instaló `sudo pacman -S --needed xfce4` y se cambió la última línea a `exec startxfce4`.
+
+**Mediciones.** Se midió con una sola terminal abierta y unos 30 segundos de espera, usando `free -m` y `ps -e --no-headers | wc -l`:
+
+| Entorno | Memoria usada (MB) | Memoria disponible (MB) | Procesos | Costo sobre la base |
+| --- | ---: | ---: | ---: | --- |
+| Base (sin entorno gráfico) | 370 | 3518 | 94 | n/a |
+| i3 | 520 | 3367 | 104 | +150 MB, +10 procesos |
+| XFCE | 613 | 3274 | 128 | +243 MB, +34 procesos |
+
+**Interpretación.** i3 usa 93 MB menos que XFCE (cerca de 15 % menos de memoria total) y tiene 24 procesos menos. Medido contra la base, el costo de i3 (+150 MB) es alrededor de 38 % menor que el de XFCE (+243 MB). La razón es el diseño: i3 solo acomoda ventanas, mientras que XFCE lanza además un panel, un gestor de sesión, un demonio de configuración y servicios de energía y notificaciones, cada uno como proceso aparte. Para comparar se usaron las columnas `used` y `available` y no `free`, porque `buff/cache` sube en ambos casos (Linux guarda en caché los archivos leídos y la libera cuando hace falta). Se eligió **i3**.
+
+**Limitación.** Son lecturas de una VM y no de hardware real, y no representan el promedio de varias ejecuciones. Datos originales: `docs/evidencia/geiner/medicion-de-wm.txt`.
+
+### 9.10 Portapapeles compartido
+
+Como la instalación está en VirtualBox, se configuró el portapapeles para copiar texto entre Arch Linux y Windows. En una terminal `Ctrl + C` interrumpe el comando, y además `xterm` guarda lo que se selecciona con el mouse en la "selección primaria", que VirtualBox no comparte; por eso hay que decirle a `xterm` que use el portapapeles normal.
+
+1. En VirtualBox: **Dispositivos → Portapapeles compartido → Bidireccional**.
+2. Se instaló `xorg-xrdb` (`sudo pacman -S --needed xorg-xrdb`).
+3. En `.Xresources` se escribió `XTerm*selectToClipboard: true`.
+4. En `.xinitrc` se agregó la carga de ese archivo, de modo que queda así:
+
+```bash
+xrdb -merge /home/geiner/.Xresources
+VBoxClient-all &
+exec i3
+```
+
+Se probó copiando texto de Arch al Bloc de notas de Windows y de Windows a la terminal de Arch; ambas direcciones funcionaron. Hoy `.xinitrc` y `.Xresources` son enlaces simbólicos a `dotfiles/xinitrc` y `dotfiles/Xresources`, creados por `install.sh`.
+
+### 9.11 Git y conexión con GitHub
+
+GitHub no acepta contraseñas desde la terminal, así que se usó una llave SSH: la privada se queda en la VM y la pública se registra en la cuenta.
+
+```bash
+sudo pacman -S --needed openssh
+ssh-keygen -t ed25519 -C "barrantesgeiner06@gmail.com"
+ssh -T git@github.com
+cd /home/geiner
+git clone git@github.com:Estebanmckenzie/midistro.git
+git config --global user.name "Geiner Barrantes"
+git config --global user.email "barrantesgeiner06@gmail.com"
+```
+
+La llave pública se agregó en la configuración de la cuenta de GitHub, y `ssh -T` confirmó la autenticación. La llave privada se protegió con una *passphrase*, por eso `git` la solicita en cada `pull` y `push`. El nombre y el correo configurados firman cada commit, y el profesor los usa para ver quién hizo qué.
+
+Para acceder a la VM desde PowerShell (copiar y pegar comandos, y subir archivos con `scp`) se habilitó el servicio SSH y una regla de reenvío de puertos en VirtualBox (puerto del anfitrión 2222 hacia el 22 de la VM):
+
+```bash
+sudo systemctl enable --now sshd
+```
+
+### 9.12 Evidencia de la instalación y bootstrap
+
+Las evidencias de cada integrante van en su propia carpeta para que no se sobrescriban:
+
+```bash
+mkdir -p docs/evidencia/geiner
+cp /home/geiner/evidencia/*.txt docs/evidencia/geiner/
+git add docs/evidencia/geiner/
+git commit -m "Evidencia de instalación de Geiner Barrantes"
+git push
+```
+
+| Archivo | Qué demuestra |
+| --- | --- |
+| `lsblk.txt` | particiones, sistemas de archivos y puntos de montaje |
+| `fstab.txt` | tabla de montaje con UUID y las máscaras de seguridad de `/boot` |
+| `bootctl-status.txt` | arranque por UEFI y estado del gestor de arranque |
+| `efibootmgr.txt` | entradas de arranque en la NVRAM |
+| `list-boots.txt` | arranques registrados por `journald` |
+| `failed-services.txt` | resultado de `systemctl --failed` (servicios fallidos al arrancar) |
+| `medicion-de-wm.txt` | memoria y procesos de la base, i3 y XFCE |
+
+**Bootstrap.** El script `install.sh` se ejecutó dos veces seguidas en esta máquina, con `bash install.sh 2>&1 | tee logs/install-geiner.log` y de nuevo para `logs/install-geiner-2da-corrida.log`. En ambas corridas `pacman` respondió `there is nothing to do` y se repitieron los tres enlaces de dotfiles y los seis enlaces de comandos propios en `/usr/local/bin`; que la segunda corrida no cambie nada demuestra la idempotencia. Hay que decir con claridad que ambas corridas se hicieron sobre esta VM, que ya tenía los paquetes instalados, y no sobre una base limpia: la prueba sobre una instalación limpia, donde el script sí instala los paquetes, está en los logs de Esteban (`logs/install-esteban-limpia.log`).
+
+### 9.13 Problemas encontrados
+
+| Problema | Causa | Solución |
+| --- | --- | --- |
+| Aviso de que no se había iniciado mediante EFI y de que no se podían modificar las variables del firmware | `bootctl install` se ejecutó dentro del chroot | Repetir `sudo bootctl install` con el sistema ya arrancado y comprobar con `efibootmgr -v` |
+| Líneas rojas `security hole` al instalar el bootloader | `/boot` montado con `fmask=0022` | Cambiar a `fmask=0077,dmask=0077` en el `fstab` |
+| Error al seleccionar los paquetes de XFCE | Se escribió `all` en el menú de selección del grupo, y ese menú espera números o rangos | Presionar Enter, que ya instala todos los paquetes (`default=all`) |
+| No funcionaba el portapapeles entre Windows y Arch Linux | Faltaba la integración de VirtualBox y configurar `xterm` | Portapapeles bidireccional, `xorg-xrdb` y `XTerm*selectToClipboard: true` |
+| `scp` desde PowerShell respondía `Connection refused` | Faltaba la regla de reenvío de puertos en VirtualBox y el servicio `sshd` | Habilitar `sshd` y agregar la regla 2222 hacia 22 en Configuración, Red, Avanzado |
+| Error temporal al ejecutar `git pull` | Fallo de resolución DNS al acceder a GitHub | Comprobar la red con `ping` y repetir el comando |
+| Las instrucciones usaban otro usuario | La guía original usa `/home/esteban` | Adaptar las rutas a `/home/geiner` |
+| `nano: command not found` | Nano no está en la lista de `pacstrap` | Usar `vim`, que sí está instalado (o instalar nano con `sudo pacman -S nano`) |
+
+En conclusión, la instalación dejó un Arch Linux funcional en VirtualBox, con i3 elegido con datos medidos, intercambio de texto con Windows, acceso a GitHub y el bootstrap aplicado. Las evidencias están organizadas en `docs/evidencia/geiner/` y los logs en `logs/`.
