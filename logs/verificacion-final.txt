@@ -1,0 +1,25 @@
+NAME       TYPE      SIZE USED PRIO
+/swapfile  file        2G   0B   10
+/dev/zram0 partition 1.9G   0B  100
+NEXT                        LEFT LAST                             PASSED UNIT                  ACTIVATES
+Thu 2026-11-12 22:11:14 CST 5min Thu 2026-11-12 22:01:14 CST 4min 5s ago midistro-estado.timer midistro-estado.service
+
+1 timers listed.
+Pass --all to see loaded but inactive timers, too.
+○ midistro-estado.service - Registro periodico del estado de MiDistro
+     Loaded: loaded (/etc/systemd/system/midistro-estado.service; static)
+     Active: inactive (dead) since Thu 2026-11-12 22:01:16 CST; 4min 39s ago
+ Invocation: 18247d5cb1a041d2a09125d19ed84cb0
+TriggeredBy: ● midistro-estado.timer
+    Process: 509 ExecStart=/usr/local/lib/midistro/midistro-estado (code=exited, status=0/SUCCESS)
+   Main PID: 509 (code=exited, status=0/SUCCESS)
+   Mem peak: 5.5M
+        CPU: 336ms
+
+Nov 12 22:01:14 midistro systemd[1]: Starting Registro periodico del estado de MiDistro...
+Nov 12 22:01:15 midistro midistro-estado[509]: timestamp=2026-11-12T22:01:15-06:00 uptime_s=136.88 processes=128 mem_available_mib=3368 swap_used_mib=0 root_available_mib=279306
+Nov 12 22:01:16 midistro systemd[1]: midistro-estado.service: Deactivated successfully.
+Nov 12 22:01:16 midistro systemd[1]: Finished Registro periodico del estado de MiDistro.
+timestamp=2026-11-12T21:53:47-06:00 uptime_s=125.03 processes=141 mem_available_mib=3371 swap_used_mib=0 root_available_mib=279306
+timestamp=2026-11-12T22:00:51-06:00 uptime_s=111.99 processes=132 mem_available_mib=3379 swap_used_mib=0 root_available_mib=279306
+timestamp=2026-11-12T22:01:15-06:00 uptime_s=136.88 processes=128 mem_available_mib=3368 swap_used_mib=0 root_available_mib=279306
