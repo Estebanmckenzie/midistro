@@ -273,5 +273,3 @@ Todos los componentes de Esteban (Capa 1 y Temas 1, 7 y 9) tienen entrada. Las e
 | Resultado obtenido | `bin/midistro-presion`, `bin/midistro-cgroup`, tres atajos en `dotfiles/i3/config`, documentación individual, cheatsheet y matriz actualizados |
 | Validado / corregido / descartado | **Error 18 de la IA:** la primera versión de `midistro-presion` pasaba un intervalo `None` a `max()` en la captura sin `--watch`; la ejecución real lo detectó y se corrigió usando un intervalo inicial de 1 segundo. No se hicieron cambios al bootstrap porque ya enlaza automáticamente los ejecutables de `bin/` |
 | Cómo se validó | `midistro-presion` leyó PSI y `/proc/vmstat`; `midistro-cgroup systemd-journald.service` leyó propiedades de systemd y cgroup v2; `i3 -C -c dotfiles/i3/config`, `bash -n install.sh` y `git diff --check` finalizaron sin errores |
-
-Las consultas previas de Ryan para los Temas 2 y 4 todavía deben registrarse en sus respectivas entradas.

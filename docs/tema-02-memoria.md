@@ -17,6 +17,18 @@ Las prioridades son explícitas: zram usa prioridad **100** y el swapfile priori
 
 ## 2. Concepto de SO
 
+**Memoria virtual y paginación.** Cada proceso trabaja con un espacio de direcciones virtuales. El kernel, junto con la unidad de gestión de memoria (MMU), mantiene las tablas que relacionan esas direcciones con páginas de memoria física y controla los permisos de acceso. Una dirección virtual reservada no implica necesariamente que ya exista una página física asignada: el kernel puede asignarla cuando se usa por primera vez.
+
+**Fallos de página.** Un fallo ocurre cuando el acceso a una página requiere intervención del kernel; no significa necesariamente que haya un error en el programa. Un fallo *minor* se resuelve sin leer la página desde almacenamiento, por ejemplo al asignar una página nueva o aplicar copia al escribir. Un fallo *major* requiere esperar una lectura para recuperar los datos, por ejemplo desde un archivo o swap. Los contadores son acumulados, por lo que su diferencia entre dos lecturas permite observar la actividad durante un intervalo; no miden directamente la latencia experimentada por el usuario.
+
+**Recuperación de memoria y swap.** Cuando aumenta la presión de memoria, el kernel puede recuperar páginas de la caché de archivos y desplazar páginas anónimas elegibles a un dispositivo de intercambio. Si esas páginas se necesitan de nuevo, deben recuperarse. La swap amplía el espacio disponible para páginas desplazadas, pero no sustituye a la RAM: el intercambio frecuente puede provocar demoras. Si el kernel no logra satisfacer una asignación, puede intervenir el OOM killer y terminar procesos para recuperar memoria.
+
+**Zram y prioridades.** Zram es un dispositivo de bloques que almacena sus datos comprimidos en RAM; al utilizarlo como swap, una página desplazada puede ocupar menos memoria física a cambio de trabajo de compresión y descompresión. En esta configuración su capacidad lógica es la mitad de la RAM y usa `zstd`; esa capacidad no es una reserva fija de RAM. Linux prefiere la swap de mayor prioridad: zram tiene 100 y el swapfile 10, por lo que se intenta usar zram primero y luego el archivo cuando es necesario. El swapfile usa almacenamiento persistente, pero sus contenidos no deben considerarse datos persistentes de usuario.
+
+**Lecturas del sistema.** `/proc/meminfo` resume el estado de memoria; `MemAvailable` es una estimación de la memoria disponible para nuevas aplicaciones sin recurrir a swap, no solo la RAM libre. `/proc/swaps` informa el uso y la prioridad de cada área de intercambio, mientras que las estadísticas de zram distinguen el tamaño original de los datos, el tamaño comprimido y la memoria realmente asignada. Estas cifras representan conceptos distintos y no deben compararse como si fueran el mismo tipo de ocupación.
+
+Referencias: `proc_meminfo(5)`, `proc_pid_stat(5)`, `swapon(2)` y `zramctl(8)`, páginas del manual; documentación del kernel sobre [zram](https://docs.kernel.org/admin-guide/blockdev/zram.html) y [OOM](https://docs.kernel.org/mm/oom.html).
+
 
 ## 3. Método de medición
 
