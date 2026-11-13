@@ -42,7 +42,7 @@ enlazar "$REPO/dotfiles/xinitrc"    "$HOME/.xinitrc"
 enlazar "$REPO/dotfiles/Xresources" "$HOME/.Xresources"
 enlazar "$REPO/dotfiles/i3/config"  "$HOME/.config/i3/config"
 
-msg "4/8 Memoria: swap y zram (Tema 2)"
+msg "4/8 Memoria: swap y zram"
 sudo install -m 644 "$REPO/systemd/zram-generator.conf" /etc/systemd/zram-generator.conf
 sudo bash "$REPO/scripts/configurar-swap.sh"
 sudo systemctl daemon-reload
@@ -70,7 +70,7 @@ msg "7/8 Servicios"
 sudo systemctl enable --now NetworkManager systemd-timesyncd vboxservice
 sudo localectl set-x11-keymap latam
 
-msg "8/8 Timer de estado (Tema 4)"
+msg "8/8 Timer de estado"
 sudo systemctl enable --now midistro-estado.timer
 
 msg "Listo. Para entrar al escritorio ejecute: startx"
