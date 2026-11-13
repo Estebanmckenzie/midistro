@@ -86,7 +86,7 @@ sudo security/probar-negativas.sh
 | --- | --- | --- | --- |
 | `midistro-info` (obligatorio) | Geiner | `/proc` y `/sys` | [`comando-midistro-info.md`](docs/comando-midistro-info.md) |
 | `midistro-memtop` | Geiner | `/proc/[pid]/status`, `/proc/meminfo` | [`comando-midistro-memtop.md`](docs/comando-midistro-memtop.md) |
-| `midistro-zombies` | Geiner | `/proc` | [`tema-06-gestion-paquetes.md`](docs/tema-06-gestion-paquetes.md) |
+| `midistro-zombies` | Geiner | `/proc` | [`comando-midistro-zombies.md`](docs/comando-midistro-zombies.md) |
 | `procesos` | Esteban | `/proc/[pid]/stat` y llamadas de planificación | [`comando-procesos.md`](docs/comando-procesos.md) |
 | `medir-arranque` | Esteban | `systemd` (`systemd-analyze`) | [`comando-medir-arranque.md`](docs/comando-medir-arranque.md) |
 | `midistro-presion` | Ryan | `/proc/pressure/*` y `/proc/vmstat` | [`comando-midistro-presion.md`](docs/comando-midistro-presion.md) |
@@ -97,4 +97,5 @@ Atajos de i3 (`Super` es la tecla Windows): `Super+Enter` abre una terminal, `Su
 ## Equipo, responsabilidades y uso de IA
 
 - Reparto de temas y componentes: [`docs/responsabilidades.md`](docs/responsabilidades.md).
+- Informe final: [`docs/Informe_midistro.pdf`](docs/Informe_midistro.pdf).
 - Uso de IA (Claude, de Anthropic), con lo que se validó, se corrigió o se descartó, y los errores de la IA que se detectaron: [`docs/bitacora_ia.md`](docs/bitacora_ia.md).
