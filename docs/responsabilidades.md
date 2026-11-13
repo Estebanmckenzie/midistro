@@ -12,8 +12,8 @@ El equipo implementa **7 de los 9 temas** de la Capa 2, y cada integrante es res
 | Tema / módulo | Responsable principal | Apoyo | Ruta en el repositorio | Ficha de evidencia | Estado |
 | --- | --- | --- | --- | --- | --- |
 | Tema 1 · Procesos y planificación | Esteban McKenzie | Geiner | `bin/procesos`, `bin/experimento-prioridades` | `docs/tema-01-procesos.md` | Cerrado |
-| Tema 2 · Memoria, swap y zram | Ryan | Esteban | `bin/`, `systemd/` (configuración de zram) | `docs/tema-02-memoria.md` | En curso |
-| Tema 4 · Gestión de servicios systemd | Ryan | Geiner | `systemd/` (unit file y timer) | `docs/tema-04-servicios.md` | En curso |
+| Tema 2 · Memoria, swap y zram | Ryan | Esteban | `bin/midistro-memoria`, `scripts/configurar-swap.sh`, `scripts/tema2-evidencia.sh`, `systemd/zram-generator.conf`, `docs/evidencia/tema2/` | `docs/tema-02-memoria.md` | Medición y resultados listos; falta la sección 2 (concepto de SO) |
+| Tema 4 · Gestión de servicios systemd | Ryan | Geiner | `systemd/midistro-estado.*`, `bin/midistro-estado`, `scripts/tema4-evidencia.sh`, `docs/evidencia/tema4/` | `docs/tema-04-servicios.md` | Cerrado |
 | Tema 5 · Concurrencia e IPC | Geiner | Ryan | `src/`, `bin/midistro-zombies`, `scripts/tema5-evidencia.sh`, `docs/evidencia/tema5/` | `docs/tema-05-concurrencia-ipc.md` | Cerrado |
 | Tema 6 · Gestión de paquetes | Geiner | Esteban | `pacman/` (hook de ALPM y PKGBUILD), `scripts/tema6-evidencia.sh`, `docs/evidencia/tema6/` | `docs/tema-06-gestion-paquetes.md` | Cerrado |
 | Tema 7 · Proceso de arranque | Esteban McKenzie | Ryan | `boot/arch-rescue.conf`, `bin/medir-arranque`, `docs/evidencia/esteban/` | `docs/tema-07-arranque.md` | Cerrado |
@@ -32,7 +32,7 @@ Resumen por integrante: Esteban lleva 3 temas (1, 7 y 9), Ryan 2 (2 y 4) y Geine
 
 | Componente | Responsable principal | Apoyo | Ruta en el repositorio | Estado |
 | --- | --- | --- | --- | --- |
-| Instalación manual de Arch (evidencia por integrante) | Cada integrante, en su propia máquina | n/a | `docs/instalacion.md`, `docs/evidencia/<integrante>/` | Esteban y Geiner con log de `install.sh`; falta el de Ryan |
+| Instalación manual de Arch (evidencia por integrante) | Cada integrante, en su propia máquina | n/a | `docs/instalacion.md`, `docs/evidencia/<integrante>/` | Esteban y Geiner con log de `install.sh` (el de Esteban, también sobre instalación limpia: `logs/install-esteban-final*.log`); falta el de Ryan y su sección 8 de `docs/instalacion.md`; falta la sección 9 de Geiner |
 | Bootstrap `install.sh` y `pkglist.txt` | Esteban McKenzie | Ryan y Geiner aportan sus paquetes y unit files | `install.sh`, `pkglist.txt`, `dotfiles/`, `logs/` | Cerrado |
 | Justificación del DE/WM | Esteban McKenzie | n/a | `docs/instalacion.md` (sección 4) | Cerrado |
 | Comando obligatorio (lee de `/proc` y `/sys`): `midistro-info` | Geiner | Esteban | `bin/midistro-info`, `docs/comando-midistro-info.md` | Cerrado |
@@ -42,7 +42,7 @@ Resumen por integrante: Esteban lleva 3 temas (1, 7 y 9), Ryan 2 (2 y 4) y Geine
 | 3 atajos libres por integrante y los 4 obligatorios | Cada integrante | n/a | `dotfiles/i3/config` | Cerrado |
 | Cheatsheet de atajos | Esteban McKenzie (compila los de los tres) | Ryan y Geiner | `docs/cheatsheet.md` | Cerrado |
 | Bitácora de uso de IA | Cada responsable registra sus consultas | n/a | `docs/bitacora_ia.md` | Esteban y Geiner cerrados; Ryan agregó Capa 3, faltan consultas de Temas 2 y 4 |
-| README e informe final | Esteban McKenzie | Ryan y Geiner aportan sus secciones | `README.md`, informe en PDF | README listo; informe pendiente |
+| README e informe final | Esteban McKenzie | Ryan y Geiner aportan sus secciones | `README.md`, informe en PDF | README y matriz listos; informe en preparación |
 
 ## Acuerdos de trabajo
 
@@ -59,3 +59,4 @@ Resumen por integrante: Esteban lleva 3 temas (1, 7 y 9), Ryan 2 (2 y 4) y Geine
 | 2026-11-02 | Versión inicial con el reparto de los 7 temas y de los componentes de las Capas 1 y 3 |
 | Antes del 2026-11-07 | Geiner actualizó las rutas reales de las fichas y de la evidencia de los Temas 5 y 6 (commit `17905a6`) |
 | 2026-11-07 | Se confirma a Geiner como autor del comando obligatorio (`midistro-info`) y se quita la justificación inicial, que lo ligaba al Tema 6; se agregan los comandos libres y atajos de cada integrante, las rutas del Tema 1 y del Tema 7, y la columna de estado |
+| 2026-11-12 | Estados de los Temas 2 y 4 tras la entrega de Ryan. Prueba final de `install.sh` sobre instalación limpia, con primera y segunda corrida (`logs/install-esteban-final.log` y `-2da.log`) y la verificación de zram, swapfile y timer (`logs/verificacion-final.txt`) |
